@@ -1,13 +1,15 @@
 import { AdminDashboard } from "@/components/admin/AdminDashboard";
+import { buildPageMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
+export const metadata = buildPageMetadata({
+  title: "Admin",
+  description: "BoofMap admin dashboard.",
+  path: "/admin",
+  noIndex: true,
+});
+
 export default function AdminPage() {
-  return (
-    <div className="min-h-screen bg-[#050505]">
-      <div className="mx-auto max-w-lg px-4 pb-12">
-        <AdminDashboard />
-      </div>
-    </div>
-  );
+  return <AdminDashboard />;
 }

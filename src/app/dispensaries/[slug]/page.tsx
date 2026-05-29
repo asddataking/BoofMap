@@ -1,10 +1,31 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { AlertTriangle, Flame } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { PageTransition } from "@/components/PageTransition";
 import { ReportCard } from "@/components/ReportCard";
+import { BreadcrumbJsonLd } from "@/components/SiteJsonLd";
 import { fetchDispensaryProfile } from "@/lib/convex/queries";
+import { buildPageMetadata } from "@/lib/seo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const dispo = await fetchDispensaryProfile(slug);
+  if (!dispo) {
+    return buildPageMetadata({ title: "Dispensary not found", noIndex: true });
+  }
+
+  return buildPageMetadata({
+    title: `${dispo.name} — ${dispo.city}, MI`,
+    description: `Community reports for ${dispo.name} in ${dispo.city}, Michigan. Value score ${dispo.value_score}, ${dispo.report_count} reports, ${dispo.taxed_alert_count} taxed alerts. See fire finds and recent boof reports.`,
+    path: `/dispensaries/${slug}`,
+  });
+}
 
 export default async function DispensaryPage({
   params,
@@ -17,6 +38,13 @@ export default async function DispensaryPage({
 
   return (
     <AppShell>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Reports", path: "/reports" },
+          { name: dispo.name, path: `/dispensaries/${slug}` },
+        ]}
+      />
       <PageTransition>
         <div className="py-4">
           <p className="text-xs text-zinc-500">{dispo.city}</p>

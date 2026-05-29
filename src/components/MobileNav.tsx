@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Flame, Map, Newspaper, PlusCircle, User } from "lucide-react";
+import { Flame, Map, Newspaper, Target, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/", label: "Home", icon: Map },
+  { href: "/", label: "Map", icon: Map },
   { href: "/reports", label: "Reports", icon: Newspaper },
-  { href: "/report", label: "Report", icon: PlusCircle },
+  { href: "/report", label: "Report", icon: Target },
   { href: "/brands", label: "Brands", icon: Flame },
   { href: "/profile", label: "Profile", icon: User },
 ] as const;
@@ -18,7 +18,7 @@ export function MobileNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 border-t border-zinc-800/60 bg-[#0a0a0a]/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-2xl lg:hidden"
+      className="fixed bottom-0 left-0 right-0 z-50 border-t border-zinc-800/80 bg-[#0a0a0a]/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-2xl lg:hidden"
       aria-label="Main navigation"
     >
       <div className="mx-auto flex max-w-6xl items-stretch justify-around px-1 py-1.5">
@@ -42,7 +42,7 @@ export function MobileNav() {
               <Icon
                 className={cn(
                   "h-5 w-5",
-                  active && "drop-shadow-[0_0_8px_rgba(52,211,153,0.5)]"
+                  active && "drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]"
                 )}
                 strokeWidth={active ? 2.5 : 2}
               />

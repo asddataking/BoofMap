@@ -1,11 +1,32 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { AlertTriangle } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { PageTransition } from "@/components/PageTransition";
 import { ReportCard } from "@/components/ReportCard";
 import { ScoreBadge } from "@/components/ScoreBadge";
+import { BreadcrumbJsonLd } from "@/components/SiteJsonLd";
 import { fetchBrandProfile } from "@/lib/convex/queries";
+import { buildPageMetadata } from "@/lib/seo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const brand = await fetchBrandProfile(slug);
+  if (!brand) {
+    return buildPageMetadata({ title: "Brand not found", noIndex: true });
+  }
+
+  return buildPageMetadata({
+    title: `${brand.name} — Brand Profile`,
+    description: `${brand.name} has ${brand.report_count} community reports on BoofMap. Trust score ${brand.trust_score}, avg boof score ${brand.avg_boof_score.toFixed(1)}. See mold alerts, complaints, and recent reports.`,
+    path: `/brands/${slug}`,
+  });
+}
 
 export default async function BrandPage({
   params,
@@ -18,6 +39,13 @@ export default async function BrandPage({
 
   return (
     <AppShell>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Brands", path: "/brands" },
+          { name: brand.name, path: `/brands/${slug}` },
+        ]}
+      />
       <PageTransition>
         <div className="py-4">
           <Link href="/brands" className="text-xs text-zinc-500 hover:text-zinc-400">

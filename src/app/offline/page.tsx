@@ -1,8 +1,12 @@
 import Link from "next/link";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = {
-  title: "BoofMap — Offline",
-};
+export const metadata = buildPageMetadata({
+  title: "Offline",
+  description: "BoofMap is offline. Reconnect to load fresh community reports.",
+  path: "/offline",
+  noIndex: true,
+});
 
 export default function OfflinePage() {
   return (

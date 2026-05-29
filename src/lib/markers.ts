@@ -21,3 +21,37 @@ export function scoreLabel(score: number): string {
   if (score <= 4.5) return "Decent";
   return "Fire";
 }
+
+export function reportBadgeLabel(report: Report): string {
+  const tier = getMarkerTier(report);
+  if (tier === "boof") return "Boof Alert";
+  if (tier === "taxed") return "Taxed";
+  if (tier === "fire") return "Fire Find";
+  return "Mid";
+}
+
+export const tierStyles: Record<
+  MarkerTier,
+  { badge: string; ring: string; text: string }
+> = {
+  boof: {
+    badge: "bg-red-500/90 text-white",
+    ring: "stroke-red-500",
+    text: "text-red-400",
+  },
+  taxed: {
+    badge: "bg-orange-500/90 text-white",
+    ring: "stroke-orange-500",
+    text: "text-orange-400",
+  },
+  fire: {
+    badge: "bg-emerald-500/90 text-white",
+    ring: "stroke-emerald-500",
+    text: "text-emerald-400",
+  },
+  mid: {
+    badge: "bg-amber-500/90 text-black",
+    ring: "stroke-amber-500",
+    text: "text-amber-400",
+  },
+};

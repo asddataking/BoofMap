@@ -143,12 +143,12 @@ function ReportsClientView({
   return (
     <AppShell showFab>
       <PageTransition>
-        <div className="py-4">
-          <h2 className="font-heading text-2xl font-bold text-white">
+        <div className="py-4 lg:py-8">
+          <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">
             Live Reports
           </h2>
           <p className="mt-1 text-sm text-zinc-500">
-            Real-time community reports — product & meetup
+            Real-time community reports — browse free, no signup required.
           </p>
 
           <div className="mt-4 flex rounded-2xl border border-zinc-800 bg-zinc-900/50 p-1">

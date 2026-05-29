@@ -4,6 +4,14 @@ import { AppShell } from "@/components/AppShell";
 import { PageTransition } from "@/components/PageTransition";
 import { slugify } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
+import { buildPageMetadata } from "@/lib/seo";
+
+export const metadata = buildPageMetadata({
+  title: "Brands",
+  description:
+    "Community trust scores and boof reports by cannabis brand in Michigan. See which brands are fire and which to avoid.",
+  path: "/brands",
+});
 
 export default async function BrandsPage() {
   const brands = await fetchBrandNames();
@@ -11,8 +19,8 @@ export default async function BrandsPage() {
   return (
     <AppShell>
       <PageTransition>
-        <div className="py-4">
-          <h2 className="font-heading text-2xl font-bold text-white">Brands</h2>
+        <div className="py-4 lg:py-8">
+          <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">Brands</h2>
           <p className="mt-1 text-sm text-zinc-500">
             Community trust scores by brand
           </p>

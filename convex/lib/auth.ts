@@ -11,6 +11,24 @@ function parseAdminIds(): string[] {
     .filter(Boolean);
 }
 
+function parseAdminEmails(): string[] {
+  const raw = process.env.ADMIN_EMAILS ?? "";
+  return raw
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+export function isAdminIdentity(identity: {
+  subject: string;
+  email?: string | null;
+}): boolean {
+  if (parseAdminIds().includes(identity.subject)) return true;
+  const email = identity.email?.toLowerCase();
+  if (email && parseAdminEmails().includes(email)) return true;
+  return false;
+}
+
 export async function requireIdentity(ctx: AuthCtx): Promise<UserIdentity> {
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) {
@@ -21,7 +39,7 @@ export async function requireIdentity(ctx: AuthCtx): Promise<UserIdentity> {
 
 export async function requireAdmin(ctx: AuthCtx): Promise<UserIdentity> {
   const identity = await requireIdentity(ctx);
-  if (!parseAdminIds().includes(identity.subject)) {
+  if (!isAdminIdentity(identity)) {
     throw new Error("Unauthorized");
   }
   return identity;

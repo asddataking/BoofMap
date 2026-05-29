@@ -1,5 +1,5 @@
 import { mutation, query } from "./_generated/server";
-import { isAdminUserId, requireIdentity } from "./lib/auth";
+import { isAdminIdentity, requireIdentity } from "./lib/auth";
 
 export const syncCurrentUser = mutation({
   args: {},
@@ -17,7 +17,7 @@ export const syncCurrentUser = mutation({
       identity.nickname ??
       identity.email?.split("@")[0] ??
       undefined;
-    const role = isAdminUserId(clerkId) ? "admin" : "user";
+    const role = isAdminIdentity(identity) ? "admin" : "user";
 
     if (existing) {
       if (displayName && displayName !== existing.displayName) {

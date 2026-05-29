@@ -1,9 +1,12 @@
-import type { Metadata, Viewport } from "next";
+import type { Viewport } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Analytics } from "@vercel/analytics/next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 import { BoofAuthProvider } from "@/components/BoofAuthProvider";
 import { PwaRegister } from "@/components/PwaRegister";
+import { SiteJsonLd } from "@/components/SiteJsonLd";
+import { rootMetadata } from "@/lib/seo";
 import "./globals.css";
 
 const inter = Inter({
@@ -17,37 +20,10 @@ const spaceGrotesk = Space_Grotesk({
   weight: ["400", "500", "600", "700"],
 });
 
-export const metadata: Metadata = {
-  title: "BoofMap — Find fire. Avoid boof.",
-  description:
-    "Community cannabis quality and value reports. Find fire, avoid boof — runs in your browser, no app store required.",
-  manifest: "/manifest.json",
-  applicationName: "BoofMap",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "black-translucent",
-    title: "BoofMap",
-  },
-  formatDetection: {
-    telephone: false,
-    email: false,
-    address: false,
-  },
-  icons: {
-    icon: [
-      { url: "/icons/icon.svg", type: "image/svg+xml" },
-      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
-    ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
-  },
-  other: {
-    "mobile-web-app-capable": "yes",
-  },
-};
+export const metadata = rootMetadata;
 
 export const viewport: Viewport = {
-  themeColor: "#050505",
+  themeColor: "#0a0a0a",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -66,6 +42,7 @@ export default function RootLayout({
       className={`${inter.variable} ${spaceGrotesk.variable} h-full`}
     >
       <head>
+        <SiteJsonLd />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link
           rel="apple-touch-startup-image"
@@ -85,6 +62,7 @@ export default function RootLayout({
             <BoofAuthProvider>{children}</BoofAuthProvider>
           </ConvexClientProvider>
         </ClerkProvider>
+        <Analytics />
       </body>
     </html>
   );

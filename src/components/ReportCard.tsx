@@ -27,7 +27,7 @@ export function ReportCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.04, duration: 0.35 }}
-      className="glass-card overflow-hidden"
+      className="glass-card overflow-hidden transition hover:border-zinc-700/60"
     >
       <div className="p-4">
         <div className="flex items-start justify-between gap-3">
@@ -38,7 +38,7 @@ export function ReportCard({
             <p className="mt-0.5 text-sm text-zinc-400">
               <Link
                 href={`/brands/${slugify(report.brand_name)}`}
-                className="text-amber-400/90 hover:text-amber-300"
+                className="text-emerald-400/90 hover:text-emerald-300"
               >
                 {report.brand_name}
               </Link>

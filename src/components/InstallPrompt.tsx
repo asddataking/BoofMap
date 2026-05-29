@@ -90,8 +90,7 @@ export function InstallPrompt() {
               type="button"
               onClick={handleInstall}
               className={cn(
-                "mt-3 w-full rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-2.5 text-sm font-semibold text-emerald-300 transition",
-                "hover:bg-emerald-500/20 active:scale-[0.98]"
+                "btn-primary mt-3 w-full !py-2.5"
               )}
             >
               Add to Home Screen

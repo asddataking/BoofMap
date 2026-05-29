@@ -13,14 +13,15 @@ export function StatCard({
   label: string;
   value: number | string;
   icon: LucideIcon;
-  accent?: "emerald" | "gold" | "red" | "orange";
+  accent?: "emerald" | "gold" | "red" | "orange" | "purple";
   index?: number;
 }) {
   const accents = {
-    emerald: "from-emerald-500/20 to-transparent text-emerald-400",
-    gold: "from-amber-500/20 to-transparent text-amber-400",
-    red: "from-red-500/20 to-transparent text-red-400",
-    orange: "from-orange-500/20 to-transparent text-orange-400",
+    emerald: "bg-emerald-500/15 text-emerald-400",
+    gold: "bg-orange-500/15 text-orange-400",
+    red: "bg-red-500/15 text-red-400",
+    orange: "bg-orange-500/15 text-orange-400",
+    purple: "bg-purple-500/15 text-purple-400",
   };
 
   return (
@@ -28,19 +29,21 @@ export function StatCard({
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.06, duration: 0.4 }}
-      className="glass-card flex min-w-[140px] flex-col gap-1 p-3.5"
+      className="glass-card flex min-w-[140px] flex-col gap-3 p-4"
     >
       <div
-        className={`flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br ${accents[accent]}`}
+        className={`flex h-9 w-9 items-center justify-center rounded-xl ${accents[accent]}`}
       >
         <Icon className="h-4 w-4" strokeWidth={2} />
       </div>
-      <p className="font-heading text-2xl font-semibold tracking-tight text-white">
-        {value}
-      </p>
-      <p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500">
-        {label}
-      </p>
+      <div>
+        <p className="font-heading text-2xl font-bold tracking-tight text-white">
+          {value}
+        </p>
+        <p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500">
+          {label}
+        </p>
+      </div>
     </motion.div>
   );
 }
