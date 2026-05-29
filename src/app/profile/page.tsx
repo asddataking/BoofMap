@@ -25,6 +25,24 @@ export default function ProfilePage() {
             </p>
           </div>
 
+          {isAdmin && (
+            <Link
+              href="/admin"
+              className="glass-card mb-4 flex items-center justify-between gap-3 border-amber-500/30 bg-amber-500/10 p-4 text-amber-200 transition hover:border-amber-500/50"
+            >
+              <div className="flex items-center gap-3">
+                <Shield className="h-5 w-5 text-amber-400" />
+                <div>
+                  <span className="text-sm font-semibold">Admin panel</span>
+                  <p className="text-xs text-amber-200/70">
+                    Manage reports, users, and moderation
+                  </p>
+                </div>
+              </div>
+              <span className="text-xs font-medium text-amber-400">Open →</span>
+            </Link>
+          )}
+
           <div className="glass-card flex items-center gap-4 p-5">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/15">
               <User className="h-7 w-7 text-emerald-400" />
@@ -43,6 +61,11 @@ export default function ProfilePage() {
                   <p className="mt-1 text-xs text-zinc-500">
                     Reputation: {profile?.reputation ?? 0} · Reports:{" "}
                     {profile?.report_count ?? 0}
+                    {isAdmin && (
+                      <span className="ml-2 rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-semibold uppercase text-amber-300">
+                        Admin
+                      </span>
+                    )}
                   </p>
                 </>
               ) : (

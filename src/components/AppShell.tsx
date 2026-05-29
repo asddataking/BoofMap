@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
-import { Menu, Target } from "lucide-react";
+import { Menu, Shield, Target } from "lucide-react";
 import { MobileNav } from "./MobileNav";
 import { Disclaimer } from "./Disclaimer";
 import { BoofLogo } from "./BoofLogo";
@@ -33,7 +33,7 @@ export function AppShell({
   showFab?: boolean;
   variant?: "default" | "landing";
 }) {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, isAdmin } = useAuth();
   const pathname = usePathname();
   const isLanding = variant === "landing";
   const [menuOpen, setMenuOpen] = useState(false);
@@ -81,6 +81,15 @@ export function AppShell({
           </nav>
 
           <div className="flex items-center gap-2">
+            {isAdmin && (
+              <Link
+                href="/admin"
+                className="hidden items-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-sm font-semibold text-amber-300 transition hover:bg-amber-500/20 sm:inline-flex"
+              >
+                <Shield className="h-4 w-4" />
+                Admin
+              </Link>
+            )}
             <Link
               href="/report"
               className="btn-dark hidden items-center gap-2 !px-4 !py-2 text-sm sm:inline-flex"
@@ -141,6 +150,15 @@ export function AppShell({
                   {label}
                 </Link>
               ))}
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  onClick={() => setMenuOpen(false)}
+                  className="rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2.5 text-sm font-semibold text-amber-300"
+                >
+                  Admin panel
+                </Link>
+              )}
               <Link
                 href="/report"
                 onClick={() => setMenuOpen(false)}

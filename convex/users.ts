@@ -23,7 +23,7 @@ export const syncCurrentUser = mutation({
       if (displayName && displayName !== existing.displayName) {
         await ctx.db.patch(existing._id, { displayName });
       }
-      if (existing.role !== role && role === "admin") {
+      if (existing.role !== role) {
         await ctx.db.patch(existing._id, { role });
       }
       return existing._id;
@@ -46,17 +46,30 @@ export const getMe = query({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) return null;
 
+    const admin = isAdminIdentity(identity);
     const user = await ctx.db
       .query("users")
       .withIndex("by_clerk_id", (q) => q.eq("clerkId", identity.subject))
       .unique();
 
-    if (!user) return null;
+    if (!user) {
+      return {
+        uid: identity.subject,
+        display_name:
+          identity.name ??
+          identity.nickname ??
+          identity.email?.split("@")[0] ??
+          undefined,
+        role: admin ? ("admin" as const) : ("user" as const),
+        reputation: 0,
+        report_count: 0,
+      };
+    }
 
     return {
       uid: user.clerkId,
       display_name: user.displayName,
-      role: user.role,
+      role: admin ? ("admin" as const) : user.role,
       reputation: user.reputation,
       report_count: user.reportCount,
     };
