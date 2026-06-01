@@ -7,9 +7,9 @@ import { buildPageMetadata } from "@/lib/seo";
 import { ReportsClient } from "./ReportsClient";
 
 export const metadata = buildPageMetadata({
-  title: "Live Reports",
+  title: "Live Cannabis Reports — Michigan",
   description:
-    "Browse real-time community cannabis reports across Michigan — product quality, taxed alerts, mold warnings, and fire finds. Free to browse, no signup required.",
+    "Browse real-time Michigan cannabis reports — boof alerts, fire finds, mold warnings, and taxed product flags from real buyers. Free community intel, no signup required.",
   path: "/reports",
 });
 

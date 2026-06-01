@@ -32,6 +32,8 @@ export function MobileNav() {
             <Link
               key={href}
               href={href}
+              aria-current={active ? "page" : undefined}
+              aria-label={label}
               className={cn(
                 "flex min-h-[52px] min-w-[56px] flex-1 flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-1.5 text-[10px] font-medium transition active:scale-95",
                 active
@@ -45,6 +47,7 @@ export function MobileNav() {
                   active && "drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]"
                 )}
                 strokeWidth={active ? 2.5 : 2}
+                aria-hidden
               />
               <span>{label}</span>
             </Link>

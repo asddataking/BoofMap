@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { SignUpButton } from "@clerk/nextjs";
 import type { Preloaded } from "convex/react";
@@ -12,11 +12,8 @@ import { PageTransition } from "@/components/PageTransition";
 import { SearchBar } from "@/components/SearchBar";
 import { BoofTicker } from "@/components/home/BoofTicker";
 import { HomepageHero } from "@/components/home/HomepageHero";
-import { LiveScoreboard } from "@/components/home/LiveScoreboard";
-import { TrendingNow } from "@/components/home/TrendingNow";
-import { RecentReportsFeed } from "@/components/home/RecentReportsFeed";
+import { IntelBoard } from "@/components/home/IntelBoard";
 import { AnalystCard } from "@/components/home/AnalystCard";
-import { NotificationSettings } from "@/components/home/NotificationSettings";
 import { api } from "../../convex/_generated/api";
 import { useAuth } from "@/components/BoofAuthProvider";
 import { MICHIGAN_CENTER } from "@/lib/constants";
@@ -27,33 +24,44 @@ import { useMeetupReports } from "@/hooks/useMeetupReports";
 export function HomeClient({
   preloadedReports,
   seedReports,
+  seoIntro,
 }: {
   preloadedReports: Preloaded<typeof api.reports.listApproved> | null;
   seedReports: Report[];
+  seoIntro?: ReactNode;
 }) {
   if (preloadedReports) {
     return (
       <HomeClientLive
         preloadedReports={preloadedReports}
         seedReports={seedReports}
+        seoIntro={seoIntro}
       />
     );
   }
-  return <HomeClientView reports={seedReports} />;
+  return <HomeClientView reports={seedReports} seoIntro={seoIntro} />;
 }
 
 function HomeClientLive({
   preloadedReports,
   seedReports,
+  seoIntro,
 }: {
   preloadedReports: Preloaded<typeof api.reports.listApproved>;
   seedReports: Report[];
+  seoIntro?: ReactNode;
 }) {
   const reports = usePreloadedReports(preloadedReports, seedReports);
-  return <HomeClientView reports={reports} />;
+  return <HomeClientView reports={reports} seoIntro={seoIntro} />;
 }
 
-function HomeClientView({ reports }: { reports: Report[] }) {
+function HomeClientView({
+  reports,
+  seoIntro,
+}: {
+  reports: Report[];
+  seoIntro?: ReactNode;
+}) {
   const { isAuthenticated } = useAuth();
   const meetups = useMeetupReports();
   const [search, setSearch] = useState("");
@@ -74,34 +82,19 @@ function HomeClientView({ reports }: { reports: Report[] }) {
     document.getElementById("map")?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const scrollToSettings = () => {
-    document.getElementById("settings")?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
     <AppShell showFab variant="landing">
       <PageTransition>
         <BoofTicker />
 
-        <div className="space-y-12 pb-8 pt-6 lg:space-y-16 lg:pb-12 lg:pt-8">
+        {seoIntro}
+
+        <div className="space-y-12 pb-8 pt-4 lg:space-y-16 lg:pb-12 lg:pt-6">
           <HomepageHero
             onOpenMap={scrollToMap}
-            onOpenAlerts={scrollToSettings}
             reports={filtered}
             totalReports={reports.length}
           />
-
-          <TrendingNow />
-
-          <LiveScoreboard />
-
-          <RecentReportsFeed reports={filtered} meetups={meetups} />
-
-          <AnalystCard />
-
-          <NotificationSettings />
-
-          <HowItWorksSection />
 
           <section id="map" className="scroll-mt-24" aria-label="Map">
             <p className="section-kicker">Live Map</p>
@@ -126,6 +119,12 @@ function HomeClientView({ reports }: { reports: Report[] }) {
               />
             </div>
           </section>
+
+          <IntelBoard reports={filtered} meetups={meetups} />
+
+          <AnalystCard />
+
+          <HowItWorksSection />
 
           <LandingPwaSection />
 

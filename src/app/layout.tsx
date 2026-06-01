@@ -5,6 +5,7 @@ import { Barlow_Condensed, Inter } from "next/font/google";
 import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 import { BoofAuthProvider } from "@/components/BoofAuthProvider";
 import { PwaRegister } from "@/components/PwaRegister";
+import { SkipToMain } from "@/components/a11y/SkipToMain";
 import { SiteJsonLd } from "@/components/SiteJsonLd";
 import { rootMetadata } from "@/lib/seo";
 import "./globals.css";
@@ -27,8 +28,6 @@ export const viewport: Viewport = {
   themeColor: "#050807",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
   viewportFit: "cover",
 };
 
@@ -57,6 +56,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full antialiased page-gradient">
+        <SkipToMain />
         <PwaRegister />
         <ClerkProvider>
           <ConvexClientProvider>

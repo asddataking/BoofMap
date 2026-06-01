@@ -5,9 +5,10 @@ import { AlertTriangle, Flame } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { PageTransition } from "@/components/PageTransition";
 import { ReportCard } from "@/components/ReportCard";
+import { JsonLdScript } from "@/components/seo/JsonLdScript";
 import { BreadcrumbJsonLd } from "@/components/SiteJsonLd";
 import { fetchDispensaryProfile } from "@/lib/convex/queries";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildDispensaryJsonLd, buildPageMetadata } from "@/lib/seo";
 
 export async function generateMetadata({
   params,
@@ -45,12 +46,21 @@ export default async function DispensaryPage({
           { name: dispo.name, path: `/dispensaries/${slug}` },
         ]}
       />
+      <JsonLdScript
+        data={buildDispensaryJsonLd({
+          name: dispo.name,
+          slug,
+          city: dispo.city,
+          report_count: dispo.report_count,
+          value_score: dispo.value_score,
+        })}
+      />
       <PageTransition>
         <div className="py-4">
           <p className="text-xs text-zinc-500">{dispo.city}</p>
-          <h2 className="mt-1 font-heading text-2xl font-bold text-white">
+          <h1 className="mt-1 font-display text-2xl font-bold text-white">
             {dispo.name}
-          </h2>
+          </h1>
 
           {dispo.taxed_alert_count > 0 && (
             <div className="mt-4 flex items-start gap-3 rounded-2xl border border-orange-500/30 bg-orange-500/10 p-4">

@@ -5,11 +5,11 @@ import { usePathname } from "next/navigation";
 import { SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 import { Menu, Shield, Target } from "lucide-react";
 import { MobileNav } from "./MobileNav";
-import { Disclaimer } from "./Disclaimer";
+import { SiteFooter } from "./SiteFooter";
 import { BoofLogo } from "./BoofLogo";
 import { useAuth } from "@/components/BoofAuthProvider";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import { useId, useState } from "react";
 
 const landingLinks = [
   { href: "/#map", label: "Map" },
@@ -37,6 +37,7 @@ export function AppShell({
   const pathname = usePathname();
   const isLanding = variant === "landing";
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuId = useId();
   const navLinks = isLanding ? landingLinks : appLinks;
 
   return (
@@ -54,7 +55,7 @@ export function AppShell({
 
           <nav
             className="hidden items-center gap-1 lg:flex"
-            aria-label="Desktop navigation"
+            aria-label="Main navigation"
           >
             {navLinks.map(({ href, label }) => {
               const path = href.split("#")[0] || "/";
@@ -67,6 +68,7 @@ export function AppShell({
                 <Link
                   key={href}
                   href={href}
+                  aria-current={active ? "page" : undefined}
                   className={cn(
                     "font-display rounded-lg px-4 py-2 text-sm font-bold uppercase tracking-wide transition",
                     active
@@ -86,7 +88,7 @@ export function AppShell({
                 href="/admin"
                 className="hidden items-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-sm font-semibold text-amber-300 transition hover:bg-amber-500/20 sm:inline-flex"
               >
-                <Shield className="h-4 w-4" />
+                <Shield className="h-4 w-4" aria-hidden />
                 Admin
               </Link>
             )}
@@ -94,7 +96,7 @@ export function AppShell({
               href="/report"
               className="btn-dark hidden items-center gap-2 !px-4 !py-2 text-sm sm:inline-flex"
             >
-              <Target className="h-4 w-4" />
+              <Target className="h-4 w-4" aria-hidden />
               Report Boof
             </Link>
 
@@ -130,26 +132,41 @@ export function AppShell({
               type="button"
               onClick={() => setMenuOpen((o) => !o)}
               className="rounded-xl p-2 text-zinc-400 hover:bg-zinc-900 hover:text-white lg:hidden"
-              aria-label="Menu"
+              aria-expanded={menuOpen}
+              aria-controls={menuId}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
             >
-              <Menu className="h-5 w-5" />
+              <Menu className="h-5 w-5" aria-hidden />
             </button>
           </div>
         </div>
 
         {menuOpen && (
-          <div className="border-t border-zinc-900 px-4 py-3 lg:hidden">
+          <nav
+            id={menuId}
+            className="border-t border-zinc-900 px-4 py-3 lg:hidden"
+            aria-label="Mobile menu"
+          >
             <div className="flex flex-col gap-1">
-              {navLinks.map(({ href, label }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  onClick={() => setMenuOpen(false)}
-                  className="rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-400 hover:bg-zinc-900 hover:text-white"
-                >
-                  {label}
-                </Link>
-              ))}
+              {navLinks.map(({ href, label }) => {
+                const path = href.split("#")[0] || "/";
+                const active =
+                  path === "/"
+                    ? pathname === "/" && !href.includes("#")
+                    : pathname === path || pathname.startsWith(`${path}/`);
+
+                return (
+                  <Link
+                    key={href}
+                    href={href}
+                    aria-current={active ? "page" : undefined}
+                    onClick={() => setMenuOpen(false)}
+                    className="rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-400 hover:bg-zinc-900 hover:text-white"
+                  >
+                    {label}
+                  </Link>
+                );
+              })}
               {isAdmin && (
                 <Link
                   href="/admin"
@@ -167,18 +184,21 @@ export function AppShell({
                 Report Boof
               </Link>
             </div>
-          </div>
+          </nav>
         )}
       </header>
 
-      <main className="mx-auto max-w-6xl px-4">{children}</main>
+      <main id="main-content" className="mx-auto max-w-6xl px-4" tabIndex={-1}>
+        {children}
+      </main>
 
       {showFab && (
         <Link
           href="/report"
+          aria-label="Report boof — submit a community report"
           className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] right-4 z-40 flex min-h-[48px] items-center gap-2 rounded-lg bg-[#FF3B3B] px-5 py-3.5 font-display text-sm font-extrabold uppercase tracking-wide text-white shadow-[0_8px_32px_rgba(255,59,59,0.4)] transition hover:scale-[1.02] hover:shadow-[0_8px_40px_rgba(255,59,59,0.55)] active:scale-[0.98] lg:bottom-8 lg:right-8"
         >
-          <Target className="h-4 w-4" />
+          <Target className="h-4 w-4" aria-hidden />
           <span className="hidden sm:inline">Report Boof</span>
         </Link>
       )}
@@ -189,7 +209,7 @@ export function AppShell({
           isLanding ? "pb-28 lg:pb-8" : "pb-28"
         )}
       >
-        <Disclaimer />
+        <SiteFooter />
       </footer>
 
       <MobileNav />

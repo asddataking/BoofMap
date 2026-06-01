@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
+import { HomePageSeoHead } from "@/components/seo/HomePageSeo";
 import { HomeClient } from "./HomeClient";
 import { preloadApprovedReports } from "@/lib/convex/queries";
 import { getSeedApprovedReports } from "@/lib/convex/seed";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildPageMetadata, SITE_DESCRIPTION_LONG } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Find Fire. Avoid Boof.",
-  description:
-    "Real cannabis reports from real people in Michigan. Browse community quality reports, explore the map, and find fire — no signup required.",
+  title: "Michigan Cannabis Map & Community Reports",
+  description: SITE_DESCRIPTION_LONG,
   path: "/",
 });
 
@@ -16,6 +16,10 @@ export default async function HomePage() {
   const preloadedReports = await preloadApprovedReports();
 
   return (
-    <HomeClient preloadedReports={preloadedReports} seedReports={seedReports} />
+    <HomeClient
+      preloadedReports={preloadedReports}
+      seedReports={seedReports}
+      seoIntro={<HomePageSeoHead />}
+    />
   );
 }

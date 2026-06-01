@@ -20,7 +20,11 @@ export function BoofLogo({
   };
 
   return (
-    <Link href="/" className={cn("group inline-flex items-center gap-2", className)}>
+    <Link
+      href="/"
+      aria-label="BoofMap home"
+      className={cn("group inline-flex items-center gap-2", className)}
+    >
       <span
         className={cn(
           "font-heading font-bold tracking-tight text-white",
@@ -33,6 +37,7 @@ export function BoofLogo({
           strokeWidth={2.5}
           fill="currentColor"
           fillOpacity={0.2}
+          aria-hidden
         />
         OFMAP
       </span>

@@ -9,7 +9,7 @@ import { buildPageMetadata } from "@/lib/seo";
 export const metadata = buildPageMetadata({
   title: "Brands",
   description:
-    "Community trust scores and boof reports by cannabis brand in Michigan. See which brands are fire and which to avoid.",
+    "Michigan cannabis brand intel — community trust scores, boof reports, and fire finds. Compare brands without pay-to-play listings.",
   path: "/brands",
 });
 
@@ -20,7 +20,9 @@ export default async function BrandsPage() {
     <AppShell>
       <PageTransition>
         <div className="py-4 lg:py-8">
-          <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">Brands</h2>
+          <h1 className="font-display text-2xl font-bold text-white sm:text-3xl">
+            Cannabis Brands
+          </h1>
           <p className="mt-1 text-sm text-zinc-500">
             Community trust scores by brand
           </p>

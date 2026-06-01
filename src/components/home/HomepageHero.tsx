@@ -2,15 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import {
-  Bell,
-  Flame,
-  MapPin,
-  QrCode,
-  Shield,
-  Skull,
-  Zap,
-} from "lucide-react";
+import { Flame, MapPin, Shield, Skull, Zap } from "lucide-react";
 import { LandingStatCard } from "@/components/LandingStatCard";
 import { TacticalMapPanel } from "@/components/home/TacticalMapPanel";
 import type { Report } from "@/lib/types";
@@ -25,12 +17,10 @@ function countSince(reports: Report[], ms: number, predicate: (r: Report) => boo
 
 export function HomepageHero({
   onOpenMap,
-  onOpenAlerts,
   reports,
   totalReports,
 }: {
   onOpenMap: () => void;
-  onOpenAlerts: () => void;
   reports: Report[];
   totalReports: number;
 }) {
@@ -72,14 +62,17 @@ export function HomepageHero({
               </span>
             </div>
 
-            <h1 className="font-display font-black uppercase leading-[0.92] tracking-tight">
+            <p
+              className="font-display font-black uppercase leading-[0.92] tracking-tight"
+              aria-hidden="true"
+            >
               <span className="block text-[clamp(2.75rem,10vw,4.5rem)] text-[#39FF88] drop-shadow-[0_0_32px_rgba(57,255,136,0.35)]">
                 Find Fire.
               </span>
               <span className="mt-1 block text-[clamp(2.75rem,10vw,4.5rem)] text-[#FF3B3B] drop-shadow-[0_0_28px_rgba(255,59,59,0.3)]">
                 Avoid Boof.
               </span>
-            </h1>
+            </p>
 
             <p className="mt-4 max-w-lg text-base leading-relaxed text-[var(--text-muted)]">
               Real-time community intel on cannabis products, dispensaries, and
@@ -95,36 +88,19 @@ export function HomepageHero({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45, delay: 0.1 }}
-            className="order-2 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3"
+            className="order-2 flex flex-wrap gap-3"
           >
             <Link
               href="/report"
-              className="btn-primary col-span-2 inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:col-span-1"
+              className="btn-primary inline-flex flex-1 items-center justify-center gap-2 px-6 py-3.5 sm:flex-none"
             >
               <Zap className="h-4 w-4" />
               Report Boof
             </Link>
-            <Link
-              href="#"
-              onClick={(e) => e.preventDefault()}
-              className="btn-dark inline-flex items-center justify-center gap-2 px-4 py-3.5 text-sm"
-              title="METRC tag scanning coming soon"
-            >
-              <QrCode className="h-4 w-4" />
-              Scan METRC Tag
-            </Link>
-            <button
-              type="button"
-              onClick={onOpenAlerts}
-              className="btn-dark inline-flex items-center justify-center gap-2 px-4 py-3.5 text-sm"
-            >
-              <Bell className="h-4 w-4" />
-              Boof Alerts
-            </button>
             <button
               type="button"
               onClick={onOpenMap}
-              className="btn-secondary col-span-2 inline-flex items-center justify-center gap-2 sm:col-span-1"
+              className="btn-secondary inline-flex flex-1 items-center justify-center gap-2 px-6 py-3.5 sm:flex-none"
             >
               <MapPin className="h-4 w-4" />
               Open Map

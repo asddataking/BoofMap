@@ -6,9 +6,10 @@ import { AppShell } from "@/components/AppShell";
 import { PageTransition } from "@/components/PageTransition";
 import { ReportCard } from "@/components/ReportCard";
 import { ScoreBadge } from "@/components/ScoreBadge";
+import { JsonLdScript } from "@/components/seo/JsonLdScript";
 import { BreadcrumbJsonLd } from "@/components/SiteJsonLd";
 import { fetchBrandProfile } from "@/lib/convex/queries";
-import { buildPageMetadata } from "@/lib/seo";
+import { buildBrandJsonLd, buildPageMetadata } from "@/lib/seo";
 
 export async function generateMetadata({
   params,
@@ -46,14 +47,23 @@ export default async function BrandPage({
           { name: brand.name, path: `/brands/${slug}` },
         ]}
       />
+      <JsonLdScript
+        data={buildBrandJsonLd({
+          name: brand.name,
+          slug,
+          trust_score: brand.trust_score,
+          report_count: brand.report_count,
+          avg_boof_score: brand.avg_boof_score,
+        })}
+      />
       <PageTransition>
         <div className="py-4">
           <Link href="/brands" className="text-xs text-zinc-500 hover:text-zinc-400">
             ← All brands
           </Link>
-          <h2 className="mt-2 font-heading text-2xl font-bold text-white">
+          <h1 className="mt-2 font-display text-2xl font-bold text-white">
             {brand.name}
-          </h2>
+          </h1>
 
           {brand.mold_report_count > 0 && (
             <div className="mt-4 flex items-start gap-3 rounded-2xl border border-red-500/30 bg-red-500/10 p-4">

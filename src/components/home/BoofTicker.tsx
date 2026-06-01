@@ -65,8 +65,12 @@ export function BoofTicker() {
   return (
     <div
       className="relative -mx-4 overflow-hidden border-y border-[var(--border-soft)] bg-[var(--bg-panel)] sm:-mx-6 lg:-mx-8"
+      role="region"
       aria-label="Live activity ticker"
     >
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        Live community intel updates scrolling
+      </div>
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-[var(--bg-panel)] to-transparent sm:w-14" />
       <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-[var(--bg-panel)] to-transparent sm:w-14" />
 
