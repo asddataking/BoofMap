@@ -114,7 +114,7 @@ Set these on the **Production** environment in the Vercel project:
 | `NEXT_PUBLIC_ADMIN_USER_IDS` / `NEXT_PUBLIC_ADMIN_EMAILS` | Optional nav hints (same as dev) |
 | `OPENAI_API_KEY` | Required for `/admin` AI chat |
 
-`vercel.json` redirects `boofmap.com` → `www.boofmap.com`. Add **both** hostnames in Vercel → Domains.
+Configure apex/www redirect behavior in the Vercel dashboard (Project → Domains), not in repo-level `vercel.json`, to avoid redirect loops. Add **both** hostnames in Vercel → Domains.
 
 Production builds validate required env vars automatically (`scripts/validate-production-env.mjs`).
 
