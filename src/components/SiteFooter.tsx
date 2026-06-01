@@ -6,8 +6,7 @@ import { TAGLINE } from "@/lib/constants";
 import { MEDIA_CONTACT_EMAIL, MEDIA_KIT_PDF_FILENAME, MEDIA_KIT_PDF_PATH } from "@/lib/media";
 
 const exploreLinks = [
-  { href: "/map", label: "Live map" },
-  { href: "/reports", label: "Reports" },
+  { href: "/reports", label: "Map & reports" },
   { href: "/brands", label: "Brands" },
   { href: "/report", label: "Report boof" },
 ] as const;

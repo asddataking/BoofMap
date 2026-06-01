@@ -45,7 +45,7 @@
     {
       "name": "Open the Map",
       "short_name": "Map",
-      "url": "/#map",
+      "url": "/reports",
       "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
     },
     {

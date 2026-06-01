@@ -115,7 +115,7 @@ export function TacticalMapPanel({
             </span>
           </div>
           <Link
-            href="/map"
+            href="/reports"
             className="btn-secondary !rounded-lg !px-3 !py-2 text-xs"
           >
             <MapPin className="mr-1 inline h-3.5 w-3.5" aria-hidden />

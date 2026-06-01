@@ -7,9 +7,9 @@ import { buildPageMetadata } from "@/lib/seo";
 import { ReportsClient } from "./ReportsClient";
 
 export const metadata = buildPageMetadata({
-  title: "Live Cannabis Reports — Michigan",
+  title: "Map & Reports — Michigan Intel Hub",
   description:
-    "Browse real-time Michigan cannabis reports — boof alerts, fire finds, mold warnings, and taxed product flags from real buyers. Free community intel, no signup required.",
+    "Tactical Michigan cannabis map plus analytical community reports — boof alerts, fire finds, mold warnings, and full buyer signals. Free community intel.",
   path: "/reports",
 });
 

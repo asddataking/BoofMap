@@ -95,7 +95,7 @@ export function HomepageHero({
               Report Boof
             </Link>
             <Link
-              href="/map"
+              href="/reports"
               className="btn-secondary inline-flex flex-1 items-center justify-center gap-2 px-6 py-3.5 sm:flex-none"
             >
               <MapPin className="h-4 w-4" aria-hidden />
