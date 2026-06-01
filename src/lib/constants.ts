@@ -1,6 +1,6 @@
 import type { MeetupType, ProductType } from "./types";
 
-export const TAGLINE = "Find fire. Avoid boof.";
+export const TAGLINE = "Find Fire. Avoid Boof.";
 
 export const DISCLAIMER =
   "BoofMap is based on community-submitted reports. Always inspect products yourself and contact the licensed retailer or regulator for serious safety concerns.";

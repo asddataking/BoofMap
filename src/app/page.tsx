@@ -5,7 +5,7 @@ import { getSeedApprovedReports } from "@/lib/convex/seed";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Find fire. Avoid boof.",
+  title: "Find Fire. Avoid Boof.",
   description:
     "Real cannabis reports from real people in Michigan. Browse community quality reports, explore the map, and find fire — no signup required.",
   path: "/",

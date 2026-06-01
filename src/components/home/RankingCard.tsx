@@ -23,11 +23,11 @@ export function RankingCard({
   const inner = (
     <>
       <div className="flex items-center gap-3">
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-zinc-800 font-heading text-sm font-bold text-emerald-400">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-[#39FF88]/20 bg-[var(--bg-panel)] font-display text-sm font-extrabold text-[#39FF88]">
           {entry.rank}
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate font-heading text-sm font-bold text-white">
+          <p className="truncate font-display text-sm font-bold text-[var(--text-main)]">
             {entry.name}
           </p>
           {entry.subtitle && (
@@ -38,11 +38,11 @@ export function RankingCard({
 
       <div className="mt-3 flex items-end justify-between gap-2">
         <div>
-          <p className="font-heading text-2xl font-bold tabular-nums text-white">
+          <p className="font-display text-2xl font-black tabular-nums text-[var(--text-main)]">
             {entry.score.toFixed(1)}
           </p>
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-zinc-600">
-            Boof Score
+          <p className="font-display text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+            Intel Score
           </p>
         </div>
         <ChangeIndicator change={change} />
@@ -56,7 +56,7 @@ export function RankingCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.04, duration: 0.35 }}
-      className="glass-card min-w-[200px] shrink-0 p-4 transition hover:border-emerald-500/30 sm:min-w-[220px]"
+      className="glass-card min-w-[200px] shrink-0 p-4 transition hover:border-[#39FF88]/30 sm:min-w-[220px]"
     >
       {href ? (
         <Link href={href} className="block">

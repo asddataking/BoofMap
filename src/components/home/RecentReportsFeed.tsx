@@ -25,13 +25,13 @@ export function RecentReportsFeed({
       <div className="flex items-end justify-between gap-4">
         <div>
           <p className="section-kicker">Fresh Intel</p>
-          <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">
-            Latest from the community
+          <h2 className="font-display text-2xl font-extrabold uppercase tracking-tight text-[var(--text-main)] sm:text-3xl">
+            Latest Signals
           </h2>
         </div>
         <Link
           href="/reports"
-          className="group hidden shrink-0 items-center gap-1 text-sm font-semibold text-emerald-400 sm:inline-flex"
+          className="group hidden shrink-0 items-center gap-1 text-sm font-semibold text-[#39FF88] sm:inline-flex"
         >
           View all
           <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />

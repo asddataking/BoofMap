@@ -42,13 +42,13 @@ export function AppShell({
   return (
     <div
       className={cn(
-        "relative min-h-dvh bg-[#0a0a0a]",
+        "relative min-h-dvh bg-[var(--bg-main)]",
         isLanding
           ? "pb-[calc(5.5rem+env(safe-area-inset-bottom))] lg:pb-12"
           : "pb-[calc(5.5rem+env(safe-area-inset-bottom))]"
       )}
     >
-      <header className="sticky top-0 z-30 border-b border-zinc-800/60 bg-[#080808]/92 backdrop-blur-xl">
+      <header className="sticky top-0 z-30 border-b border-[var(--border-soft)] bg-[var(--bg-panel)]/95 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
           <BoofLogo size="md" />
 
@@ -68,10 +68,10 @@ export function AppShell({
                   key={href}
                   href={href}
                   className={cn(
-                    "rounded-xl px-4 py-2 text-sm font-medium transition",
+                    "font-display rounded-lg px-4 py-2 text-sm font-bold uppercase tracking-wide transition",
                     active
-                      ? "text-white"
-                      : "text-zinc-500 hover:text-zinc-200"
+                      ? "text-[#39FF88]"
+                      : "text-[var(--text-muted)] hover:text-[var(--text-main)]"
                   )}
                 >
                   {label}
@@ -176,7 +176,7 @@ export function AppShell({
       {showFab && (
         <Link
           href="/report"
-          className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] right-4 z-40 flex min-h-[48px] items-center gap-2 rounded-full bg-red-500 px-5 py-3.5 text-sm font-bold text-white shadow-[0_8px_32px_rgba(239,68,68,0.35)] transition hover:scale-[1.02] active:scale-[0.98] lg:bottom-8 lg:right-8"
+          className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] right-4 z-40 flex min-h-[48px] items-center gap-2 rounded-lg bg-[#FF3B3B] px-5 py-3.5 font-display text-sm font-extrabold uppercase tracking-wide text-white shadow-[0_8px_32px_rgba(255,59,59,0.4)] transition hover:scale-[1.02] hover:shadow-[0_8px_40px_rgba(255,59,59,0.55)] active:scale-[0.98] lg:bottom-8 lg:right-8"
         >
           <Target className="h-4 w-4" />
           <span className="hidden sm:inline">Report Boof</span>

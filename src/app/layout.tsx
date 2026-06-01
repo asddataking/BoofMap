@@ -1,7 +1,7 @@
 import type { Viewport } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Analytics } from "@vercel/analytics/next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Barlow_Condensed, Inter } from "next/font/google";
 import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 import { BoofAuthProvider } from "@/components/BoofAuthProvider";
 import { PwaRegister } from "@/components/PwaRegister";
@@ -12,18 +12,19 @@ import "./globals.css";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const barlowCondensed = Barlow_Condensed({
+  variable: "--font-barlow-condensed",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["600", "700", "800", "900"],
 });
 
 export const metadata = rootMetadata;
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0a",
+  themeColor: "#050807",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -39,7 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${spaceGrotesk.variable} h-full`}
+      className={`${inter.variable} ${barlowCondensed.variable} h-full`}
     >
       <head>
         <SiteJsonLd />

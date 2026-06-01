@@ -4,15 +4,8 @@ import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { SignUpButton } from "@clerk/nextjs";
 import type { Preloaded } from "convex/react";
-import {
-  AlertTriangle,
-  Crown,
-  DollarSign,
-  Leaf,
-} from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { HowItWorksSection } from "@/components/HowItWorksSection";
-import { LandingStatCard } from "@/components/LandingStatCard";
 import { LandingPwaSection } from "@/components/LandingPwaSection";
 import { MapViewDynamic } from "@/components/MapViewDynamic";
 import { PageTransition } from "@/components/PageTransition";
@@ -20,7 +13,7 @@ import { SearchBar } from "@/components/SearchBar";
 import { BoofTicker } from "@/components/home/BoofTicker";
 import { HomepageHero } from "@/components/home/HomepageHero";
 import { LiveScoreboard } from "@/components/home/LiveScoreboard";
-import { MarketMovers } from "@/components/home/MarketMovers";
+import { TrendingNow } from "@/components/home/TrendingNow";
 import { RecentReportsFeed } from "@/components/home/RecentReportsFeed";
 import { AnalystCard } from "@/components/home/AnalystCard";
 import { NotificationSettings } from "@/components/home/NotificationSettings";
@@ -30,7 +23,6 @@ import { MICHIGAN_CENTER } from "@/lib/constants";
 import type { Report } from "@/lib/types";
 import { usePreloadedReports } from "@/hooks/useRealtimeReports";
 import { useMeetupReports } from "@/hooks/useMeetupReports";
-import { getMarkerTier } from "@/lib/markers";
 
 export function HomeClient({
   preloadedReports,
@@ -61,34 +53,10 @@ function HomeClientLive({
   return <HomeClientView reports={reports} />;
 }
 
-function countThisWeek(reports: Report[], predicate: (r: Report) => boolean) {
-  const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
-  return reports.filter(
-    (r) => predicate(r) && new Date(r.created_at).getTime() >= weekAgo
-  ).length;
-}
-
 function HomeClientView({ reports }: { reports: Report[] }) {
   const { isAuthenticated } = useAuth();
   const meetups = useMeetupReports();
   const [search, setSearch] = useState("");
-
-  const stats = useMemo(() => {
-    const brands = new Set(reports.map((r) => r.brand_name));
-    const dispos = new Set(reports.map((r) => r.dispensary_name));
-    const taxed = reports.filter((r) => getMarkerTier(r) === "taxed");
-    const boof = reports.filter((r) => getMarkerTier(r) === "boof");
-    return {
-      boofReports: boof.length,
-      disposRated: dispos.size,
-      brandsReviewed: brands.size,
-      taxedAlerts: taxed.length,
-      boofThisWeek: countThisWeek(reports, (r) => getMarkerTier(r) === "boof"),
-      disposThisWeek: countThisWeek(reports, () => true),
-      brandsThisWeek: countThisWeek(reports, () => true),
-      taxedThisWeek: countThisWeek(reports, (r) => getMarkerTier(r) === "taxed"),
-    };
-  }, [reports]);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
@@ -115,7 +83,7 @@ function HomeClientView({ reports }: { reports: Report[] }) {
       <PageTransition>
         <BoofTicker />
 
-        <div className="space-y-12 pb-8 pt-6 lg:space-y-20 lg:pb-12 lg:pt-8">
+        <div className="space-y-12 pb-8 pt-6 lg:space-y-16 lg:pb-12 lg:pt-8">
           <HomepageHero
             onOpenMap={scrollToMap}
             onOpenAlerts={scrollToSettings}
@@ -123,48 +91,11 @@ function HomeClientView({ reports }: { reports: Report[] }) {
             totalReports={reports.length}
           />
 
+          <TrendingNow />
+
           <LiveScoreboard />
 
-          <section aria-label="Statistics">
-            <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin lg:grid lg:grid-cols-4 lg:overflow-visible">
-              <LandingStatCard
-                label="Boof Reports"
-                value={stats.boofReports}
-                delta={`+${stats.boofThisWeek} this week`}
-                icon={Leaf}
-                accent="emerald"
-                index={0}
-              />
-              <LandingStatCard
-                label="Dispensaries Rated"
-                value={stats.disposRated}
-                delta={`+${Math.min(stats.disposThisWeek, stats.disposRated)} this week`}
-                icon={DollarSign}
-                accent="orange"
-                index={1}
-              />
-              <LandingStatCard
-                label="Brands Reviewed"
-                value={stats.brandsReviewed}
-                delta={`+${Math.min(stats.brandsThisWeek, stats.brandsReviewed)} this week`}
-                icon={Crown}
-                accent="purple"
-                index={2}
-              />
-              <LandingStatCard
-                label="Taxed Alerts"
-                value={stats.taxedAlerts}
-                delta={`+${stats.taxedThisWeek} this week`}
-                icon={AlertTriangle}
-                accent="red"
-                index={3}
-              />
-            </div>
-          </section>
-
           <RecentReportsFeed reports={filtered} meetups={meetups} />
-
-          <MarketMovers />
 
           <AnalystCard />
 
@@ -174,18 +105,18 @@ function HomeClientView({ reports }: { reports: Report[] }) {
 
           <section id="map" className="scroll-mt-24" aria-label="Map">
             <p className="section-kicker">Live Map</p>
-            <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">
-              Michigan intel
+            <h2 className="font-display text-2xl font-extrabold uppercase tracking-tight text-[var(--text-main)] sm:text-3xl">
+              Tactical Intel Map
             </h2>
-            <p className="mt-1 text-sm text-zinc-500">
-              Dispensary pins by score · magenta diamonds = meetup / seller flags
+            <p className="mt-1 text-sm text-[var(--text-muted)]">
+              Dispensary pins by signal tier · magenta diamonds = seller flags
             </p>
 
             <div className="mt-6">
               <SearchBar value={search} onChange={setSearch} />
             </div>
 
-            <div className="mt-4 h-[50vh] min-h-[320px] overflow-hidden rounded-2xl border border-zinc-800/60 lg:min-h-[480px]">
+            <div className="mt-4 h-[50vh] min-h-[320px] overflow-hidden rounded-xl border border-[var(--border-soft)] lg:min-h-[480px]">
               <MapViewDynamic
                 reports={filtered}
                 meetups={meetups}
@@ -204,16 +135,16 @@ function HomeClientView({ reports }: { reports: Report[] }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               aria-label="Sign up"
-              className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-950 p-8 lg:p-10"
+              className="relative overflow-hidden rounded-xl border border-[var(--border-soft)] bg-[var(--bg-card)] p-8 lg:p-10"
             >
               <div className="flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div>
-                  <h3 className="font-heading text-xl font-bold text-white sm:text-2xl">
-                    Join the community
+                  <h3 className="font-display text-xl font-extrabold uppercase tracking-tight text-[var(--text-main)] sm:text-2xl">
+                    Join the intel network
                   </h3>
-                  <p className="mt-2 max-w-lg text-sm text-zinc-500">
-                    Browse free forever. Sign up to submit reports, confirm
-                    findings, and help Michigan avoid boof.
+                  <p className="mt-2 max-w-lg text-sm text-[var(--text-muted)]">
+                    Browse live signals free. Sign up to submit reports, confirm
+                    alerts, and help Michigan skip the boof.
                   </p>
                 </div>
                 <SignUpButton mode="modal">
