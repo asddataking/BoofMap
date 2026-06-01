@@ -8,7 +8,6 @@ import {
   getSeedMarketMovers,
   getSeedRankings,
   getSeedTickerItems,
-  getSeedUserProfile,
 } from "@/lib/home/seed";
 import type { RankingEntry, RankingType, TickerItem, UserProfile } from "@/lib/types";
 
@@ -85,14 +84,16 @@ export function useMarketMovers() {
   return live ?? getSeedMarketMovers();
 }
 
-export function useCurrentUserProfile(): UserProfile | null {
+/** Signed-in analyst profile; `undefined` while loading, `null` when signed out or unavailable. */
+export function useCurrentUserProfile(): UserProfile | null | undefined {
   const configured = isConvexConfigured();
   const live = useQuery(
     api.users.getCurrentUserProfile,
     configured ? {} : "skip"
   );
+  if (!configured) return null;
+  if (live === undefined) return undefined;
   if (live === null) return null;
-  if (live === undefined) return getSeedUserProfile();
   return live as UserProfile;
 }
 

@@ -10,7 +10,7 @@ import { PageTransition } from "@/components/PageTransition";
 import { BoofTicker } from "@/components/home/BoofTicker";
 import { HomepageHero } from "@/components/home/HomepageHero";
 import { IntelBoard } from "@/components/home/IntelBoard";
-import { AnalystCard } from "@/components/home/AnalystCard";
+import { AnalystRankTeaser } from "@/components/home/AnalystRankTeaser";
 import { api } from "../../convex/_generated/api";
 import { useAuth } from "@/components/BoofAuthProvider";
 import type { Report } from "@/lib/types";
@@ -64,8 +64,6 @@ function HomeClientView({ reports }: { reports: Report[] }) {
 
           <IntelBoard reports={reports} meetups={meetups} />
 
-          <AnalystCard />
-
           <HowItWorksSection />
 
           <LandingPwaSection />
@@ -87,6 +85,7 @@ function HomeClientView({ reports }: { reports: Report[] }) {
                     Browse live signals free. Sign up to submit reports, confirm
                     alerts, and help Michigan skip the boof.
                   </p>
+                  <AnalystRankTeaser />
                 </div>
                 <SignUpButton mode="modal">
                   <button type="button" className="btn-primary shrink-0 px-8 py-4">

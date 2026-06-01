@@ -1,12 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="BoofMap">
-  <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#34d399"/>
-      <stop offset="100%" stop-color="#059669"/>
-    </linearGradient>
-  </defs>
-  <rect width="512" height="512" rx="108" fill="#050505"/>
-  <circle cx="256" cy="256" r="200" fill="none" stroke="#d4a853" stroke-width="8" opacity="0.35"/>
-  <path fill="url(#g)" d="M256 96c-72 0-130 52-130 124 0 88 130 196 130 196s130-108 130-196c0-72-58-124-130-124zm0 172a48 48 0 1 1 0-96 48 48 0 0 1 0 96z"/>
-  <path fill="#050505" opacity="0.15" d="M256 140c-40 0-72 30-72 68 0 48 72 88 72 88s72-40 72-88c0-38-32-68-72-68z"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#050807"/>
+  <image href="/boofmaplogo.png" x="24" y="80" width="464" height="232" preserveAspectRatio="xMidYMid meet"/>
 </svg>

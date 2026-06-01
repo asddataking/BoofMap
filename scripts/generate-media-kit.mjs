@@ -31,7 +31,7 @@ const lines = [
   "Background  #050807  — app background",
   "",
   "WEB & ASSETS",
-  "Website: https://boofmap.com (set NEXT_PUBLIC_SITE_URL in production)",
+  "Website: https://www.boofmap.com",
   "Logo PNG: /boofmaplogo.png",
   "",
   "PRESS CONTACT",

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { isProductionHostname } from "@/lib/site";
 
 function isVercelPreviewHost(hostname: string): boolean {
   // Per-deployment URLs: project-hash-team.vercel.app (many segments)
@@ -10,24 +11,25 @@ function isVercelPreviewHost(hostname: string): boolean {
 
 function shouldRegisterServiceWorker(): boolean {
   if (process.env.NODE_ENV !== "production") return false;
+  if (typeof window === "undefined") return true;
+
+  const { hostname } = window.location;
+  if (isVercelPreviewHost(hostname)) return false;
 
   const configuredSite = process.env.NEXT_PUBLIC_SITE_URL?.trim();
   if (configuredSite) {
     try {
       const siteHost = new URL(configuredSite).hostname;
-      if (typeof window !== "undefined" && window.location.hostname !== siteHost) {
-        return false;
-      }
+      return (
+        hostname === siteHost ||
+        (siteHost === "www.boofmap.com" && hostname === "boofmap.com")
+      );
     } catch {
-      /* invalid NEXT_PUBLIC_SITE_URL — fall through */
+      return isProductionHostname(hostname);
     }
   }
 
-  if (typeof window !== "undefined" && isVercelPreviewHost(window.location.hostname)) {
-    return false;
-  }
-
-  return true;
+  return isProductionHostname(hostname);
 }
 
 async function clearStaleServiceWorkers() {

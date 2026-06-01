@@ -1,6 +1,6 @@
 /// BoofMap service worker — offline shell only (never cache Next.js bundles)
-const CACHE_VERSION = "boofmap-v2";
-const SHELL_CACHE = "boofmap-shell-v2";
+const CACHE_VERSION = "boofmap-v3";
+const SHELL_CACHE = "boofmap-shell-v3";
 
 const SHELL_URLS = [
   "/offline",
@@ -9,6 +9,7 @@ const SHELL_URLS = [
   "/icons/icon.svg",
   "/icons/icon-192.png",
   "/icons/icon-512.png",
+  "/icons/icon-512-maskable.png",
   "/apple-touch-icon.png",
 ];
 

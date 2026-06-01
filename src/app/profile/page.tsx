@@ -1,36 +1,36 @@
 "use client";
 
 import Link from "next/link";
-import { SignInButton, UserButton } from "@clerk/nextjs";
-import { Shield, User } from "lucide-react";
+import { Shield } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { InstallPrompt } from "@/components/InstallPrompt";
 import { PageTransition } from "@/components/PageTransition";
+import { AnalystCard } from "@/components/profile/AnalystCard";
 import { useAuth } from "@/components/BoofAuthProvider";
 import { NotificationSettings } from "@/components/NotificationSettings";
 import { ProfileMyReports } from "@/components/ProfileMyReports";
 import { isConvexConfigured } from "@/lib/convex/config";
 
 export default function ProfilePage() {
-  const { user, profile, loading, isAdmin, isAuthenticated } = useAuth();
+  const { isAdmin, isAuthenticated } = useAuth();
 
   return (
     <AppShell>
       <PageTransition>
         <div className="space-y-6 py-4">
           <div>
-            <h2 className="font-heading text-2xl font-bold text-white">
+            <h1 className="font-heading text-2xl font-bold text-white">
               Profile
-            </h2>
+            </h1>
             <p className="mt-1 text-sm text-zinc-500">
-              Your BoofMap account — sign in to report and vote.
+              Your account, analyst card, alerts, and reports.
             </p>
           </div>
 
           {isAdmin && (
             <Link
               href="/admin"
-              className="glass-card mb-4 flex items-center justify-between gap-3 border-amber-500/30 bg-amber-500/10 p-4 text-amber-200 transition hover:border-amber-500/50"
+              className="glass-card flex items-center justify-between gap-3 border-amber-500/30 bg-amber-500/10 p-4 text-amber-200 transition hover:border-amber-500/50"
             >
               <div className="flex items-center gap-3">
                 <Shield className="h-5 w-5 text-amber-400" />
@@ -45,72 +45,26 @@ export default function ProfilePage() {
             </Link>
           )}
 
-          <div className="glass-card flex items-center gap-4 p-5">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-500/15">
-              <User className="h-7 w-7 text-emerald-400" />
-            </div>
-            <div className="min-w-0 flex-1">
-              {loading ? (
-                <p className="text-sm text-zinc-500">Loading…</p>
-              ) : isAuthenticated && user ? (
-                <>
-                  <p className="truncate text-sm font-medium text-white">
-                    {profile?.display_name ?? "Community member"}
-                  </p>
-                  <p className="mt-0.5 truncate font-mono text-[10px] text-zinc-600">
-                    {user.uid}
-                  </p>
-                  <p className="mt-1 text-xs text-zinc-500">
-                    Reputation: {profile?.reputation ?? 0} · Reports:{" "}
-                    {profile?.report_count ?? 0}
-                    {isAdmin && (
-                      <span className="ml-2 rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-semibold uppercase text-amber-300">
-                        Admin
-                      </span>
-                    )}
-                  </p>
-                </>
-              ) : (
-                <p className="text-sm text-zinc-500">
-                  Sign in to sync your profile
-                </p>
-              )}
-            </div>
-            {isAuthenticated ? (
-              <UserButton
-                appearance={{
-                  elements: {
-                    avatarBox: "h-10 w-10",
-                  },
-                }}
-              />
-            ) : (
-              <SignInButton mode="modal">
-                <button type="button" className="btn-primary shrink-0 px-4 py-2 text-sm">
-                  Sign in
-                </button>
-              </SignInButton>
-            )}
-          </div>
+          <AnalystCard />
 
           <InstallPrompt />
 
           {isAuthenticated && <ProfileMyReports />}
 
           <section>
-            <h3 className="mb-3 text-xs font-medium uppercase tracking-wider text-zinc-500">
+            <h2 className="mb-3 text-xs font-medium uppercase tracking-wider text-zinc-500">
               Boof Alerts
-            </h3>
+            </h2>
             <NotificationSettings compact />
           </section>
 
           <div className="space-y-2">
-            <h3 className="text-xs font-medium uppercase tracking-wider text-zinc-500">
+            <h2 className="text-xs font-medium uppercase tracking-wider text-zinc-500">
               Quick actions
-            </h3>
+            </h2>
             <div className="grid gap-2">
-              <Link href="/" className="btn-primary text-center">
-                Open BoofMap
+              <Link href="/reports" className="btn-primary text-center">
+                Open intel map
               </Link>
               <Link
                 href="/report"

@@ -81,6 +81,34 @@ Runs Next.js and Convex dev servers together.
 
 In the Convex dashboard, run the `seed:seedDemo` mutation once on an empty database.
 
+## Production (`www.boofmap.com`)
+
+### Vercel environment variables
+
+Set these on the **Production** environment in the Vercel project:
+
+| Variable | Value |
+|----------|--------|
+| `NEXT_PUBLIC_SITE_URL` | `https://www.boofmap.com` |
+| `NEXT_PUBLIC_CONVEX_URL` | Your **production** Convex deployment URL |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk **production** `pk_live_...` |
+| `CLERK_SECRET_KEY` | Clerk **production** `sk_live_...` |
+| `ADMIN_USER_IDS` / `ADMIN_EMAILS` | Same as dev |
+| `NEXT_PUBLIC_ADMIN_USER_IDS` / `NEXT_PUBLIC_ADMIN_EMAIL` | Same as dev |
+
+`vercel.json` redirects `boofmap.com` → `www.boofmap.com`. Add **both** hostnames in Vercel → Domains.
+
+### Clerk (production instance)
+
+In the Clerk Dashboard for your **production** application:
+
+1. **Domains** → add `https://www.boofmap.com` (and `https://boofmap.com` if listed).
+2. **Paths** → set sign-in / sign-up URLs if you use custom paths (defaults are fine).
+3. **JWT templates** → keep a template named exactly `convex` (Convex integration).
+4. Copy **Frontend API URL** into Vercel `CLERK_FRONTEND_API_URL` and Convex production env as `CLERK_FRONTEND_API_URL`.
+
+Redeploy Vercel after changing env vars. Run `npx convex deploy` for production Convex with matching Clerk vars.
+
 ## Local dev without Convex
 
 If `NEXT_PUBLIC_CONVEX_URL` is unset, the app uses **local seed data** (no realtime, no uploads).

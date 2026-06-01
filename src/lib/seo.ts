@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { BOOFMAP_LOGO, TAGLINE } from "./constants";
+import { CANONICAL_SITE_URL, normalizeSiteUrl } from "./site";
 
 export const SITE_NAME = "BoofMap";
 export const SITE_TITLE = `${SITE_NAME} — ${TAGLINE}`;
@@ -53,10 +54,13 @@ export const SEO_FAQ = [
 ] as const;
 
 export function getSiteUrl(): string {
-  const fromEnv = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
-  if (fromEnv) return fromEnv;
+  const fromEnv = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (fromEnv) return normalizeSiteUrl(fromEnv);
+  if (process.env.VERCEL_ENV === "production") {
+    return CANONICAL_SITE_URL;
+  }
   if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL.replace(/\/$/, "")}`;
+    return `https://${normalizeSiteUrl(process.env.VERCEL_URL)}`;
   }
   return "http://localhost:3000";
 }
@@ -154,10 +158,12 @@ export const rootMetadata: Metadata = {
   icons: {
     icon: [
       { url: "/icons/icon.svg", type: "image/svg+xml" },
+      { url: "/icons/favicon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/icons/favicon-32.png", sizes: "32x32", type: "image/png" },
       { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
       { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
   },
   other: {
     "mobile-web-app-capable": "yes",
@@ -194,7 +200,7 @@ export function buildOrganizationJsonLd() {
     "@type": "Organization",
     name: SITE_NAME,
     url: siteUrl,
-    logo: `${siteUrl}${BOOFMAP_LOGO.src}`,
+    logo: `${siteUrl}/icons/icon-512.png`,
     description: SITE_DESCRIPTION,
     areaServed: {
       "@type": "State",
