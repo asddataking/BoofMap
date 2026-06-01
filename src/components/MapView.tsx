@@ -9,14 +9,13 @@ import {
   useMap,
 } from "react-leaflet";
 import L from "leaflet";
-import type { Report } from "@/lib/types";
+import type { MeetupReport, Report } from "@/lib/types";
 import { getMarkerTier } from "@/lib/markers";
 import { MARKER_COLORS, MICHIGAN_CENTER, DEFAULT_ZOOM } from "@/lib/constants";
-import { ScoreBadge } from "./ScoreBadge";
 import { IssueTag } from "./IssueTag";
 import "leaflet/dist/leaflet.css";
 
-function createIcon(color: string) {
+function createProductIcon(color: string) {
   return L.divIcon({
     className: "boof-marker",
     html: `<div style="
@@ -31,6 +30,21 @@ function createIcon(color: string) {
   });
 }
 
+function createMeetupIcon(color: string) {
+  return L.divIcon({
+    className: "boof-marker",
+    html: `<div style="
+      width:11px;height:11px;
+      background:${color};
+      border:2px solid rgba(255,255,255,0.95);
+      transform:rotate(45deg);
+      box-shadow:0 0 16px ${color}aa, 0 2px 8px rgba(0,0,0,0.5);
+    "></div>`,
+    iconSize: [11, 11],
+    iconAnchor: [5.5, 5.5],
+  });
+}
+
 function MapController({ center, zoom }: { center: [number, number]; zoom: number }) {
   const map = useMap();
   useEffect(() => {
@@ -41,18 +55,20 @@ function MapController({ center, zoom }: { center: [number, number]; zoom: numbe
 
 export function MapView({
   reports,
+  meetups = [],
   center,
   zoom = DEFAULT_ZOOM,
   className = "",
 }: {
   reports: Report[];
+  meetups?: MeetupReport[];
   center?: [number, number];
   zoom?: number;
   className?: string;
 }) {
   const mapCenter = center ?? [MICHIGAN_CENTER.lat, MICHIGAN_CENTER.lng];
 
-  const markers = useMemo(
+  const productMarkers = useMemo(
     () =>
       reports.filter(
         (r) => r.latitude != null && r.longitude != null
@@ -60,13 +76,26 @@ export function MapView({
     [reports]
   );
 
-  const icons = useMemo(
+  const meetupMarkers = useMemo(
+    () =>
+      meetups.filter(
+        (m) => m.latitude != null && m.longitude != null
+      ),
+    [meetups]
+  );
+
+  const productIcons = useMemo(
     () => ({
-      boof: createIcon(MARKER_COLORS.boof),
-      taxed: createIcon(MARKER_COLORS.taxed),
-      mid: createIcon(MARKER_COLORS.mid),
-      fire: createIcon(MARKER_COLORS.fire),
+      boof: createProductIcon(MARKER_COLORS.boof),
+      taxed: createProductIcon(MARKER_COLORS.taxed),
+      mid: createProductIcon(MARKER_COLORS.mid),
+      fire: createProductIcon(MARKER_COLORS.fire),
     }),
+    []
+  );
+
+  const meetupIcon = useMemo(
+    () => createMeetupIcon(MARKER_COLORS.meetup),
     []
   );
 
@@ -84,13 +113,13 @@ export function MapView({
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
         />
         <MapController center={mapCenter} zoom={zoom} />
-        {markers.map((report) => {
+        {productMarkers.map((report) => {
           const tier = getMarkerTier(report);
           return (
             <Marker
               key={report.id}
               position={[report.latitude!, report.longitude!]}
-              icon={icons[tier]}
+              icon={productIcons[tier]}
             >
               <Popup className="boof-popup">
                 <div className="min-w-[180px] p-1 text-zinc-900">
@@ -100,12 +129,7 @@ export function MapView({
                   </p>
                   <div className="mt-2 flex flex-wrap gap-1">
                     {report.issue_tags.slice(0, 3).map((t) => (
-                      <span
-                        key={t}
-                        className="rounded bg-zinc-200 px-1.5 py-0.5 text-[10px]"
-                      >
-                        {t}
-                      </span>
+                      <IssueTag key={t} tag={t} small />
                     ))}
                   </div>
                   <p className="mt-1 text-xs">
@@ -116,9 +140,38 @@ export function MapView({
             </Marker>
           );
         })}
+        {meetupMarkers.map((meetup) => (
+          <Marker
+            key={`meetup-${meetup.id}`}
+            position={[meetup.latitude!, meetup.longitude!]}
+            icon={meetupIcon}
+          >
+            <Popup className="boof-popup">
+              <div className="min-w-[180px] p-1 text-zinc-900">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-fuchsia-600">
+                  Meetup / Seller
+                </p>
+                <p className="font-semibold">{meetup.seller_display_name}</p>
+                <p className="text-xs text-zinc-600">
+                  {meetup.platform} · {meetup.city}, MI
+                </p>
+                <div className="mt-2 flex flex-wrap gap-1">
+                  {meetup.issue_tags.slice(0, 3).map((t) => (
+                    <span
+                      key={t}
+                      className="rounded bg-zinc-200 px-1.5 py-0.5 text-[10px]"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
       </MapContainer>
 
-      <div className="pointer-events-none absolute bottom-3 left-3 flex flex-wrap gap-2 rounded-xl border border-zinc-800/50 bg-black/70 px-2.5 py-2 backdrop-blur-md">
+      <div className="pointer-events-none absolute bottom-3 left-3 flex flex-wrap gap-x-2.5 gap-y-1.5 rounded-xl border border-zinc-800/60 bg-black/75 px-2.5 py-2 backdrop-blur-md">
         {(
           [
             ["boof", "Boof"],
@@ -135,6 +188,13 @@ export function MapView({
             {label}
           </span>
         ))}
+        <span className="flex items-center gap-1.5 text-[10px] text-zinc-400">
+          <span
+            className="h-2 w-2 rotate-45 border border-white/50"
+            style={{ background: MARKER_COLORS.meetup }}
+          />
+          Meetup
+        </span>
       </div>
     </div>
   );

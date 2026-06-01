@@ -48,7 +48,7 @@ export function AppShell({
           : "pb-[calc(5.5rem+env(safe-area-inset-bottom))]"
       )}
     >
-      <header className="sticky top-0 z-30 border-b border-zinc-900/80 bg-[#0a0a0a]/90 backdrop-blur-xl">
+      <header className="sticky top-0 z-30 border-b border-zinc-800/60 bg-[#080808]/92 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
           <BoofLogo size="md" />
 

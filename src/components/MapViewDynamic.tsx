@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import type { Report } from "@/lib/types";
+import type { MeetupReport, Report } from "@/lib/types";
 
 const MapView = dynamic(() => import("./MapView").then((m) => m.MapView), {
   ssr: false,
@@ -14,6 +14,7 @@ const MapView = dynamic(() => import("./MapView").then((m) => m.MapView), {
 
 export function MapViewDynamic(props: {
   reports: Report[];
+  meetups?: MeetupReport[];
   center?: [number, number];
   zoom?: number;
   className?: string;

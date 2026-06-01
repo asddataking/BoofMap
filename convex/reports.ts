@@ -27,6 +27,22 @@ export const listApproved = query({
   handler: async (ctx, { limit }) => loadApprovedReports(ctx, limit ?? DEFAULT_LIMIT),
 });
 
+export const listMine = query({
+  args: { limit: v.optional(v.number()) },
+  handler: async (ctx, { limit }) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return [];
+
+    const rows = await ctx.db
+      .query("reports")
+      .withIndex("by_user_created", (q) => q.eq("userId", identity.subject))
+      .order("desc")
+      .take(limit ?? 50);
+
+    return rows.map(reportToApi);
+  },
+});
+
 export const stats = query({
   args: {},
   handler: async (ctx) => {

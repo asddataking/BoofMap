@@ -24,11 +24,9 @@ export function RecentReportsFeed({
     <section id="reports" className="scroll-mt-24" aria-label="Recent reports">
       <div className="flex items-end justify-between gap-4">
         <div>
-          <p className="font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-emerald-500">
-            Fresh Intel
-          </p>
+          <p className="section-kicker">Fresh Intel</p>
           <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">
-            Recent Reports Near You
+            Latest from the community
           </h2>
         </div>
         <Link
@@ -75,13 +73,13 @@ function MeetupHighlightCard({
 }) {
   return (
     <article
-      className="glass-card w-[280px] shrink-0 overflow-hidden border-orange-500/20 sm:w-[300px]"
+      className="glass-card w-[280px] shrink-0 overflow-hidden border-fuchsia-500/25 sm:w-[300px]"
       style={{ animationDelay: `${index * 50}ms` }}
     >
-      <div className="flex items-center gap-2 border-b border-zinc-800/60 bg-orange-500/10 px-4 py-2.5">
-        <MessageSquareWarning className="h-4 w-4 text-orange-400" />
-        <span className="font-heading text-[10px] font-bold uppercase tracking-wider text-orange-400">
-          Meetup Flag
+      <div className="flex items-center gap-2 border-b border-zinc-800/60 bg-fuchsia-500/10 px-4 py-2.5">
+        <MessageSquareWarning className="h-4 w-4 text-fuchsia-400" />
+        <span className="font-heading text-[10px] font-bold uppercase tracking-wider text-fuchsia-400">
+          Meetup / Seller
         </span>
       </div>
       <div className="p-4">
@@ -103,7 +101,7 @@ function MeetupHighlightCard({
           </span>
         </div>
         {meetup.public_warning && (
-          <p className="mt-3 line-clamp-2 text-xs text-orange-200/80">
+          <p className="mt-3 line-clamp-2 text-xs text-fuchsia-200/80">
             {meetup.public_warning}
           </p>
         )}

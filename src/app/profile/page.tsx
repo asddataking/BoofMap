@@ -8,6 +8,7 @@ import { InstallPrompt } from "@/components/InstallPrompt";
 import { PageTransition } from "@/components/PageTransition";
 import { useAuth } from "@/components/BoofAuthProvider";
 import { NotificationSettings } from "@/components/NotificationSettings";
+import { ProfileMyReports } from "@/components/ProfileMyReports";
 import { isConvexConfigured } from "@/lib/convex/config";
 
 export default function ProfilePage() {
@@ -93,6 +94,8 @@ export default function ProfilePage() {
           </div>
 
           <InstallPrompt />
+
+          {isAuthenticated && <ProfileMyReports />}
 
           <section>
             <h3 className="mb-3 text-xs font-medium uppercase tracking-wider text-zinc-500">

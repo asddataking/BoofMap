@@ -27,9 +27,7 @@ export function LiveScoreboard() {
     <section aria-label="Live scoreboard">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-emerald-500">
-            Live Rankings
-          </p>
+          <p className="section-kicker">Live Rankings</p>
           <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">
             BoofMap Scoreboard
           </h2>

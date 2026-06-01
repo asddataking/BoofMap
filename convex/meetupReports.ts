@@ -22,6 +22,22 @@ export const listApproved = query({
   },
 });
 
+export const listMine = query({
+  args: { limit: v.optional(v.number()) },
+  handler: async (ctx, { limit }) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return [];
+
+    const rows = await ctx.db
+      .query("meetupReports")
+      .withIndex("by_user_created", (q) => q.eq("userId", identity.subject))
+      .order("desc")
+      .take(limit ?? 50);
+
+    return rows.map(meetupToApi);
+  },
+});
+
 export const create = mutation({
   args: {
     sellerDisplayName: v.string(),

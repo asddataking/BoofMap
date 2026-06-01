@@ -31,11 +31,11 @@ export function ReportSuccess({
       </motion.div>
 
       <h3 className="mt-5 font-heading text-xl font-bold text-white">
-        Report in the queue
+        Report is live
       </h3>
       <p className="mt-2 text-sm text-zinc-400">
-        Your community report is live in our system. Moderation usually clears
-        fast — thanks for helping the map stay honest.
+        It&apos;s on the map and feed now. Check Profile → Your reports anytime,
+        or browse the live feed.
       </p>
 
       <p className="mt-3 text-xs font-medium uppercase tracking-wider text-emerald-400/90">

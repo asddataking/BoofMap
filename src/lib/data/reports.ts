@@ -19,6 +19,11 @@ export function filterReports(
   userLng?: number
 ): Report[] {
   switch (filterId) {
+    case "latest":
+      return [...reports].sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
     case "near":
       if (userLat == null || userLng == null) return reports;
       return [...reports].sort((a, b) => {

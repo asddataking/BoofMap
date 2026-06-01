@@ -87,7 +87,7 @@ function ReportsClientView({
   const voteMutation = useMutation(api.reports.vote);
   const confirmMeetupMutation = useMutation(api.meetupReports.confirm);
 
-  const [activeFilter, setActiveFilter] = useState("near");
+  const [activeFilter, setActiveFilter] = useState("latest");
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(
     null
   );
@@ -144,11 +144,12 @@ function ReportsClientView({
     <AppShell showFab>
       <PageTransition>
         <div className="py-4 lg:py-8">
+          <p className="section-kicker">Intel Feed</p>
           <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">
-            Live Reports
+            Live reports
           </h2>
           <p className="mt-1 text-sm text-zinc-500">
-            Real-time community reports — browse free, no signup required.
+            Community submissions — sorted by latest by default.
           </p>
 
           <div className="mt-4 flex rounded-2xl border border-zinc-800 bg-zinc-900/50 p-1">
@@ -162,7 +163,7 @@ function ReportsClientView({
                   feedTab === t
                     ? t === "product"
                       ? "bg-emerald-500/20 text-emerald-300"
-                      : "bg-purple-500/20 text-purple-300"
+                      : "bg-fuchsia-500/20 text-fuchsia-300"
                     : "text-zinc-500"
                 )}
               >
@@ -182,7 +183,7 @@ function ReportsClientView({
                   activeFilter === f.id
                     ? feedTab === "product"
                       ? "border-emerald-500/50 bg-emerald-500/15 text-emerald-300"
-                      : "border-purple-500/50 bg-purple-500/15 text-purple-300"
+                      : "border-fuchsia-500/50 bg-fuchsia-500/15 text-fuchsia-300"
                     : "border-zinc-800 text-zinc-500 hover:border-zinc-700"
                 )}
               >

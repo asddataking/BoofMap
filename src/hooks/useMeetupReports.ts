@@ -10,7 +10,7 @@ export function useMeetupReports(): MeetupReport[] {
   const configured = isConvexConfigured();
   const live = useQuery(
     api.meetupReports.listApproved,
-    configured ? { limit: 10 } : "skip"
+    configured ? { limit: 200 } : "skip"
   );
   return (live ?? getSeedApprovedMeetupReports()) as MeetupReport[];
 }

@@ -31,15 +31,15 @@ export function LandingStatCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.06, duration: 0.4 }}
-      className="glass-card flex min-w-[160px] flex-1 flex-col gap-3 p-5 lg:min-w-0"
+      className="glass-card flex min-w-[160px] flex-1 flex-col gap-3 p-4 lg:min-w-0 lg:p-5"
     >
       <div
-        className={`flex h-10 w-10 items-center justify-center rounded-xl ${accents[accent]}`}
+        className={`flex h-9 w-9 items-center justify-center rounded-xl ${accents[accent]}`}
       >
-        <Icon className="h-5 w-5" strokeWidth={2} />
+        <Icon className="h-4 w-4" strokeWidth={2.25} />
       </div>
       <div>
-        <p className="font-heading text-3xl font-bold tracking-tight text-white">
+        <p className="font-heading text-3xl font-bold tabular-nums tracking-tight text-white">
           {typeof value === "number" ? value.toLocaleString() : value}
         </p>
         <p className="mt-0.5 text-sm font-medium text-zinc-400">{label}</p>

@@ -115,7 +115,7 @@ function HomeClientView({ reports }: { reports: Report[] }) {
       <PageTransition>
         <BoofTicker />
 
-        <div className="space-y-16 pb-8 pt-6 lg:space-y-24 lg:pb-12 lg:pt-8">
+        <div className="space-y-12 pb-8 pt-6 lg:space-y-20 lg:pb-12 lg:pt-8">
           <HomepageHero
             onOpenMap={scrollToMap}
             onOpenAlerts={scrollToSettings}
@@ -173,11 +173,12 @@ function HomeClientView({ reports }: { reports: Report[] }) {
           <HowItWorksSection />
 
           <section id="map" className="scroll-mt-24" aria-label="Map">
+            <p className="section-kicker">Live Map</p>
             <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">
-              Explore Michigan
+              Michigan intel
             </h2>
             <p className="mt-1 text-sm text-zinc-500">
-              Search and browse geo-tagged community reports.
+              Dispensary pins by score · magenta diamonds = meetup / seller flags
             </p>
 
             <div className="mt-6">
@@ -187,6 +188,7 @@ function HomeClientView({ reports }: { reports: Report[] }) {
             <div className="mt-4 h-[50vh] min-h-[320px] overflow-hidden rounded-2xl border border-zinc-800/60 lg:min-h-[480px]">
               <MapViewDynamic
                 reports={filtered}
+                meetups={meetups}
                 center={[MICHIGAN_CENTER.lat, MICHIGAN_CENTER.lng]}
                 zoom={8}
                 className="h-full shadow-[0_12px_48px_rgba(0,0,0,0.5)]"

@@ -48,7 +48,8 @@ export default defineSchema({
     reviewedAt: v.optional(v.number()),
   })
     .index("by_status_created", ["status", "createdAt"])
-    .index("by_status", ["status"]),
+    .index("by_status", ["status"])
+    .index("by_user_created", ["userId", "createdAt"]),
 
   meetupReports: defineTable({
     userId: v.string(),
@@ -73,6 +74,7 @@ export default defineSchema({
   })
     .index("by_status_created", ["status", "createdAt"])
     .index("by_status", ["status"])
+    .index("by_user_created", ["userId", "createdAt"])
     .index("by_seller_city", ["sellerDisplayName", "city"]),
 
   votes: defineTable({

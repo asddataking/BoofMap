@@ -37,21 +37,25 @@ export function HomepageHero({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1">
-              <span className="font-heading text-[10px] font-bold uppercase tracking-[0.25em] text-emerald-400">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+              </span>
+              <span className="section-kicker !text-emerald-400">
                 Michigan · Live
               </span>
             </div>
             <h1 className="font-heading text-[2.25rem] font-bold leading-[1.05] tracking-tight text-white sm:text-5xl lg:text-[3.25rem]">
-              America&apos;s Live
+              The live
               <br />
-              <span className="bg-gradient-to-r from-emerald-300 via-emerald-400 to-emerald-500 bg-clip-text text-transparent">
-                Weed Scoreboard
+              <span className="bg-gradient-to-r from-emerald-200 via-emerald-400 to-teal-400 bg-clip-text text-transparent">
+                weed scoreboard
               </span>
             </h1>
             <p className="mt-4 max-w-lg text-base leading-relaxed text-zinc-400 sm:text-lg">
-              Real-time boof alerts, fire finds, and dispensary intel — scored
-              by the community, not the brands.
+              Community-scored dispensary intel and seller flags — like a sports
+              ticker meets a product scan, built for Michigan.
             </p>
           </motion.div>
 

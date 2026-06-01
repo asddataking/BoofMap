@@ -124,6 +124,7 @@ export const PLATFORMS = [
 ] as const;
 
 export const FEED_FILTERS = [
+  { id: "latest", label: "Latest" },
   { id: "near", label: "Near Me" },
   { id: "mold", label: "Mold" },
   { id: "taxed", label: "Taxed" },
@@ -136,6 +137,7 @@ export const FEED_FILTERS = [
 ] as const;
 
 export const MEETUP_FEED_FILTERS = [
+  { id: "latest", label: "Latest" },
   { id: "near", label: "Near Me" },
   { id: "scam", label: "Scam" },
   { id: "no-show", label: "No Show" },
@@ -151,7 +153,7 @@ export const MARKER_COLORS = {
   taxed: "#f97316",
   mid: "#eab308",
   fire: "#10b981",
-  meetup: "#a855f7",
+  meetup: "#e879f9",
 } as const;
 
 export const SELLER_SIGNAL_COLORS = {
