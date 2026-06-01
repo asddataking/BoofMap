@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Flame, Map, Newspaper, Target, User } from "lucide-react";
+import { Flame, Home, Map, Newspaper, Target, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/", label: "Map", icon: Map },
+  { href: "/", label: "Home", icon: Home },
+  { href: "/map", label: "Map", icon: Map },
   { href: "/reports", label: "Reports", icon: Newspaper },
   { href: "/report", label: "Report", icon: Target },
   { href: "/brands", label: "Brands", icon: Flame },

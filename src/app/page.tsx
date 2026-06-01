@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { HomePageSeoHead } from "@/components/seo/HomePageSeo";
+import { HomePageJsonLd } from "@/components/seo/HomePageSeo";
 import { HomeClient } from "./HomeClient";
 import { preloadApprovedReports } from "@/lib/convex/queries";
 import { getSeedApprovedReports } from "@/lib/convex/seed";
@@ -16,10 +16,12 @@ export default async function HomePage() {
   const preloadedReports = await preloadApprovedReports();
 
   return (
-    <HomeClient
-      preloadedReports={preloadedReports}
-      seedReports={seedReports}
-      seoIntro={<HomePageSeoHead />}
-    />
+    <>
+      <HomePageJsonLd />
+      <HomeClient
+        preloadedReports={preloadedReports}
+        seedReports={seedReports}
+      />
+    </>
   );
 }

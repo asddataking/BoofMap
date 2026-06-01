@@ -1,22 +1,18 @@
 "use client";
 
-import { useMemo, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { SignUpButton } from "@clerk/nextjs";
 import type { Preloaded } from "convex/react";
 import { AppShell } from "@/components/AppShell";
 import { HowItWorksSection } from "@/components/HowItWorksSection";
 import { LandingPwaSection } from "@/components/LandingPwaSection";
-import { MapViewDynamic } from "@/components/MapViewDynamic";
 import { PageTransition } from "@/components/PageTransition";
-import { SearchBar } from "@/components/SearchBar";
 import { BoofTicker } from "@/components/home/BoofTicker";
 import { HomepageHero } from "@/components/home/HomepageHero";
 import { IntelBoard } from "@/components/home/IntelBoard";
 import { AnalystCard } from "@/components/home/AnalystCard";
 import { api } from "../../convex/_generated/api";
 import { useAuth } from "@/components/BoofAuthProvider";
-import { MICHIGAN_CENTER } from "@/lib/constants";
 import type { Report } from "@/lib/types";
 import { usePreloadedReports } from "@/hooks/useRealtimeReports";
 import { useMeetupReports } from "@/hooks/useMeetupReports";
@@ -24,103 +20,49 @@ import { useMeetupReports } from "@/hooks/useMeetupReports";
 export function HomeClient({
   preloadedReports,
   seedReports,
-  seoIntro,
 }: {
   preloadedReports: Preloaded<typeof api.reports.listApproved> | null;
   seedReports: Report[];
-  seoIntro?: ReactNode;
 }) {
   if (preloadedReports) {
     return (
       <HomeClientLive
         preloadedReports={preloadedReports}
         seedReports={seedReports}
-        seoIntro={seoIntro}
       />
     );
   }
-  return <HomeClientView reports={seedReports} seoIntro={seoIntro} />;
+  return <HomeClientView reports={seedReports} />;
 }
 
 function HomeClientLive({
   preloadedReports,
   seedReports,
-  seoIntro,
 }: {
   preloadedReports: Preloaded<typeof api.reports.listApproved>;
   seedReports: Report[];
-  seoIntro?: ReactNode;
 }) {
   const reports = usePreloadedReports(preloadedReports, seedReports);
-  return <HomeClientView reports={reports} seoIntro={seoIntro} />;
+  return <HomeClientView reports={reports} />;
 }
 
-function HomeClientView({
-  reports,
-  seoIntro,
-}: {
-  reports: Report[];
-  seoIntro?: ReactNode;
-}) {
+function HomeClientView({ reports }: { reports: Report[] }) {
   const { isAuthenticated } = useAuth();
   const meetups = useMeetupReports();
-  const [search, setSearch] = useState("");
-
-  const filtered = useMemo(() => {
-    const q = search.toLowerCase().trim();
-    if (!q) return reports;
-    return reports.filter(
-      (r) =>
-        r.strain_name.toLowerCase().includes(q) ||
-        r.brand_name.toLowerCase().includes(q) ||
-        r.dispensary_name.toLowerCase().includes(q) ||
-        r.city.toLowerCase().includes(q)
-    );
-  }, [reports, search]);
-
-  const scrollToMap = () => {
-    document.getElementById("map")?.scrollIntoView({ behavior: "smooth" });
-  };
 
   return (
     <AppShell showFab variant="landing">
       <PageTransition>
         <BoofTicker />
 
-        {seoIntro}
-
         <div className="space-y-12 pb-8 pt-4 lg:space-y-16 lg:pb-12 lg:pt-6">
           <HomepageHero
-            onOpenMap={scrollToMap}
-            reports={filtered}
+            reports={reports}
+            meetups={meetups}
             totalReports={reports.length}
           />
 
-          <section id="map" className="scroll-mt-24" aria-label="Map">
-            <p className="section-kicker">Live Map</p>
-            <h2 className="font-display text-2xl font-extrabold uppercase tracking-tight text-[var(--text-main)] sm:text-3xl">
-              Tactical Intel Map
-            </h2>
-            <p className="mt-1 text-sm text-[var(--text-muted)]">
-              Dispensary pins by signal tier · magenta diamonds = seller flags
-            </p>
-
-            <div className="mt-6">
-              <SearchBar value={search} onChange={setSearch} />
-            </div>
-
-            <div className="mt-4 h-[50vh] min-h-[320px] overflow-hidden rounded-xl border border-[var(--border-soft)] lg:min-h-[480px]">
-              <MapViewDynamic
-                reports={filtered}
-                meetups={meetups}
-                center={[MICHIGAN_CENTER.lat, MICHIGAN_CENTER.lng]}
-                zoom={8}
-                className="h-full shadow-[0_12px_48px_rgba(0,0,0,0.5)]"
-              />
-            </div>
-          </section>
-
-          <IntelBoard reports={filtered} meetups={meetups} />
+          <IntelBoard reports={reports} meetups={meetups} />
 
           <AnalystCard />
 

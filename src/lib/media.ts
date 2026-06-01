@@ -1,4 +1,7 @@
+import { BOOFMAP_LOGO } from "./constants";
+
 export const MEDIA_KIT_PDF_PATH = "/media/boofmap-media-kit.pdf";
+export const MEDIA_LOGO_PATH = BOOFMAP_LOGO.src;
 export const MEDIA_KIT_PDF_FILENAME = "boofmap-media-kit.pdf";
 
 export const BRAND_COLORS = [

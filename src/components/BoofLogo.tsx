@@ -1,23 +1,56 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { Leaf } from "lucide-react";
+import { BOOFMAP_LOGO } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+
+const sizeStyles = {
+  sm: "h-9 max-w-[180px]",
+  md: "h-11 max-w-[220px] sm:max-w-[260px]",
+  lg: "h-28 max-w-full sm:h-36",
+} as const;
 
 export function BoofLogo({
   className,
   showBeta = true,
   size = "md",
+  linkToHome = true,
 }: {
   className?: string;
   showBeta?: boolean;
-  size?: "sm" | "md" | "lg";
+  size?: keyof typeof sizeStyles;
+  linkToHome?: boolean;
 }) {
-  const sizes = {
-    sm: "text-lg",
-    md: "text-xl lg:text-2xl",
-    lg: "text-3xl lg:text-4xl",
-  };
+  const image = (
+    <Image
+      src={BOOFMAP_LOGO.src}
+      alt={BOOFMAP_LOGO.alt}
+      width={BOOFMAP_LOGO.width}
+      height={BOOFMAP_LOGO.height}
+      className={cn("w-auto object-contain object-left", sizeStyles[size])}
+      priority={size === "md"}
+    />
+  );
+
+  const content = (
+    <>
+      {image}
+      {showBeta && (
+        <span className="rounded-md bg-[#39FF88] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-[#050807]">
+          Beta
+        </span>
+      )}
+    </>
+  );
+
+  if (!linkToHome) {
+    return (
+      <span className={cn("inline-flex items-center gap-2", className)}>
+        {content}
+      </span>
+    );
+  }
 
   return (
     <Link
@@ -25,27 +58,7 @@ export function BoofLogo({
       aria-label="BoofMap home"
       className={cn("group inline-flex items-center gap-2", className)}
     >
-      <span
-        className={cn(
-          "font-heading font-bold tracking-tight text-white",
-          sizes[size]
-        )}
-      >
-        B
-        <Leaf
-          className="inline h-[0.85em] w-[0.85em] -translate-y-px text-emerald-400"
-          strokeWidth={2.5}
-          fill="currentColor"
-          fillOpacity={0.2}
-          aria-hidden
-        />
-        OFMAP
-      </span>
-      {showBeta && (
-        <span className="rounded-md bg-emerald-500 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-black">
-          Beta
-        </span>
-      )}
+      {content}
     </Link>
   );
 }

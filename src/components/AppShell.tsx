@@ -12,13 +12,14 @@ import { cn } from "@/lib/utils";
 import { useId, useState } from "react";
 
 const landingLinks = [
-  { href: "/#map", label: "Map" },
+  { href: "/map", label: "Map" },
   { href: "/reports", label: "Reports" },
   { href: "/brands", label: "Brands" },
   { href: "/#how-it-works", label: "How It Works" },
 ] as const;
 
 const appLinks = [
+  { href: "/map", label: "Map" },
   { href: "/reports", label: "Reports" },
   { href: "/brands", label: "Brands" },
   { href: "/report", label: "Report" },

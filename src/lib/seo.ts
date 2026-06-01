@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { TAGLINE } from "./constants";
+import { BOOFMAP_LOGO, TAGLINE } from "./constants";
 
 export const SITE_NAME = "BoofMap";
 export const SITE_TITLE = `${SITE_NAME} — ${TAGLINE}`;
@@ -74,7 +74,7 @@ export function buildPageMetadata({
   description = SITE_DESCRIPTION,
   path = "",
   noIndex = false,
-  image = "/icons/icon-512.png",
+  image = BOOFMAP_LOGO.src,
 }: PageMetaOptions = {}): Metadata {
   const siteUrl = getSiteUrl();
   const url = `${siteUrl}${path.startsWith("/") ? path : path ? `/${path}` : ""}`;
@@ -103,9 +103,9 @@ export function buildPageMetadata({
       images: [
         {
           url: imageUrl,
-          width: 512,
-          height: 512,
-          alt: `${SITE_NAME} — ${TAGLINE}`,
+          width: BOOFMAP_LOGO.width,
+          height: BOOFMAP_LOGO.height,
+          alt: BOOFMAP_LOGO.alt,
         },
       ],
     },
@@ -194,7 +194,7 @@ export function buildOrganizationJsonLd() {
     "@type": "Organization",
     name: SITE_NAME,
     url: siteUrl,
-    logo: `${siteUrl}/icons/icon-512.png`,
+    logo: `${siteUrl}${BOOFMAP_LOGO.src}`,
     description: SITE_DESCRIPTION,
     areaServed: {
       "@type": "State",

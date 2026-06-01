@@ -10,6 +10,7 @@ import {
   Users,
   UserCheck,
 } from "lucide-react";
+import { BoofLogo } from "@/components/BoofLogo";
 import { cn } from "@/lib/utils";
 
 export type AdminSection =
@@ -44,12 +45,13 @@ export function AdminShell({
       <div className="flex min-h-screen">
         <aside className="hidden w-64 shrink-0 flex-col border-r border-zinc-900 bg-zinc-950/50 lg:flex">
           <div className="border-b border-zinc-900 p-5">
+            <BoofLogo size="sm" showBeta={false} className="mb-4" />
             <Link
               href="/"
               className="mb-4 inline-flex items-center gap-1.5 text-xs text-zinc-500 transition hover:text-zinc-300"
             >
-              <ArrowLeft className="h-3.5 w-3.5" />
-              Back to BoofMap
+              <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
+              Back to home
             </Link>
             <h1 className="font-heading text-lg font-bold text-white">
               Admin<span className="text-emerald-400">Panel</span>

@@ -3,7 +3,8 @@ import Link from "next/link";
 import { ArrowLeft, Download, ExternalLink } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { PageTransition } from "@/components/PageTransition";
-import { BoofLogo } from "@/components/BoofLogo";
+import Image from "next/image";
+import { BOOFMAP_LOGO } from "@/lib/constants";
 import { TAGLINE } from "@/lib/constants";
 import { buildPageMetadata, SITE_NAME } from "@/lib/seo";
 import {
@@ -68,13 +69,23 @@ export default function MediaPage() {
               <h2 className="font-display text-sm font-bold uppercase tracking-wider text-[var(--text-main)]">
                 Logo
               </h2>
-              <div className="mt-4 flex items-center gap-4 rounded-lg border border-[var(--border-soft)] bg-[var(--bg-panel)] p-6">
-                <BoofLogo size="lg" showBeta={false} />
+              <div className="mt-4 flex justify-center rounded-lg border border-[var(--border-soft)] bg-[var(--bg-panel)] p-6">
+                <Image
+                  src={BOOFMAP_LOGO.src}
+                  alt={BOOFMAP_LOGO.alt}
+                  width={BOOFMAP_LOGO.width}
+                  height={BOOFMAP_LOGO.height}
+                  className="h-32 w-auto max-w-full object-contain sm:h-40"
+                />
               </div>
               <p className="mt-3 text-xs text-[var(--text-muted)]">
-                SVG icon:{" "}
-                <Link href="/icons/icon.svg" className="text-[#39FF88] hover:underline">
-                  /icons/icon.svg
+                Download PNG:{" "}
+                <Link
+                  href={BOOFMAP_LOGO.src}
+                  download="boofmap-logo.png"
+                  className="text-[#39FF88] hover:underline"
+                >
+                  {BOOFMAP_LOGO.src}
                 </Link>
               </p>
             </section>

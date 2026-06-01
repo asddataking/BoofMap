@@ -5,6 +5,7 @@ const SHELL_CACHE = "boofmap-shell-v2";
 const SHELL_URLS = [
   "/offline",
   "/manifest.json",
+  "/boofmaplogo.png",
   "/icons/icon.svg",
   "/icons/icon-192.png",
   "/icons/icon-512.png",

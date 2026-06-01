@@ -32,7 +32,7 @@ const lines = [
   "",
   "WEB & ASSETS",
   "Website: https://boofmap.com (set NEXT_PUBLIC_SITE_URL in production)",
-  "Logo SVG: /icons/icon.svg",
+  "Logo PNG: /boofmaplogo.png",
   "",
   "PRESS CONTACT",
   "press@boofmap.com",

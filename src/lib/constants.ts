@@ -2,6 +2,14 @@ import type { MeetupType, ProductType } from "./types";
 
 export const TAGLINE = "Find Fire. Avoid Boof.";
 
+/** Primary brand lockup (header, footer, media). */
+export const BOOFMAP_LOGO = {
+  src: "/boofmaplogo.png",
+  width: 1774,
+  height: 887,
+  alt: "BoofMap — Find Fire. Avoid Boof. Live cannabis intelligence",
+} as const;
+
 export const DISCLAIMER =
   "BoofMap is based on community-submitted reports. Always inspect products yourself and contact the licensed retailer or regulator for serious safety concerns.";
 
