@@ -1,9 +1,8 @@
-/// BoofMap service worker — offline shell + static asset cache
-const CACHE_VERSION = "boofmap-v1";
-const SHELL_CACHE = "boofmap-shell-v1";
+/// BoofMap service worker — offline shell only (never cache Next.js bundles)
+const CACHE_VERSION = "boofmap-v2";
+const SHELL_CACHE = "boofmap-shell-v2";
 
 const SHELL_URLS = [
-  "/",
   "/offline",
   "/manifest.json",
   "/icons/icon.svg",
@@ -12,7 +11,13 @@ const SHELL_URLS = [
   "/apple-touch-icon.png",
 ];
 
-const STATIC_DESTINATIONS = ["style", "script", "font", "image"];
+async function safeCachePut(cache, request, response) {
+  try {
+    await cache.put(request, response);
+  } catch {
+    /* quota, truncated body, or opaque response — skip */
+  }
+}
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -50,45 +55,33 @@ self.addEventListener("fetch", (event) => {
 
   if (url.origin !== self.location.origin) return;
 
-  // Navigation: network first, offline fallback
+  // Never intercept Next.js build output — hashed filenames change every deploy.
+  if (url.pathname.startsWith("/_next/")) return;
+
+  // Navigation: network first, offline fallback (do not cache HTML — avoids stale app shells)
   if (request.mode === "navigate") {
     event.respondWith(
-      fetch(request)
-        .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
-          return response;
-        })
-        .catch(async () => {
-          const cached = await caches.match(request);
-          if (cached) return cached;
-          const offline = await caches.match("/offline");
-          if (offline) return offline;
-          return new Response("Offline", {
-            status: 503,
-            headers: { "Content-Type": "text/plain" },
-          });
-        })
+      fetch(request).catch(async () => {
+        const offline = await caches.match("/offline");
+        if (offline) return offline;
+        return new Response("Offline", {
+          status: 503,
+          headers: { "Content-Type": "text/plain" },
+        });
+      })
     );
     return;
   }
 
-  // Static assets: stale-while-revalidate
-  if (
-    STATIC_DESTINATIONS.includes(request.destination) ||
-    url.pathname.startsWith("/_next/static/") ||
-    url.pathname.startsWith("/icons/")
-  ) {
+  // PWA icons only — cache-first for install assets
+  if (url.pathname.startsWith("/icons/") || url.pathname === "/apple-touch-icon.png") {
     event.respondWith(
-      caches.open(CACHE_VERSION).then(async (cache) => {
+      caches.open(SHELL_CACHE).then(async (cache) => {
         const cached = await cache.match(request);
-        const network = fetch(request)
-          .then((response) => {
-            if (response.ok) cache.put(request, response.clone());
-            return response;
-          })
-          .catch(() => null);
-        return cached || network || fetch(request);
+        if (cached) return cached;
+        const response = await fetch(request);
+        if (response.ok) await safeCachePut(cache, request, response.clone());
+        return response;
       })
     );
   }
