@@ -5,7 +5,7 @@ import { MapPin, ThumbsUp, AlertTriangle } from "lucide-react";
 import { IssueTag } from "./IssueTag";
 import { SellerSignalBadge } from "./SellerSignalBadge";
 import type { MeetupReport } from "@/lib/types";
-import { formatTimeAgo } from "@/lib/utils";
+import { formatTimeAgo, cn } from "@/lib/utils";
 
 export function MeetupReportCard({
   report,
@@ -34,9 +34,23 @@ export function MeetupReportCard({
 
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
-            <h3 className="font-heading text-base font-semibold text-white">
-              {report.seller_display_name}
-            </h3>
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="font-heading text-base font-semibold text-white">
+                {report.seller_display_name}
+              </h3>
+              {report.status && report.status !== "approved" && (
+                <span
+                  className={cn(
+                    "rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide",
+                    report.status === "rejected"
+                      ? "bg-red-500/15 text-red-400"
+                      : "bg-amber-500/15 text-amber-300"
+                  )}
+                >
+                  {report.status === "flagged" ? "Under review" : report.status}
+                </span>
+              )}
+            </div>
             <p className="mt-0.5 text-sm text-zinc-400">
               {report.platform} · {report.meetup_type.replace("-", " ")}
             </p>

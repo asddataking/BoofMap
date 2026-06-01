@@ -5,7 +5,7 @@ import { api } from "../../convex/_generated/api";
 import type { MeetupReport } from "@/lib/types";
 
 export function usePreloadedMeetupReports(
-  preloaded: Preloaded<typeof api.meetupReports.listApproved>,
+  preloaded: Preloaded<typeof api.meetupReports.listFeed>,
   seedFallback: MeetupReport[]
 ): MeetupReport[] {
   const live = usePreloadedQuery(preloaded);

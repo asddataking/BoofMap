@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BOOFMAP_LOGO, TAGLINE } from "./constants";
+import { BOOFMAP_LOGO, BOOFMAP_SOCIAL_SHARE, TAGLINE } from "./constants";
 import { CANONICAL_SITE_URL, normalizeSiteUrl } from "./site";
 
 export const SITE_NAME = "BoofMap";
@@ -73,17 +73,31 @@ type PageMetaOptions = {
   image?: string;
 };
 
+function resolveShareImage(imagePath: string) {
+  if (imagePath === BOOFMAP_LOGO.src) return BOOFMAP_LOGO;
+  if (imagePath === BOOFMAP_SOCIAL_SHARE.src) return BOOFMAP_SOCIAL_SHARE;
+  return {
+    src: imagePath,
+    width: BOOFMAP_SOCIAL_SHARE.width,
+    height: BOOFMAP_SOCIAL_SHARE.height,
+    alt: BOOFMAP_SOCIAL_SHARE.alt,
+  };
+}
+
 export function buildPageMetadata({
   title,
   description = SITE_DESCRIPTION,
   path = "",
   noIndex = false,
-  image = BOOFMAP_LOGO.src,
+  image = BOOFMAP_SOCIAL_SHARE.src,
 }: PageMetaOptions = {}): Metadata {
   const siteUrl = getSiteUrl();
   const url = `${siteUrl}${path.startsWith("/") ? path : path ? `/${path}` : ""}`;
   const pageTitle = title ? `${title} | ${SITE_NAME}` : SITE_TITLE;
-  const imageUrl = image.startsWith("http") ? image : `${siteUrl}${image}`;
+  const shareImage = resolveShareImage(image);
+  const imageUrl = shareImage.src.startsWith("http")
+    ? shareImage.src
+    : `${siteUrl}${shareImage.src}`;
 
   return {
     title: pageTitle,
@@ -107,9 +121,9 @@ export function buildPageMetadata({
       images: [
         {
           url: imageUrl,
-          width: BOOFMAP_LOGO.width,
-          height: BOOFMAP_LOGO.height,
-          alt: BOOFMAP_LOGO.alt,
+          width: shareImage.width,
+          height: shareImage.height,
+          alt: shareImage.alt,
         },
       ],
     },

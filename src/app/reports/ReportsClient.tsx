@@ -13,15 +13,20 @@ import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import type { Id } from "../../../convex/_generated/dataModel";
 import { useAuth } from "@/components/BoofAuthProvider";
-import { FEED_FILTERS, MEETUP_FEED_FILTERS, MICHIGAN_CENTER } from "@/lib/constants";
+import {
+  FEED_FILTERS,
+  MEETUP_FEED_FILTERS,
+  MICHIGAN_CENTER,
+  normalizeFeedFilter,
+} from "@/lib/constants";
 import { filterReports } from "@/lib/data/reports";
 import { filterMeetupReports } from "@/lib/data/meetupReports";
-import { isConvexConfigured } from "@/lib/convex/config";
 import { getMarkerTier } from "@/lib/markers";
 import type { MeetupReport, Report } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { usePreloadedReports } from "@/hooks/useRealtimeReports";
 import { usePreloadedMeetupReports } from "@/hooks/useRealtimeMeetupReports";
+import { isConvexConfigured } from "@/lib/convex/config";
 
 export function ReportsClient({
   preloadedReports,
@@ -31,7 +36,7 @@ export function ReportsClient({
 }: {
   preloadedReports: Preloaded<typeof api.reports.listApproved> | null;
   seedReports: Report[];
-  preloadedMeetupReports: Preloaded<typeof api.meetupReports.listApproved> | null;
+  preloadedMeetupReports: Preloaded<typeof api.meetupReports.listFeed> | null;
   seedMeetupReports: MeetupReport[];
 }) {
   if (preloadedReports && preloadedMeetupReports) {
@@ -60,7 +65,7 @@ function ReportsClientLive({
 }: {
   preloadedReports: Preloaded<typeof api.reports.listApproved>;
   seedReports: Report[];
-  preloadedMeetupReports: Preloaded<typeof api.meetupReports.listApproved>;
+  preloadedMeetupReports: Preloaded<typeof api.meetupReports.listFeed>;
   seedMeetupReports: MeetupReport[];
 }) {
   const reports = usePreloadedReports(preloadedReports, seedReports);
@@ -101,6 +106,10 @@ function ReportsClientView({
   }, [tabParam]);
 
   useEffect(() => {
+    setActiveFilter((current) => normalizeFeedFilter(feedTab, current));
+  }, [feedTab]);
+
+  useEffect(() => {
     if (typeof navigator !== "undefined" && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (p) => setCoords({ lat: p.coords.latitude, lng: p.coords.longitude }),
@@ -124,16 +133,39 @@ function ReportsClientView({
     );
   }, [reports, search]);
 
+  const searchFilteredMeetups = useMemo(() => {
+    const q = search.toLowerCase().trim();
+    if (!q) return meetupReports;
+    return meetupReports.filter(
+      (r) =>
+        r.seller_display_name.toLowerCase().includes(q) ||
+        r.platform.toLowerCase().includes(q) ||
+        r.city.toLowerCase().includes(q) ||
+        (r.area?.toLowerCase().includes(q) ?? false) ||
+        (r.notes?.toLowerCase().includes(q) ?? false) ||
+        r.issue_tags.some((t) => t.toLowerCase().includes(q))
+    );
+  }, [meetupReports, search]);
+
+  const productFilter = normalizeFeedFilter("product", activeFilter);
+
   const filteredProduct = useMemo(
     () =>
-      filterReports(searchFiltered, activeFilter, coords?.lat, coords?.lng),
-    [searchFiltered, activeFilter, coords]
+      filterReports(searchFiltered, productFilter, coords?.lat, coords?.lng),
+    [searchFiltered, productFilter, coords]
   );
+
+  const meetupFilter = normalizeFeedFilter("meetup", activeFilter);
 
   const filteredMeetup = useMemo(
     () =>
-      filterMeetupReports(meetupReports, activeFilter, coords?.lat, coords?.lng),
-    [meetupReports, activeFilter, coords]
+      filterMeetupReports(
+        searchFilteredMeetups,
+        meetupFilter,
+        coords?.lat,
+        coords?.lng
+      ),
+    [searchFilteredMeetups, meetupFilter, coords]
   );
 
   const stats = useMemo(() => {
@@ -192,7 +224,11 @@ function ReportsClientView({
             <SearchBar
               value={search}
               onChange={setSearch}
-              placeholder="Search strain, brand, dispo, city, notes…"
+              placeholder={
+                feedTab === "meetup"
+                  ? "Search seller, platform, city, tags, notes…"
+                  : "Search strain, brand, dispo, city, notes…"
+              }
             />
           </div>
 
@@ -212,7 +248,7 @@ function ReportsClientView({
               <div className="h-[42vh] min-h-[280px] lg:h-[calc(100vh-12rem)] lg:min-h-[520px]">
                 <MapViewDynamic
                   reports={searchFiltered}
-                  meetups={meetupReports}
+                  meetups={searchFilteredMeetups}
                   center={[MICHIGAN_CENTER.lat, MICHIGAN_CENTER.lng]}
                   zoom={8}
                   className="h-full"
@@ -226,7 +262,10 @@ function ReportsClientView({
                   <button
                     key={t}
                     type="button"
-                    onClick={() => setFeedTab(t)}
+                    onClick={() => {
+                      setFeedTab(t);
+                      setActiveFilter("latest");
+                    }}
                     className={cn(
                       "flex-1 rounded-lg py-2 font-display text-xs font-bold uppercase tracking-wide transition",
                       feedTab === t
@@ -284,7 +323,9 @@ function ReportsClientView({
                 {((feedTab === "product" && filteredProduct.length === 0) ||
                   (feedTab === "meetup" && filteredMeetup.length === 0)) && (
                   <p className="py-12 text-center text-sm text-[var(--text-muted)]">
-                    No signals match this filter.
+                    {feedTab === "meetup" && meetupReports.length > 0
+                      ? "No meetup reports match this filter. Try Latest or clear search."
+                      : "No signals match this filter."}
                   </p>
                 )}
               </div>

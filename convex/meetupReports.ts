@@ -22,6 +22,43 @@ export const listApproved = query({
   },
 });
 
+/** Approved reports plus the signed-in reporter's pending/flagged submissions. */
+export const listFeed = query({
+  args: { limit: v.optional(v.number()) },
+  handler: async (ctx, { limit }) => {
+    const cap = limit ?? 200;
+    const approved = await ctx.db
+      .query("meetupReports")
+      .withIndex("by_status_created", (q) => q.eq("status", "approved"))
+      .order("desc")
+      .take(cap);
+
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      return approved.map(meetupToApi);
+    }
+
+    const mine = await ctx.db
+      .query("meetupReports")
+      .withIndex("by_user_created", (q) => q.eq("userId", identity.subject))
+      .order("desc")
+      .take(50);
+
+    const approvedIds = new Set(approved.map((r) => r._id));
+    const extra = mine.filter(
+      (r) =>
+        !approvedIds.has(r._id) &&
+        (r.status === "pending" || r.status === "flagged")
+    );
+
+    const merged = [...extra, ...approved]
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .slice(0, cap);
+
+    return merged.map(meetupToApi);
+  },
+});
+
 export const listMine = query({
   args: { limit: v.optional(v.number()) },
   handler: async (ctx, { limit }) => {

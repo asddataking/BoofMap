@@ -9,7 +9,7 @@ import type { MeetupReport } from "@/lib/types";
 export function useMeetupReports(): MeetupReport[] {
   const configured = isConvexConfigured();
   const live = useQuery(
-    api.meetupReports.listApproved,
+    api.meetupReports.listFeed,
     configured ? { limit: 200 } : "skip"
   );
   return (live ?? getSeedApprovedMeetupReports()) as MeetupReport[];

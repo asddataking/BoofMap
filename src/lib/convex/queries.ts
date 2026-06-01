@@ -20,10 +20,10 @@ export async function preloadApprovedReports(): Promise<Preloaded<
 }
 
 export async function preloadApprovedMeetupReports(): Promise<Preloaded<
-  typeof api.meetupReports.listApproved
+  typeof api.meetupReports.listFeed
 > | null> {
   if (!isConvexConfigured()) return null;
-  return preloadQuery(api.meetupReports.listApproved, {});
+  return preloadQuery(api.meetupReports.listFeed, {});
 }
 
 export async function fetchApprovedReports(): Promise<Report[]> {
@@ -33,7 +33,7 @@ export async function fetchApprovedReports(): Promise<Report[]> {
 
 export async function fetchApprovedMeetupReports(): Promise<MeetupReport[]> {
   if (!isConvexConfigured()) return getSeedApprovedMeetupReports();
-  return (await fetchQuery(api.meetupReports.listApproved, {})) as MeetupReport[];
+  return (await fetchQuery(api.meetupReports.listFeed, {})) as MeetupReport[];
 }
 
 export async function fetchBrandNames(): Promise<string[]> {

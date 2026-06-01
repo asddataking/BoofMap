@@ -10,6 +10,14 @@ export const BOOFMAP_LOGO = {
   alt: "BoofMap — Find Fire. Avoid Boof. Live cannabis intelligence",
 } as const;
 
+/** Open Graph / Twitter / link preview image. */
+export const BOOFMAP_SOCIAL_SHARE = {
+  src: "/boofmapsocial.png",
+  width: 1254,
+  height: 1254,
+  alt: "BoofMap — Find Fire. Avoid Boof. Michigan cannabis community intel",
+} as const;
+
 export const DISCLAIMER =
   "BoofMap is based on community-submitted reports. Always inspect products yourself and contact the licensed retailer or regulator for serious safety concerns.";
 
@@ -152,6 +160,23 @@ export const MEETUP_FEED_FILTERS = [
   { id: "changed-price", label: "Changed Price" },
   { id: "unsafe", label: "Unsafe" },
 ] as const;
+
+const MEETUP_FILTER_IDS = new Set<string>(
+  MEETUP_FEED_FILTERS.map((f) => f.id)
+);
+const PRODUCT_FILTER_IDS = new Set<string>(FEED_FILTERS.map((f) => f.id));
+
+export function defaultFeedFilter(_tab: "product" | "meetup"): string {
+  return "latest";
+}
+
+export function normalizeFeedFilter(
+  tab: "product" | "meetup",
+  filterId: string
+): string {
+  const allowed = tab === "product" ? PRODUCT_FILTER_IDS : MEETUP_FILTER_IDS;
+  return allowed.has(filterId) ? filterId : defaultFeedFilter(tab);
+}
 
 export const MICHIGAN_CENTER = { lat: 42.65, lng: -83.2 };
 export const DEFAULT_ZOOM = 8;
