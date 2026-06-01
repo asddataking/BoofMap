@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { HomePageJsonLd } from "@/components/seo/HomePageSeo";
 import { HomeClient } from "./HomeClient";
 import { preloadApprovedReports } from "@/lib/convex/queries";
+import { allowLocalSeedFallback } from "@/lib/convex/config";
 import { getSeedApprovedReports } from "@/lib/convex/seed";
 import { buildPageMetadata, SITE_DESCRIPTION_LONG } from "@/lib/seo";
 
@@ -12,7 +13,7 @@ export const metadata: Metadata = buildPageMetadata({
 });
 
 export default async function HomePage() {
-  const seedReports = getSeedApprovedReports();
+  const seedReports = allowLocalSeedFallback() ? getSeedApprovedReports() : [];
   const preloadedReports = await preloadApprovedReports();
 
   return (

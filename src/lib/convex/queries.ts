@@ -1,7 +1,7 @@
 import { fetchQuery, preloadQuery } from "convex/nextjs";
 import type { Preloaded } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import { isConvexConfigured } from "./config";
+import { allowLocalSeedFallback, isConvexConfigured } from "./config";
 import {
   getSeedApprovedMeetupReports,
   getSeedApprovedReports,
@@ -27,17 +27,22 @@ export async function preloadApprovedMeetupReports(): Promise<Preloaded<
 }
 
 export async function fetchApprovedReports(): Promise<Report[]> {
-  if (!isConvexConfigured()) return getSeedApprovedReports();
+  if (!isConvexConfigured()) {
+    return allowLocalSeedFallback() ? getSeedApprovedReports() : [];
+  }
   return (await fetchQuery(api.reports.listApproved, {})) as Report[];
 }
 
 export async function fetchApprovedMeetupReports(): Promise<MeetupReport[]> {
-  if (!isConvexConfigured()) return getSeedApprovedMeetupReports();
+  if (!isConvexConfigured()) {
+    return allowLocalSeedFallback() ? getSeedApprovedMeetupReports() : [];
+  }
   return (await fetchQuery(api.meetupReports.listApproved, {})) as MeetupReport[];
 }
 
 export async function fetchBrandNames(): Promise<string[]> {
   if (!isConvexConfigured()) {
+    if (!allowLocalSeedFallback()) return [];
     return getBrandsFromReports(getSeedApprovedReports());
   }
   return fetchQuery(api.reports.listBrandNames, {});
@@ -47,6 +52,7 @@ export async function fetchBrandProfile(
   slug: string
 ): Promise<BrandProfile | null> {
   if (!isConvexConfigured()) {
+    if (!allowLocalSeedFallback()) return null;
     const { getBrandProfileFromReports } = await import(
       "@/lib/data/profileFallback"
     );
@@ -59,6 +65,7 @@ export async function fetchDispensaryProfile(
   slug: string
 ): Promise<DispensaryProfile | null> {
   if (!isConvexConfigured()) {
+    if (!allowLocalSeedFallback()) return null;
     const { getDispensaryProfileFromReports } = await import(
       "@/lib/data/profileFallback"
     );

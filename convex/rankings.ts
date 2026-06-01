@@ -172,6 +172,7 @@ export const upsertRanking = mutation({
 export const recalculateRankings = action({
   args: {},
   handler: async (ctx) => {
+    await requireAdmin(ctx);
     // TODO: Aggregate approved reports by brand/product/category and upsert rankings.
     await ctx.runMutation(internal.rankings.internalRecalculatePlaceholder, {});
     return {

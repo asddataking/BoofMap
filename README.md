@@ -79,9 +79,25 @@ Runs Next.js and Convex dev servers together.
 
 ### 6. Seed demo data (optional)
 
-In the Convex dashboard, run the `seed:seedDemo` mutation once on an empty database.
+On an empty database, run once from your machine (not from the public client):
+
+```bash
+npx convex run seed:seedDemo
+npx convex run seed:seedLiveMvp
+```
+
+Add `--prod` for the production deployment. Seed mutations are **internal** — they cannot be called from the browser.
 
 ## Production (`www.boofmap.com`)
+
+### Environment files
+
+| File | Purpose |
+|------|---------|
+| `.env.local.example` | Local dev template (`pk_test_`, dev Convex URL) |
+| `.env.example` | Production checklist for Vercel + Convex |
+
+Copy `.env.local.example` → `.env.local` when setting up locally.
 
 ### Vercel environment variables
 
@@ -93,10 +109,14 @@ Set these on the **Production** environment in the Vercel project:
 | `NEXT_PUBLIC_CONVEX_URL` | Your **production** Convex deployment URL |
 | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk **production** `pk_live_...` |
 | `CLERK_SECRET_KEY` | Clerk **production** `sk_live_...` |
+| `CLERK_FRONTEND_API_URL` | Clerk production Frontend API URL (JWT issuer) |
 | `ADMIN_USER_IDS` / `ADMIN_EMAILS` | Same as dev |
-| `NEXT_PUBLIC_ADMIN_USER_IDS` / `NEXT_PUBLIC_ADMIN_EMAIL` | Same as dev |
+| `NEXT_PUBLIC_ADMIN_USER_IDS` / `NEXT_PUBLIC_ADMIN_EMAILS` | Optional nav hints (same as dev) |
+| `OPENAI_API_KEY` | Required for `/admin` AI chat |
 
 `vercel.json` redirects `boofmap.com` → `www.boofmap.com`. Add **both** hostnames in Vercel → Domains.
+
+Production builds validate required env vars automatically (`scripts/validate-production-env.mjs`).
 
 ### Clerk (production instance)
 
@@ -111,7 +131,7 @@ Redeploy Vercel after changing env vars. Run `npx convex deploy` for production 
 
 ## Local dev without Convex
 
-If `NEXT_PUBLIC_CONVEX_URL` is unset, the app uses **local seed data** (no realtime, no uploads).
+If `NEXT_PUBLIC_CONVEX_URL` is unset in **local development**, the app uses **local seed data** (no realtime, no uploads). Production (`VERCEL_ENV=production`) never serves seed data — misconfigured Convex env shows empty feeds instead of demo Michigan data.
 
 ## Admin dashboard
 

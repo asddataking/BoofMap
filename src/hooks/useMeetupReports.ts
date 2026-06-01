@@ -2,7 +2,7 @@
 
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { isConvexConfigured } from "@/lib/convex/config";
+import { allowLocalSeedFallback, isConvexConfigured } from "@/lib/convex/config";
 import { getSeedApprovedMeetupReports } from "@/lib/convex/seed";
 import { mergeMeetupFeed } from "@/lib/data/mergeMeetupFeed";
 import { useAuth } from "@/components/BoofAuthProvider";
@@ -20,7 +20,7 @@ export function useMeetupReports(): MeetupReport[] {
     configured && isAuthenticated ? {} : "skip"
   );
 
-  const seed = getSeedApprovedMeetupReports();
+  const seed = allowLocalSeedFallback() ? getSeedApprovedMeetupReports() : [];
   if (!configured) return seed;
   if (approved === undefined) return seed;
 

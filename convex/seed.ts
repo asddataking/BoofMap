@@ -1,9 +1,8 @@
-import { mutation } from "./_generated/server";
-import { v } from "convex/values";
+import { internalMutation } from "./_generated/server";
 
-/** One-time seed for Michigan demo data. Call from Convex dashboard or a script. */
-export const seedDemo = mutation({
-  args: { adminUserId: v.optional(v.string()) },
+/** One-time seed for Michigan demo data. Run via CLI only (not callable from clients). */
+export const seedDemo = internalMutation({
+  args: {},
   handler: async (ctx) => {
     const existing = await ctx.db.query("reports").take(1);
     if (existing.length > 0) {
@@ -62,8 +61,8 @@ export const seedDemo = mutation({
   },
 });
 
-/** Demo ticker + rankings when those tables are empty (safe to call anytime). */
-export const seedLiveMvp = mutation({
+/** Demo ticker + rankings when those tables are empty. Run via CLI only. */
+export const seedLiveMvp = internalMutation({
   args: {},
   handler: async (ctx) => seedLiveMvpData(ctx, Date.now()),
 });
