@@ -360,6 +360,31 @@ export const moderate = mutation({
   },
 });
 
+export const searchReportsForAi = query({
+  args: {
+    query: v.string(),
+    limit: v.optional(v.number()),
+  },
+  handler: async (ctx, { query: searchQuery, limit }) => {
+    await requireAdmin(ctx);
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return [];
+
+    const reports = await ctx.db.query("reports").take(300);
+    return reports
+      .filter(
+        (r) =>
+          r.strainName.toLowerCase().includes(q) ||
+          r.brandName.toLowerCase().includes(q) ||
+          r.dispensaryName.toLowerCase().includes(q) ||
+          r.city.toLowerCase().includes(q) ||
+          (r.notes?.toLowerCase().includes(q) ?? false)
+      )
+      .slice(0, limit ?? 8)
+      .map(reportToAdminApi);
+  },
+});
+
 async function recalcMeetupWarnings(
   ctx: MutationCtx,
   sellerDisplayName: string,

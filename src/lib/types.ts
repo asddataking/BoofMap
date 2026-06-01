@@ -135,3 +135,75 @@ export interface BoofUser {
   reputation: number;
   report_count: number;
 }
+
+export type TickerItemType =
+  | "alert"
+  | "fire"
+  | "ranking"
+  | "warning"
+  | "fresh_drop";
+
+export interface TickerItem {
+  id: string;
+  title: string;
+  type: TickerItemType;
+  state?: string | null;
+  city?: string | null;
+  product_name?: string | null;
+  brand_name?: string | null;
+  severity?: string | null;
+  created_at: string;
+  expires_at?: string | null;
+  is_active?: boolean;
+}
+
+export type RankingType =
+  | "fire_right_now"
+  | "biggest_fallers"
+  | "most_reported"
+  | "budget_bargers"
+  | "fraud_watch";
+
+export interface RankingEntry {
+  id: string;
+  rank: number;
+  name: string;
+  subtitle?: string;
+  score: number;
+  change?: number;
+  report_count?: number;
+  slug?: string;
+  kind: "brand" | "dispensary" | "strain" | "product";
+  trend?: string;
+}
+
+export interface UserProfile {
+  user_id: string;
+  display_name?: string | null;
+  role_title: string;
+  level: number;
+  points: number;
+  report_count: number;
+  streak_count: number;
+  accuracy_score?: number | null;
+  badges: string[];
+  updated_at: string;
+}
+
+export interface MarketMover {
+  id: string;
+  name: string;
+  subtitle: string;
+  score: number;
+  change: number;
+  slug?: string;
+  kind: "brand" | "dispensary";
+}
+
+export interface AlertPreviewSettings {
+  boof_alerts: boolean;
+  taxed_alerts: boolean;
+  fire_finds: boolean;
+  meetup_warnings: boolean;
+  city: string;
+}

@@ -7,6 +7,7 @@ import { AppShell } from "@/components/AppShell";
 import { InstallPrompt } from "@/components/InstallPrompt";
 import { PageTransition } from "@/components/PageTransition";
 import { useAuth } from "@/components/BoofAuthProvider";
+import { NotificationSettings } from "@/components/NotificationSettings";
 import { isConvexConfigured } from "@/lib/convex/config";
 
 export default function ProfilePage() {
@@ -92,6 +93,13 @@ export default function ProfilePage() {
           </div>
 
           <InstallPrompt />
+
+          <section>
+            <h3 className="mb-3 text-xs font-medium uppercase tracking-wider text-zinc-500">
+              Boof Alerts
+            </h3>
+            <NotificationSettings compact />
+          </section>
 
           <div className="space-y-2">
             <h3 className="text-xs font-medium uppercase tracking-wider text-zinc-500">

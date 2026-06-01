@@ -1,23 +1,41 @@
+import { auth } from "@clerk/nextjs/server";
 import { NextRequest } from "next/server";
 import { isRequestAdmin } from "@/lib/admin/auth";
+import { AI_TOOLS, executeAiTool } from "@/lib/admin/ai-tools";
+import { getKnowledgeForPrompt } from "@/lib/admin/knowledge";
 
-const SYSTEM_PROMPT = `You are BoofMap Admin Assistant — an AI helper for the BoofMap cannabis community reporting app (Michigan-focused).
+const MAX_TOOL_ROUNDS = 6;
 
-You help the admin manage:
-- Product/dispensary reports (strains, brands, boof scores, issue tags)
-- Meetup/seller reports (platform sellers, scam warnings)
-- User signups and roles
-- Moderation queue (approve/reject flagged content)
+function buildSystemPrompt(): string {
+  const knowledge = getKnowledgeForPrompt();
+  return `You are BoofMap Admin Assistant — a live AI operator for the BoofMap admin panel (Michigan cannabis community reports).
 
-Guidelines:
-- Be concise, actionable, and direct
-- When asked about data, use the app context provided in each message
-- Suggest specific admin panel actions (e.g. "Go to Moderation → approve report X")
-- Never expose API keys, env vars, or internal secrets
-- Boof score is 1-5 (1=boof, 5=fire). Statuses: pending, approved, rejected, flagged
-- Users browse reports without signup; signup is needed to submit/vote`;
+You have TOOLS to read live data and take actions (moderate, search, list users). Always use tools when the admin asks about current stats, queue items, reports, or users — do not guess.
 
-type ChatMessage = { role: "user" | "assistant" | "system"; content: string };
+## Your knowledge base
+${knowledge}
+
+## Operating rules
+- Be concise, actionable, and direct.
+- When moderating, confirm what you did and cite report/queue IDs.
+- Before approve/reject, briefly summarize what you're acting on.
+- Boof score 1–5 (1=boof, 5=fire). Statuses: pending, approved, rejected, flagged.
+- Never expose API keys, env vars, or secrets.
+- If a tool fails, explain and suggest a manual fix in the admin panel.`;
+}
+
+type ChatMessage =
+  | { role: "system" | "user" | "assistant"; content: string }
+  | {
+      role: "assistant";
+      content: string | null;
+      tool_calls?: {
+        id: string;
+        type: "function";
+        function: { name: string; arguments: string };
+      }[];
+    }
+  | { role: "tool"; tool_call_id: string; content: string };
 
 export async function POST(req: NextRequest) {
   if (!(await isRequestAdmin())) {
@@ -31,13 +49,14 @@ export async function POST(req: NextRequest) {
   if (!apiKey) {
     return new Response(
       JSON.stringify({
-        error: "OPENAI_API_KEY is not configured. Add it to .env.local to enable the AI assistant.",
+        error:
+          "OPENAI_API_KEY is not configured. Add it to .env.local to enable the AI assistant.",
       }),
       { status: 503, headers: { "Content-Type": "application/json" } }
     );
   }
 
-  let body: { messages?: ChatMessage[]; context?: Record<string, unknown> };
+  let body: { messages?: { role: "user" | "assistant"; content: string }[] };
   try {
     body = await req.json();
   } catch {
@@ -48,93 +67,149 @@ export async function POST(req: NextRequest) {
   }
 
   const userMessages = body.messages ?? [];
-  const contextBlock = body.context
-    ? `\n\nCurrent app snapshot:\n${JSON.stringify(body.context, null, 2)}`
-    : "";
+  const { getToken } = await auth();
+  const convexToken = await getToken({ template: "convex" });
 
   const messages: ChatMessage[] = [
-    { role: "system", content: SYSTEM_PROMPT },
+    { role: "system", content: buildSystemPrompt() },
     ...userMessages.slice(-20),
   ];
 
-  if (contextBlock && userMessages.length > 0) {
-    const last = messages[messages.length - 1];
-    if (last.role === "user") {
-      last.content = `${last.content}${contextBlock}`;
-    }
-  }
+  const toolLog: string[] = [];
 
-  const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "gpt-4o-mini",
-      messages,
-      stream: true,
-      max_tokens: 1024,
-      temperature: 0.4,
-    }),
-  });
+  try {
+    for (let round = 0; round < MAX_TOOL_ROUNDS; round++) {
+      const res = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "gpt-4o-mini",
+          messages,
+          tools: AI_TOOLS,
+          tool_choice: round === 0 ? "auto" : "auto",
+          temperature: 0.3,
+        }),
+      });
 
-  if (!openaiRes.ok) {
-    const err = await openaiRes.text();
-    return new Response(JSON.stringify({ error: err }), {
-      status: openaiRes.status,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-
-  const encoder = new TextEncoder();
-  const stream = new ReadableStream({
-    async start(controller) {
-      const reader = openaiRes.body?.getReader();
-      if (!reader) {
-        controller.close();
-        return;
+      if (!res.ok) {
+        const err = await res.text();
+        return new Response(JSON.stringify({ error: err }), {
+          status: res.status,
+          headers: { "Content-Type": "application/json" },
+        });
       }
 
-      const decoder = new TextDecoder();
-      let buffer = "";
+      const data = (await res.json()) as {
+        choices: {
+          message: {
+            content: string | null;
+            tool_calls?: {
+              id: string;
+              type: "function";
+              function: { name: string; arguments: string };
+            }[];
+          };
+          finish_reason: string;
+        }[];
+      };
 
-      try {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
+      const choice = data.choices[0];
+      const assistantMsg = choice.message;
 
-          buffer += decoder.decode(value, { stream: true });
-          const lines = buffer.split("\n");
-          buffer = lines.pop() ?? "";
+      if (assistantMsg.tool_calls?.length) {
+        messages.push({
+          role: "assistant",
+          content: assistantMsg.content,
+          tool_calls: assistantMsg.tool_calls,
+        });
 
-          for (const line of lines) {
-            const trimmed = line.trim();
-            if (!trimmed.startsWith("data: ")) continue;
-            const data = trimmed.slice(6);
-            if (data === "[DONE]") continue;
-
-            try {
-              const parsed = JSON.parse(data) as {
-                choices?: { delta?: { content?: string } }[];
-              };
-              const text = parsed.choices?.[0]?.delta?.content;
-              if (text) controller.enqueue(encoder.encode(text));
-            } catch {
-              // skip malformed chunks
-            }
+        for (const tc of assistantMsg.tool_calls) {
+          const toolName = tc.function.name;
+          let toolArgs: Record<string, unknown> = {};
+          try {
+            toolArgs = JSON.parse(tc.function.arguments) as Record<
+              string,
+              unknown
+            >;
+          } catch {
+            toolArgs = {};
           }
-        }
-      } finally {
-        controller.close();
-      }
-    },
-  });
 
-  return new Response(stream, {
-    headers: {
-      "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "no-cache",
-    },
-  });
+          toolLog.push(formatToolLabel(toolName, toolArgs));
+
+          let result: unknown;
+          try {
+            result = await executeAiTool(toolName, toolArgs, convexToken);
+          } catch (err) {
+            result = {
+              error: err instanceof Error ? err.message : "Tool failed",
+            };
+          }
+
+          messages.push({
+            role: "tool",
+            tool_call_id: tc.id,
+            content: JSON.stringify(result),
+          });
+        }
+        continue;
+      }
+
+      const finalText =
+        assistantMsg.content ??
+        "I couldn't generate a response. Try rephrasing your question.";
+
+      return new Response(
+        JSON.stringify({
+          content: finalText,
+          toolsUsed: toolLog,
+        }),
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
+    return new Response(
+      JSON.stringify({
+        content:
+          "I hit the tool limit for this request. Try a simpler question or use the admin panel directly.",
+        toolsUsed: toolLog,
+      }),
+      { headers: { "Content-Type": "application/json" } }
+    );
+  } catch (err) {
+    return new Response(
+      JSON.stringify({
+        error: err instanceof Error ? err.message : "Agent failed",
+      }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
+  }
+}
+
+function formatToolLabel(name: string, args: Record<string, unknown>): string {
+  switch (name) {
+    case "get_dashboard_stats":
+      return "Fetched live dashboard stats";
+    case "list_moderation_queue":
+      return "Checked moderation queue";
+    case "list_pending_reports":
+      return "Listed pending product reports";
+    case "list_pending_meetups":
+      return "Listed pending meetup reports";
+    case "search_reports":
+      return `Searched reports for "${args.query ?? ""}"`;
+    case "list_users":
+      return "Listed users";
+    case "moderate_content":
+      return `${args.action === "approve" ? "Approved" : "Rejected"} ${args.source_type}`;
+    case "get_knowledge":
+      return `Looked up docs: ${args.topic ?? "general"}`;
+    default:
+      return name;
+  }
 }

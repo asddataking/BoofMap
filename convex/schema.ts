@@ -1,5 +1,6 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
+import { rankingTrend, rankingType, tickerType } from "./lib/validators";
 
 const reportStatus = v.union(
   v.literal("pending"),
@@ -42,6 +43,7 @@ export default defineSchema({
     status: reportStatus,
     moderationFlags: v.array(v.string()),
     trustScore: v.optional(v.number()),
+    reportType: v.optional(v.string()),
     createdAt: v.number(),
     reviewedAt: v.optional(v.number()),
   })
@@ -96,4 +98,59 @@ export default defineSchema({
     createdAt: v.number(),
     reviewedAt: v.optional(v.number()),
   }).index("by_status_created", ["status", "createdAt"]),
+
+  tickerItems: defineTable({
+    title: v.string(),
+    type: tickerType,
+    state: v.optional(v.string()),
+    city: v.optional(v.string()),
+    productName: v.optional(v.string()),
+    brandName: v.optional(v.string()),
+    severity: v.optional(v.string()),
+    createdAt: v.number(),
+    expiresAt: v.optional(v.number()),
+    isActive: v.boolean(),
+  })
+    .index("by_active_created", ["isActive", "createdAt"])
+    .index("by_type_active", ["type", "isActive"]),
+
+  rankings: defineTable({
+    productId: v.optional(v.string()),
+    productName: v.string(),
+    brandName: v.optional(v.string()),
+    category: v.string(),
+    state: v.optional(v.string()),
+    score: v.number(),
+    previousScore: v.optional(v.number()),
+    movement: v.number(),
+    reportCount: v.number(),
+    rankingType: rankingType,
+    trend: rankingTrend,
+    updatedAt: v.number(),
+  })
+    .index("by_ranking_type_updated", ["rankingType", "updatedAt"])
+    .index("by_ranking_type_score", ["rankingType", "score"]),
+
+  userProfiles: defineTable({
+    userId: v.string(),
+    displayName: v.optional(v.string()),
+    roleTitle: v.string(),
+    level: v.number(),
+    points: v.number(),
+    reportCount: v.number(),
+    streakCount: v.number(),
+    accuracyScore: v.optional(v.number()),
+    badges: v.array(v.string()),
+    updatedAt: v.number(),
+  }).index("by_user_id", ["userId"]),
+
+  notificationPreferences: defineTable({
+    userId: v.string(),
+    enabled: v.boolean(),
+    state: v.optional(v.string()),
+    categories: v.array(v.string()),
+    followedBrands: v.array(v.string()),
+    followedProducts: v.array(v.string()),
+    updatedAt: v.number(),
+  }).index("by_user_id", ["userId"]),
 });

@@ -3,7 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ISSUE_TAGS, PRODUCT_TYPES, CITIES } from "@/lib/constants";
+import {
+  BOOF_QUICK_FLAGS,
+  ISSUE_TAGS,
+  PRODUCT_TYPES,
+  CITIES,
+} from "@/lib/constants";
 import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import type { ProductType, ReportFormData } from "@/lib/types";
@@ -25,7 +30,13 @@ const initial: ReportFormData = {
   notes: "",
 };
 
-export function ReportForm() {
+export function ReportForm({
+  onSuccess,
+  useQuickFlags = false,
+}: {
+  onSuccess?: () => void;
+  useQuickFlags?: boolean;
+} = {}) {
   const router = useRouter();
   const { isAuthenticated, loading: authLoading } = useAuth();
   const createReport = useMutation(api.reports.create);
@@ -42,6 +53,11 @@ export function ReportForm() {
         : [...f.issue_tags, tag],
     }));
   };
+
+  const toggleQuickFlag = (issueTag: string) => toggleTag(issueTag);
+
+  const isQuickFlagActive = (issueTag: string) =>
+    form.issue_tags.includes(issueTag);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,7 +92,11 @@ export function ReportForm() {
 
       if ("error" in result && result.error) throw new Error(result.error);
       if (!("report" in result) || !result.report?.id) throw new Error("Failed to submit");
-      router.push("/reports");
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        router.push("/reports");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -173,24 +193,70 @@ export function ReportForm() {
       </div>
 
       <section>
-        <label className="form-label">Reported issues (community tags)</label>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {ISSUE_TAGS.map((tag) => (
-            <button
-              key={tag}
-              type="button"
-              onClick={() => toggleTag(tag)}
-              className={cn(
-                "rounded-full border px-3 py-1.5 text-xs transition",
-                form.issue_tags.includes(tag)
-                  ? "border-amber-500/40 bg-amber-500/15 text-amber-300"
-                  : "border-zinc-800 text-zinc-500 hover:border-zinc-700"
-              )}
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
+        <label className="form-label">
+          {useQuickFlags ? "Quick boof flags" : "Reported issues (community tags)"}
+        </label>
+        {useQuickFlags ? (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {BOOF_QUICK_FLAGS.map(({ label, issueTag }) => (
+              <button
+                key={label}
+                type="button"
+                onClick={() => toggleQuickFlag(issueTag)}
+                className={cn(
+                  "rounded-full border px-3 py-2 text-xs font-medium transition",
+                  isQuickFlagActive(issueTag)
+                    ? "border-red-500/40 bg-red-500/15 text-red-300"
+                    : "border-zinc-800 text-zinc-500 hover:border-zinc-700"
+                )}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-2 flex flex-wrap gap-2">
+            {ISSUE_TAGS.map((tag) => (
+              <button
+                key={tag}
+                type="button"
+                onClick={() => toggleTag(tag)}
+                className={cn(
+                  "rounded-full border px-3 py-1.5 text-xs transition",
+                  form.issue_tags.includes(tag)
+                    ? "border-amber-500/40 bg-amber-500/15 text-amber-300"
+                    : "border-zinc-800 text-zinc-500 hover:border-zinc-700"
+                )}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+        )}
+        {useQuickFlags && (
+          <details className="mt-3">
+            <summary className="cursor-pointer text-xs text-zinc-500 hover:text-zinc-400">
+              More issue tags
+            </summary>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {ISSUE_TAGS.map((tag) => (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => toggleTag(tag)}
+                  className={cn(
+                    "rounded-full border px-3 py-1.5 text-xs transition",
+                    form.issue_tags.includes(tag)
+                      ? "border-amber-500/40 bg-amber-500/15 text-amber-300"
+                      : "border-zinc-800 text-zinc-500 hover:border-zinc-700"
+                  )}
+                >
+                  {tag}
+                </button>
+              ))}
+            </div>
+          </details>
+        )}
       </section>
 
       <section>
@@ -256,7 +322,11 @@ export function ReportForm() {
         whileTap={{ scale: 0.98 }}
         className="btn-primary w-full disabled:opacity-50"
       >
-        {submitting ? "Submitting…" : "Submit community report"}
+        {submitting
+          ? "Submitting…"
+          : useQuickFlags
+            ? "Submit boof report"
+            : "Submit community report"}
       </motion.button>
     </form>
   );

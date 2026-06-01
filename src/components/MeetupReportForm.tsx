@@ -29,7 +29,11 @@ const initial: MeetupReportFormData = {
   notes: "",
 };
 
-export function MeetupReportForm() {
+export function MeetupReportForm({
+  onSuccess,
+}: {
+  onSuccess?: () => void;
+} = {}) {
   const router = useRouter();
   const { isAuthenticated, loading: authLoading } = useAuth();
   const createMeetupReport = useMutation(api.meetupReports.create);
@@ -77,7 +81,11 @@ export function MeetupReportForm() {
 
       if ("error" in result && result.error) throw new Error(result.error);
       if (!("report" in result) || !result.report?.id) throw new Error("Failed to submit");
-      router.push("/reports?tab=meetup");
+      if (onSuccess) {
+        onSuccess();
+      } else {
+        router.push("/reports?tab=meetup");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -171,7 +179,7 @@ export function MeetupReportForm() {
       </div>
 
       <section>
-        <label className="form-label">Reported meetup issues</label>
+        <label className="form-label">Warning flags</label>
         <div className="mt-2 flex flex-wrap gap-2">
           {MEETUP_ISSUE_TAGS.map((tag) => (
             <button
@@ -231,7 +239,7 @@ export function MeetupReportForm() {
         whileTap={{ scale: 0.98 }}
         className="w-full rounded-2xl bg-gradient-to-r from-purple-600 to-purple-500 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(168,85,247,0.25)] disabled:opacity-50"
       >
-        {submitting ? "Submitting…" : "Submit meetup report"}
+        {submitting ? "Submitting…" : "Submit safety warning"}
       </motion.button>
 
       <Disclaimer />

@@ -1,31 +1,35 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { SignUpButton } from "@clerk/nextjs";
 import type { Preloaded } from "convex/react";
 import {
   AlertTriangle,
-  ArrowRight,
   Crown,
   DollarSign,
   Leaf,
 } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
-import { LandingHero } from "@/components/LandingHero";
 import { HowItWorksSection } from "@/components/HowItWorksSection";
-import { LandingReportCard } from "@/components/LandingReportCard";
 import { LandingStatCard } from "@/components/LandingStatCard";
 import { LandingPwaSection } from "@/components/LandingPwaSection";
 import { MapViewDynamic } from "@/components/MapViewDynamic";
 import { PageTransition } from "@/components/PageTransition";
 import { SearchBar } from "@/components/SearchBar";
+import { BoofTicker } from "@/components/home/BoofTicker";
+import { HomepageHero } from "@/components/home/HomepageHero";
+import { LiveScoreboard } from "@/components/home/LiveScoreboard";
+import { MarketMovers } from "@/components/home/MarketMovers";
+import { RecentReportsFeed } from "@/components/home/RecentReportsFeed";
+import { AnalystCard } from "@/components/home/AnalystCard";
+import { NotificationSettings } from "@/components/home/NotificationSettings";
 import { api } from "../../convex/_generated/api";
 import { useAuth } from "@/components/BoofAuthProvider";
 import { MICHIGAN_CENTER } from "@/lib/constants";
 import type { Report } from "@/lib/types";
 import { usePreloadedReports } from "@/hooks/useRealtimeReports";
+import { useMeetupReports } from "@/hooks/useMeetupReports";
 import { getMarkerTier } from "@/lib/markers";
 
 export function HomeClient({
@@ -66,6 +70,7 @@ function countThisWeek(reports: Report[], predicate: (r: Report) => boolean) {
 
 function HomeClientView({ reports }: { reports: Report[] }) {
   const { isAuthenticated } = useAuth();
+  const meetups = useMeetupReports();
   const [search, setSearch] = useState("");
 
   const stats = useMemo(() => {
@@ -101,15 +106,24 @@ function HomeClientView({ reports }: { reports: Report[] }) {
     document.getElementById("map")?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const scrollToSettings = () => {
+    document.getElementById("settings")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <AppShell showFab variant="landing">
       <PageTransition>
-        <div className="space-y-16 pb-8 lg:space-y-24 lg:pb-12">
-          <LandingHero
+        <BoofTicker />
+
+        <div className="space-y-16 pb-8 pt-6 lg:space-y-24 lg:pb-12 lg:pt-8">
+          <HomepageHero
             onOpenMap={scrollToMap}
+            onOpenAlerts={scrollToSettings}
             reports={filtered}
             totalReports={reports.length}
           />
+
+          <LiveScoreboard />
 
           <section aria-label="Statistics">
             <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin lg:grid lg:grid-cols-4 lg:overflow-visible">
@@ -148,42 +162,15 @@ function HomeClientView({ reports }: { reports: Report[] }) {
             </div>
           </section>
 
+          <RecentReportsFeed reports={filtered} meetups={meetups} />
+
+          <MarketMovers />
+
+          <AnalystCard />
+
+          <NotificationSettings />
+
           <HowItWorksSection />
-
-          <section id="reports" className="scroll-mt-24" aria-label="Recent reports">
-            <div className="flex items-end justify-between gap-4">
-              <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">
-                Recent Reports Near You
-              </h2>
-              <Link
-                href="/reports"
-                className="group hidden shrink-0 items-center gap-1 text-sm font-semibold text-emerald-400 sm:inline-flex"
-              >
-                View all
-                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
-              </Link>
-            </div>
-
-            <div className="mt-6 flex gap-4 overflow-x-auto pb-2 scrollbar-thin">
-              {filtered.slice(0, 8).map((report, i) => (
-                <LandingReportCard key={report.id} report={report} index={i} />
-              ))}
-            </div>
-
-            {filtered.length === 0 && (
-              <div className="glass-card p-8 text-center">
-                <p className="text-sm text-zinc-500">No reports yet.</p>
-              </div>
-            )}
-
-            <Link
-              href="/reports"
-              className="btn-secondary mt-4 flex w-full items-center justify-center gap-2 sm:hidden"
-            >
-              View all reports
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </section>
 
           <section id="map" className="scroll-mt-24" aria-label="Map">
             <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">

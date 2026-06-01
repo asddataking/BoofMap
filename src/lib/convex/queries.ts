@@ -8,6 +8,7 @@ import {
 } from "./seed";
 import type { MeetupReport, Report } from "@/lib/types";
 import type { BrandProfile, DispensaryProfile } from "@/lib/types";
+import type { RankingType } from "@/lib/types";
 import { getBrandsFromReports } from "@/lib/data/reports";
 import { slugify } from "@/lib/utils";
 
@@ -66,4 +67,18 @@ export async function fetchDispensaryProfile(
   return (await fetchQuery(api.reports.getDispensaryProfile, {
     slug,
   })) as DispensaryProfile | null;
+}
+
+export async function preloadTickerItems(): Promise<Preloaded<
+  typeof api.ticker.listActiveTickerItems
+> | null> {
+  if (!isConvexConfigured()) return null;
+  return preloadQuery(api.ticker.listActiveTickerItems, {});
+}
+
+export async function preloadRankings(
+  type: RankingType
+): Promise<Preloaded<typeof api.rankings.listRankingsByType> | null> {
+  if (!isConvexConfigured()) return null;
+  return preloadQuery(api.rankings.listRankingsByType, { type });
 }

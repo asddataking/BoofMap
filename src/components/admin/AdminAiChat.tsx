@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useQuery } from "convex/react";
 import { Bot, Minimize2, Send, Sparkles } from "lucide-react";
-import { api } from "../../../convex/_generated/api";
 import { cn } from "@/lib/utils";
 
-type Message = { role: "user" | "assistant"; content: string };
+type Message = {
+  role: "user" | "assistant";
+  content: string;
+  toolsUsed?: string[];
+};
 
 export function AdminAiChat() {
   const [open, setOpen] = useState(false);
@@ -15,19 +17,17 @@ export function AdminAiChat() {
     {
       role: "assistant",
       content:
-        "Hey — I'm your BoofMap admin assistant. Ask me about users, reports, moderation, or what to do next.",
+        "I'm connected to live BoofMap data. Ask me to check the moderation queue, search reports, list signups, or approve/reject content.",
     },
   ]);
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const stats = useQuery(api.admin.getDashboardStats);
-  const queue = useQuery(api.admin.listModerationQueue);
-
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
-  }, [messages, loading]);
+  }, [messages, loading, status]);
 
   const sendMessage = async () => {
     const text = input.trim();
@@ -35,28 +35,12 @@ export function AdminAiChat() {
 
     setInput("");
     setError(null);
+    setStatus("Thinking…");
     const userMsg: Message = { role: "user", content: text };
     setMessages((m) => [...m, userMsg]);
     setLoading(true);
 
     try {
-      const context = stats
-        ? {
-            total_users: stats.total_users,
-            new_users_this_week: stats.new_users_this_week,
-            total_reports: stats.total_reports,
-            pending_reports: stats.pending_reports,
-            pending_meetups: stats.pending_meetups,
-            pending_queue: stats.pending_queue,
-            recent_signups: stats.recent_signups.slice(0, 5),
-            queue_preview: (queue ?? []).slice(0, 3).map((q) => ({
-              type: q.source_type,
-              reasons: q.reasons,
-              preview: q.preview_text?.slice(0, 120),
-            })),
-          }
-        : undefined;
-
       const res = await fetch("/api/admin/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -65,38 +49,32 @@ export function AdminAiChat() {
             role,
             content,
           })),
-          context,
         }),
       });
 
+      const data = (await res.json()) as {
+        content?: string;
+        toolsUsed?: string[];
+        error?: string;
+      };
+
       if (!res.ok) {
-        const err = await res.json().catch(() => ({ error: "Request failed" }));
-        throw new Error(err.error ?? "Request failed");
+        throw new Error(data.error ?? "Request failed");
       }
 
-      const reader = res.body?.getReader();
-      const decoder = new TextDecoder();
-      let assistantText = "";
-
-      setMessages((m) => [...m, { role: "assistant", content: "" }]);
-
-      if (reader) {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          assistantText += decoder.decode(value, { stream: true });
-          const snapshot = assistantText;
-          setMessages((m) => {
-            const next = [...m];
-            next[next.length - 1] = { role: "assistant", content: snapshot };
-            return next;
-          });
-        }
-      }
+      setMessages((m) => [
+        ...m,
+        {
+          role: "assistant",
+          content: data.content ?? "",
+          toolsUsed: data.toolsUsed,
+        },
+      ]);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
       setLoading(false);
+      setStatus(null);
     }
   };
 
@@ -122,19 +100,19 @@ export function AdminAiChat() {
               </div>
               <div>
                 <p className="text-sm font-semibold text-white">Admin AI</p>
-                <p className="text-[10px] text-zinc-500">Powered by GPT-4o mini</p>
+                <p className="text-[10px] text-emerald-500/80">
+                  Live · tools + knowledge base
+                </p>
               </div>
             </div>
-            <div className="flex gap-1">
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="rounded-lg p-2 text-zinc-500 hover:bg-zinc-800 hover:text-zinc-300"
-                aria-label="Minimize"
-              >
-                <Minimize2 className="h-4 w-4" />
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="rounded-lg p-2 text-zinc-500 hover:bg-zinc-800 hover:text-zinc-300"
+              aria-label="Minimize"
+            >
+              <Minimize2 className="h-4 w-4" />
+            </button>
           </div>
 
           <div
@@ -142,18 +120,34 @@ export function AdminAiChat() {
             className="flex-1 space-y-3 overflow-y-auto p-4 scrollbar-thin"
           >
             {messages.map((msg, i) => (
-              <div
-                key={i}
-                className={cn(
-                  "max-w-[90%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed",
-                  msg.role === "user"
-                    ? "ml-auto bg-emerald-600/20 text-emerald-100"
-                    : "bg-zinc-900 text-zinc-300"
+              <div key={i}>
+                <div
+                  className={cn(
+                    "max-w-[90%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed",
+                    msg.role === "user"
+                      ? "ml-auto bg-emerald-600/20 text-emerald-100"
+                      : "bg-zinc-900 text-zinc-300"
+                  )}
+                >
+                  {msg.content}
+                </div>
+                {msg.toolsUsed && msg.toolsUsed.length > 0 && (
+                  <div className="mt-1.5 flex flex-wrap gap-1">
+                    {msg.toolsUsed.map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-full bg-zinc-800/80 px-2 py-0.5 text-[10px] text-zinc-500"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
                 )}
-              >
-                {msg.content || (loading && i === messages.length - 1 ? "…" : "")}
               </div>
             ))}
+            {loading && status && (
+              <p className="text-xs text-zinc-500">{status}</p>
+            )}
             {error && (
               <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
                 {error}
@@ -172,7 +166,7 @@ export function AdminAiChat() {
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about users, reports, moderation…"
+                placeholder="Check queue, search Gelato, approve report…"
                 className="form-input flex-1 !py-2.5 text-sm"
                 disabled={loading}
               />

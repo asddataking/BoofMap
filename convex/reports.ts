@@ -1,7 +1,10 @@
 import { v } from "convex/values";
 import type { QueryCtx } from "./_generated/server";
+import { internal } from "./_generated/api";
 import { mutation, query } from "./_generated/server";
 import { requireIdentity } from "./lib/auth";
+import { isHighSeverityReport, severityLabel } from "./lib/reportAlerts";
+import { insertTickerFromReport } from "./lib/tickerWrite";
 import { coordsForCity } from "./lib/cityCoords";
 import { reportToApi } from "./lib/mappers";
 import { runModeration, looksLikeFullName } from "./lib/moderation";
@@ -236,6 +239,21 @@ export const create = mutation({
 
     const doc = await ctx.db.get(id);
     if (!doc) throw new Error("Report not created");
+
+    if (status === "approved") {
+      await ctx.runMutation(internal.users.incrementUserStatsAfterReport, {
+        userId,
+      });
+      if (isHighSeverityReport(args.issueTags, args.boofScore)) {
+        await insertTickerFromReport(ctx, {
+          brandName: args.brandName.trim(),
+          city: args.city.trim(),
+          productName: args.strainName.trim() || args.productType,
+          severity: severityLabel(args.issueTags, args.boofScore),
+          issueTags: args.issueTags,
+        });
+      }
+    }
 
     return {
       report: reportToApi(doc),
