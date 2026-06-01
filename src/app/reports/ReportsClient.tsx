@@ -24,67 +24,41 @@ import { filterMeetupReports } from "@/lib/data/meetupReports";
 import { getMarkerTier } from "@/lib/markers";
 import type { MeetupReport, Report } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { useMeetupReports } from "@/hooks/useMeetupReports";
 import { usePreloadedReports } from "@/hooks/useRealtimeReports";
-import { usePreloadedMeetupReports } from "@/hooks/useRealtimeMeetupReports";
 import { isConvexConfigured } from "@/lib/convex/config";
 
 export function ReportsClient({
   preloadedReports,
   seedReports,
-  preloadedMeetupReports,
-  seedMeetupReports,
 }: {
   preloadedReports: Preloaded<typeof api.reports.listApproved> | null;
   seedReports: Report[];
-  preloadedMeetupReports: Preloaded<typeof api.meetupReports.listApproved> | null;
-  seedMeetupReports: MeetupReport[];
 }) {
-  if (preloadedReports && preloadedMeetupReports) {
+  if (preloadedReports) {
     return (
       <ReportsClientLive
         preloadedReports={preloadedReports}
         seedReports={seedReports}
-        preloadedMeetupReports={preloadedMeetupReports}
-        seedMeetupReports={seedMeetupReports}
       />
     );
   }
-  return (
-    <ReportsClientView
-      reports={seedReports}
-      meetupReports={seedMeetupReports}
-    />
-  );
+  return <ReportsClientView reports={seedReports} />;
 }
 
 function ReportsClientLive({
   preloadedReports,
   seedReports,
-  preloadedMeetupReports,
-  seedMeetupReports,
 }: {
   preloadedReports: Preloaded<typeof api.reports.listApproved>;
   seedReports: Report[];
-  preloadedMeetupReports: Preloaded<typeof api.meetupReports.listApproved>;
-  seedMeetupReports: MeetupReport[];
 }) {
   const reports = usePreloadedReports(preloadedReports, seedReports);
-  const meetupReports = usePreloadedMeetupReports(
-    preloadedMeetupReports,
-    seedMeetupReports
-  );
-  return (
-    <ReportsClientView reports={reports} meetupReports={meetupReports} />
-  );
+  return <ReportsClientView reports={reports} />;
 }
 
-function ReportsClientView({
-  reports,
-  meetupReports,
-}: {
-  reports: Report[];
-  meetupReports: MeetupReport[];
-}) {
+function ReportsClientView({ reports }: { reports: Report[] }) {
+  const meetupReports = useMeetupReports();
   const searchParams = useSearchParams();
   const tabParam = searchParams.get("tab");
   const [feedTab, setFeedTab] = useState<"product" | "meetup">(
@@ -169,13 +143,32 @@ function ReportsClientView({
   );
 
   const stats = useMemo(() => {
+    if (feedTab === "meetup") {
+      const mapped = searchFilteredMeetups.filter(
+        (r) => r.latitude != null && r.longitude != null
+      ).length;
+      return {
+        total: searchFilteredMeetups.length,
+        fire: 0,
+        boof: 0,
+        mapped,
+      };
+    }
     const fire = searchFiltered.filter((r) => getMarkerTier(r) === "fire").length;
     const boof = searchFiltered.filter((r) => getMarkerTier(r) === "boof").length;
     const mapped = searchFiltered.filter(
       (r) => r.latitude != null && r.longitude != null
     ).length;
-    return { total: searchFiltered.length, fire, boof, mapped };
-  }, [searchFiltered]);
+    const meetupMapped = searchFilteredMeetups.filter(
+      (r) => r.latitude != null && r.longitude != null
+    ).length;
+    return {
+      total: searchFiltered.length,
+      fire,
+      boof,
+      mapped: mapped + meetupMapped,
+    };
+  }, [searchFiltered, searchFilteredMeetups, feedTab]);
 
   const filters =
     feedTab === "product" ? FEED_FILTERS : MEETUP_FEED_FILTERS;
@@ -214,9 +207,30 @@ function ReportsClientView({
           </header>
 
           <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
-            <StatPill label="Signals" value={stats.total} />
-            <StatPill label="Fire finds" value={stats.fire} accent="fire" />
-            <StatPill label="Boof alerts" value={stats.boof} accent="boof" />
+            <StatPill
+              label={feedTab === "meetup" ? "Seller reports" : "Signals"}
+              value={stats.total}
+            />
+            {feedTab === "product" ? (
+              <>
+                <StatPill label="Fire finds" value={stats.fire} accent="fire" />
+                <StatPill label="Boof alerts" value={stats.boof} accent="boof" />
+              </>
+            ) : (
+              <>
+                <StatPill
+                  label="Meetup pins"
+                  value={searchFilteredMeetups.filter(
+                    (r) => r.latitude != null && r.longitude != null
+                  ).length}
+                  accent="fire"
+                />
+                <StatPill
+                  label="Dispensary signals"
+                  value={searchFiltered.length}
+                />
+              </>
+            )}
             <StatPill label="On map" value={stats.mapped} />
           </div>
 
@@ -276,6 +290,11 @@ function ReportsClientView({
                     )}
                   >
                     {t === "product" ? "Dispensary" : "Meetup / Seller"}
+                    {t === "meetup" && meetupReports.length > 0 && (
+                      <span className="ml-1.5 rounded-full bg-fuchsia-500/25 px-1.5 py-0.5 text-[10px] tabular-nums">
+                        {meetupReports.length}
+                      </span>
+                    )}
                   </button>
                 ))}
               </div>
