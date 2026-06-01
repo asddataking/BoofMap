@@ -22,7 +22,7 @@ export const listApproved = query({
   },
 });
 
-/** Approved reports plus the signed-in reporter's pending/flagged submissions. */
+/** @deprecated Use listApproved + listMine on the client. Kept for older deployed bundles. */
 export const listFeed = query({
   args: { limit: v.optional(v.number()) },
   handler: async (ctx, { limit }) => {

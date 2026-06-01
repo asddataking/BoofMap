@@ -36,7 +36,7 @@ export function ReportsClient({
 }: {
   preloadedReports: Preloaded<typeof api.reports.listApproved> | null;
   seedReports: Report[];
-  preloadedMeetupReports: Preloaded<typeof api.meetupReports.listFeed> | null;
+  preloadedMeetupReports: Preloaded<typeof api.meetupReports.listApproved> | null;
   seedMeetupReports: MeetupReport[];
 }) {
   if (preloadedReports && preloadedMeetupReports) {
@@ -65,7 +65,7 @@ function ReportsClientLive({
 }: {
   preloadedReports: Preloaded<typeof api.reports.listApproved>;
   seedReports: Report[];
-  preloadedMeetupReports: Preloaded<typeof api.meetupReports.listFeed>;
+  preloadedMeetupReports: Preloaded<typeof api.meetupReports.listApproved>;
   seedMeetupReports: MeetupReport[];
 }) {
   const reports = usePreloadedReports(preloadedReports, seedReports);
