@@ -24,8 +24,8 @@ export async function generateMetadata({
   }
 
   return buildPageMetadata({
-    title: `${dispo.name} — ${dispo.city}, MI`,
-    description: `Community reports for ${dispo.name} in ${dispo.city}, Michigan. Value score ${dispo.value_score}, ${dispo.report_count} reports, ${dispo.taxed_alert_count} taxed alerts. See fire finds and recent boof reports.`,
+    title: `${dispo.name} — ${dispo.city}`,
+    description: `Community cannabis reports for ${dispo.name} in ${dispo.city}. Dispensary product reviews, quality signals, and verified buyer intel — value score ${dispo.value_score}, ${dispo.report_count} reports on BoofMap.`,
     path: `/dispensaries/${slug}`,
   });
 }

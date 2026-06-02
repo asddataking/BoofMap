@@ -17,7 +17,7 @@ import {
 export const metadata: Metadata = buildPageMetadata({
   title: "Media Kit",
   description:
-    "BoofMap press and media resources — brand colors, positioning, and downloadable media kit PDF for Michigan cannabis community intel.",
+    "BoofMap press and media resources — community-powered cannabis transparency platform. Brand colors, positioning, and downloadable media kit PDF. Launching in Michigan.",
   path: "/media",
 });
 
@@ -127,12 +127,14 @@ export default function MediaPage() {
               </h2>
               <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-[var(--text-muted)]">
                 <li>
-                  {SITE_NAME} is community-powered cannabis intel for Michigan —
-                  not a pay-to-play dispensary directory.
+                  {SITE_NAME} is a community-powered cannabis transparency
+                  platform for legal markets across the U.S. — launching in
+                  Michigan — not a pay-to-play dispensary directory.
                 </li>
                 <li>
-                  Members report fire finds, boof alerts, mold warnings, and taxed
-                  product on a live tactical map.
+                  Real consumers report fire finds, quality signals, boof alerts,
+                  mold warnings, and taxed product on a live map with community
+                  verification.
                 </li>
                 <li>
                   Tagline: <strong className="text-[var(--text-main)]">{TAGLINE}</strong>

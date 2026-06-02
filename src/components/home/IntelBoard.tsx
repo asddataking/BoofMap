@@ -182,7 +182,7 @@ export function IntelBoard({
             <p className="section-kicker !mb-0">Live Intel</p>
           </div>
           <h2 className="font-display text-2xl font-extrabold uppercase tracking-tight text-[var(--text-main)] sm:text-3xl">
-            Michigan Signals
+            Community Signals
           </h2>
           <p className="mt-1 text-sm text-[var(--text-muted)]">
             Trending brands, fire finds, boof alerts, and fresh community reports

@@ -8,7 +8,7 @@ const MAX_TOOL_ROUNDS = 6;
 
 function buildSystemPrompt(): string {
   const knowledge = getKnowledgeForPrompt();
-  return `You are BoofMap Admin Assistant — a live AI operator for the BoofMap admin panel (Michigan cannabis community reports).
+  return `You are BoofMap Admin Assistant — a live AI operator for the BoofMap admin panel (nationwide cannabis community reports; launching in Michigan).
 
 You have TOOLS to read live data and take actions (moderate, search, list users). Always use tools when the admin asks about current stats, queue items, reports, or users — do not guess.
 

@@ -6,26 +6,26 @@ import { Flame, MapPin, Pencil, ShieldCheck } from "lucide-react";
 const steps = [
   {
     icon: MapPin,
-    title: "See the Map",
-    description: "Browse reports near you",
+    title: "Browse Reports",
+    description: "See community signals on the live map",
     color: "text-emerald-400 bg-emerald-500/15",
   },
   {
     icon: Pencil,
-    title: "Report Boof",
-    description: "Flag bad product fast",
+    title: "Submit Quality Reports",
+    description: "Flag boof, taxed product, or fire finds",
     color: "text-orange-400 bg-orange-500/15",
   },
   {
-    icon: Flame,
-    title: "Community Confirms",
-    description: "Crowd-verify every report",
+    icon: ShieldCheck,
+    title: "Community Verifies",
+    description: "Crowd-confirm reports for trusted intel",
     color: "text-red-400 bg-red-500/15",
   },
   {
-    icon: ShieldCheck,
+    icon: Flame,
     title: "Find Fire",
-    description: "Discover what's worth it",
+    description: "Buy smarter with real buyer data",
     color: "text-emerald-400 bg-emerald-500/15",
   },
 ];
@@ -36,6 +36,10 @@ export function HowItWorksSection() {
       <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">
         How BoofMap Works
       </h2>
+      <p className="mt-2 max-w-2xl text-sm text-zinc-500">
+        Cannabis intelligence powered by the community — transparency,
+        accountability, and real user reports for legal markets.
+      </p>
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((step, i) => (

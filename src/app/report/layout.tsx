@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Submit Report",
+  title: "Submit Cannabis Quality Report",
   description:
-    "Report boof, mold, taxed prices, and fake sales. Help the Michigan cannabis community find fire and avoid trash product.",
+    "Submit a cannabis quality report — flag boof, mold, taxed prices, and fake sales. Help the community find fire and avoid bad weed. Real reports from real consumers, starting in Michigan.",
   path: "/report",
 });
 

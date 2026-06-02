@@ -13,7 +13,7 @@ export const ADMIN_KNOWLEDGE: KnowledgeSection[] = [
   {
     id: "product",
     title: "What is BoofMap",
-    content: `BoofMap is a Michigan-focused community cannabis reporting app.
+    content: `BoofMap is a nationwide community cannabis reporting app (launching in Michigan first).
 - Tagline: "Find fire. Avoid boof."
 - Users browse all approved reports without signing up.
 - Sign-up (Clerk) is required to submit reports, vote, and confirm community posts.

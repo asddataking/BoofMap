@@ -105,7 +105,7 @@ export function LandingHero({
               <span className="font-semibold text-zinc-300">
                 {totalReports.toLocaleString()}+
               </span>{" "}
-              reports in Michigan
+              community reports
             </p>
           </motion.div>
         </div>

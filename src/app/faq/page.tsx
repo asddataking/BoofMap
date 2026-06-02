@@ -8,9 +8,9 @@ import { JsonLdScript } from "@/components/seo/JsonLdScript";
 import { buildFaqJsonLd, buildPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "FAQ",
+  title: "FAQ — Cannabis Transparency & Community Reports",
   description:
-    "Frequently asked questions about BoofMap — Michigan cannabis community intel, how it compares to Weedmaps, accounts, and reporting.",
+    "FAQ about BoofMap — the community-powered cannabis transparency platform. Real weed reviews, quality reports, legal market coverage, Michigan launch, and how we differ from menu apps.",
   path: "/faq",
 });
 
@@ -34,8 +34,8 @@ export default function FaqPage() {
               FAQ
             </h1>
             <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
-              Answers about BoofMap, community reporting, and how we differ from
-              menu-only platforms like Weedmaps.
+              Answers about BoofMap, cannabis transparency, community reporting,
+              and how we differ from pay-to-play dispensary directories.
             </p>
           </header>
 

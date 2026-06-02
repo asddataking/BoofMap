@@ -4,8 +4,10 @@ import { motion } from "framer-motion";
 import { SignUpButton } from "@clerk/nextjs";
 import type { Preloaded } from "convex/react";
 import { AppShell } from "@/components/AppShell";
+import { FaqSection } from "@/components/FaqSection";
 import { HowItWorksSection } from "@/components/HowItWorksSection";
 import { LandingPwaSection } from "@/components/LandingPwaSection";
+import { HomeSeoSections } from "@/components/seo/HomeSeoSections";
 import { PageTransition } from "@/components/PageTransition";
 import { BoofTicker } from "@/components/home/BoofTicker";
 import { HomepageHero } from "@/components/home/HomepageHero";
@@ -129,6 +131,10 @@ function HomeClientView({
 
           <HowItWorksSection />
 
+          <HomeSeoSections />
+
+          <FaqSection id="home-faq" heading="Common questions" />
+
           <LandingPwaSection />
 
           {!isAuthenticated && (
@@ -142,11 +148,12 @@ function HomeClientView({
               <div className="flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                   <h3 className="font-display text-xl font-extrabold uppercase tracking-tight text-[var(--text-main)] sm:text-2xl">
-                    Join the intel network
+                    Join the transparency network
                   </h3>
                   <p className="mt-2 max-w-lg text-sm text-[var(--text-muted)]">
-                    Browse live signals free. Sign up to submit reports, confirm
-                    alerts, and help Michigan skip the boof.
+                    Browse live community reports free. Sign up to submit quality
+                    signals, confirm alerts, and help legal markets find fire and
+                    avoid boof.
                   </p>
                   <AnalystRankTeaser />
                 </div>

@@ -7,53 +7,142 @@ import {
 } from "./site";
 
 export const SITE_NAME = "BoofMap";
+/** First market with live community data; map defaults here until more states roll out. */
+export const LAUNCH_STATE = "Michigan";
+export const LAUNCH_STATE_ABBR = "MI";
+
 export const SITE_TITLE = `${SITE_NAME} — ${TAGLINE}`;
 export const SITE_DESCRIPTION =
-  "BoofMap is Michigan's community-powered cannabis intel platform. Live map, fire finds, boof alerts, and real reports from real consumers — a free alternative to paid dispensary listings.";
+  "BoofMap is a community-powered cannabis transparency platform for legal markets across the U.S. Real user reports, product quality signals, batch-level intel, and market analytics — launching in Michigan.";
 export const SITE_DESCRIPTION_LONG =
-  "Find fire and avoid boof with BoofMap. Browse Michigan dispensary and brand intel on an interactive map, read community quality reports, spot mold and taxed product, and report bad batches — no app store, no pay-to-play listings.";
+  "Find fire and avoid boof with BoofMap — the cannabis transparency platform for legal and recreational markets. Track quality, value, flavor, effects, and trust with verified community reports, strain and brand analytics, and real-time market intelligence. Built for consumers, not pay-to-play listings. Launching in Michigan, expanding nationwide.";
+
+/** Short reusable copy blocks for on-site messaging and meta snippets. */
+export const SEO_COPY_SNIPPETS = {
+  tagline: "Community-powered cannabis transparency.",
+  legalMarkets: "Built for legal cannabis markets.",
+  trackProducts: "Track trusted products across dispensaries.",
+  realReports: "Real reports from real consumers.",
+  communityIntel: "Cannabis intelligence powered by the community.",
+  avoidBadWeed:
+    "Helping people avoid bad weed and overpriced products.",
+  positioning:
+    "BoofMap is a community-powered cannabis transparency platform — not just a dispensary finder.",
+  heroSub:
+    "Real cannabis reports from real consumers. Track quality, value, flavor, effects, and trust across legal markets.",
+} as const;
 
 export const SITE_KEYWORDS = [
   "BoofMap",
-  "Michigan cannabis",
-  "Michigan dispensary map",
-  "Michigan weed map",
-  "cannabis community reports",
-  "dispensary intel Michigan",
-  "strain reports Michigan",
-  "boof reports",
+  "cannabis transparency",
+  "weed transparency",
+  "cannabis review app",
   "cannabis quality reports",
+  "find good weed",
+  "avoid bad weed",
   "find fire avoid boof",
-  "Weedmaps alternative Michigan",
-  "cannabis reviews Michigan",
-  "dispensary boof alerts",
-  "mold cannabis report",
-  "taxed weed Michigan",
-  "METRC cannabis Michigan",
-  "live cannabis map",
-  "community cannabis intel",
+  "dispensary product reviews",
+  "real weed reviews",
+  "legal cannabis map",
+  "cannabis reporting app",
+  "weed report card",
+  "community cannabis reviews",
+  "strain reviews",
+  "best dispensary products",
+  "cannabis batch reports",
+  "cannabis consumer protection",
+  "weed quality checker",
+  "cannabis analytics",
+  "cannabis community intelligence",
+  "verified cannabis products",
+  "cannabis market transparency",
+  "community cannabis intelligence",
+  "product quality reporting",
+  "consumer trust cannabis",
+  "verified cannabis reports",
+  "legal cannabis markets",
+  "recreational cannabis reviews",
+  "Weedmaps alternative",
+  "cannabis safety accountability",
+  "Michigan cannabis",
+  "Michigan dispensary reviews",
+  "nationwide cannabis map",
 ];
 
 export const SEO_FAQ = [
   {
     question: "What is BoofMap?",
     answer:
-      "BoofMap is a community-powered cannabis intel platform for Michigan. Members report product quality, flag boof and taxed product, and share fire finds on a live map — built for consumers, not paid listings.",
+      "BoofMap is a community-powered cannabis transparency platform for legal and recreational markets across the United States. Real consumers report product quality, flag boof and overpriced product, and share fire finds — with crowd verification, batch-level signals, and market intelligence built for buyers, not paid listings.",
+  },
+  {
+    question: "Is BoofMap just a dispensary finder?",
+    answer:
+      "No. BoofMap is not a menu app or pay-to-play directory. It is a community cannabis intelligence platform where buyers share verified reports on quality, value, flavor, effects, and trust — helping people find good weed and avoid bad product across legal markets.",
   },
   {
     question: "How is BoofMap different from Weedmaps?",
     answer:
-      "Weedmaps focuses on dispensary menus and advertising. BoofMap focuses on crowd-sourced quality intel: boof alerts, fire finds, mold warnings, and value signals from real buyers — with no pay-to-play ranking.",
+      "Weedmaps focuses on dispensary menus and advertising. BoofMap focuses on cannabis transparency: real weed reviews, quality reports, boof alerts, fire finds, mold warnings, and value signals from the community — with no pay-to-play ranking.",
   },
   {
     question: "Do I need an account to use BoofMap?",
     answer:
-      "You can browse the map, reports, and brand intel for free without signing up. Create a free account to submit reports and manage alerts from your profile.",
+      "You can browse the map, reports, brand analytics, and community signals for free without signing up. Create a free account to submit reports, confirm alerts, and contribute to cannabis consumer protection in your market.",
   },
   {
-    question: "Is BoofMap only for Michigan?",
+    question: "Which states does BoofMap cover?",
     answer:
-      "BoofMap is built for the Michigan cannabis community first, with reports tied to cities and dispensaries across the state.",
+      `BoofMap is built for any legal or recreational cannabis state in the U.S. We are launching with live community reports in ${LAUNCH_STATE} first, and expanding to more states as the community grows.`,
+  },
+  {
+    question: "What kind of cannabis reports can I submit?",
+    answer:
+      "Submit product quality reports on flower, carts, edibles, and more — including batch-level notes on flavor, effects, trim, mold concerns, fake sales, and overpriced product. Community members confirm or dispute reports to build verified cannabis intelligence over time.",
+  },
+] as const;
+
+/** Indexable homepage sections for semantic SEO content. */
+export const SEO_HOME_SECTIONS = [
+  {
+    id: "cannabis-transparency",
+    title: "Cannabis Transparency",
+    body: "BoofMap brings weed transparency to legal markets with open community reporting. See what real buyers say about quality, value, and trust before you spend — cannabis market transparency powered by people who actually smoke the product, not brands paying for placement.",
+  },
+  {
+    id: "community-reports",
+    title: "Community Reports",
+    body: "Every signal starts with a real report from a real consumer. Community cannabis reviews cover strains, brands, batches, and dispensaries — crowd-verified so you get honest weed reviews instead of polished marketing copy.",
+  },
+  {
+    id: "product-intelligence",
+    title: "Product Intelligence",
+    body: "Track quality, flavor, effects, and value across products and batches. BoofMap turns scattered buyer experiences into cannabis analytics — a weed quality checker and report card for the products people are actually buying right now.",
+  },
+  {
+    id: "legal-market-coverage",
+    title: "Legal Market Coverage",
+    body: "Built for legal cannabis markets nationwide. BoofMap is a legal cannabis map and reporting app designed to scale across every recreational and medical state — launching in Michigan and expanding as the community grows.",
+  },
+  {
+    id: "consumer-protection",
+    title: "Consumer Protection",
+    body: "Helping consumers make smarter cannabis purchases. Flag mold concerns, taxed product, fake sales, and weak batches. Cannabis consumer protection works best when the community shares what went wrong — and what is actually fire.",
+  },
+  {
+    id: "batch-level-reporting",
+    title: "Batch-Level Reporting",
+    body: "Quality varies batch to batch. BoofMap supports cannabis batch reports so you can see whether a specific drop hit or missed — not just whether a brand name looks good on a menu.",
+  },
+  {
+    id: "strain-brand-analytics",
+    title: "Strain & Brand Analytics",
+    body: "Compare strain reviews and brand track records with community trust scores, trend signals, and verified cannabis product intel. Find best dispensary products based on buyer data — not sponsored rankings.",
+  },
+  {
+    id: "real-time-community-signals",
+    title: "Real-Time Community Signals",
+    body: "Live map pins, fire finds, boof alerts, and trending reports update continuously. Cannabis community intelligence in real time — like Waze for weed quality, built for tactical buyers who want the signal before the hype.",
   },
 ] as const;
 
@@ -150,8 +239,7 @@ export function buildPageMetadata({
           },
         },
     other: {
-      "geo.region": "US-MI",
-      "geo.placename": "Michigan",
+      "geo.region": "US",
     },
   };
 }
@@ -185,7 +273,7 @@ export const rootMetadata: Metadata = {
   },
   other: {
     "mobile-web-app-capable": "yes",
-    "geo.region": "US-MI",
+    "geo.region": "US",
   },
   category: "lifestyle",
 };
@@ -220,9 +308,10 @@ export function buildOrganizationJsonLd() {
     url: siteUrl,
     logo: `${siteUrl}/icons/icon-512.png`,
     description: SITE_DESCRIPTION,
+    slogan: TAGLINE,
     areaServed: {
-      "@type": "State",
-      name: "Michigan",
+      "@type": "Country",
+      name: "United States",
     },
     sameAs: [],
   };
@@ -262,6 +351,43 @@ export function buildFaqJsonLd() {
   };
 }
 
+export function buildBreadcrumbJsonLd(
+  items: { name: string; path: string }[]
+) {
+  const siteUrl = getSiteUrl();
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: `${siteUrl}${item.path}`,
+    })),
+  };
+}
+
+export function buildCollectionPageJsonLd(options: {
+  name: string;
+  description: string;
+  path: string;
+}) {
+  const siteUrl = getSiteUrl();
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: options.name,
+    description: options.description,
+    url: `${siteUrl}${options.path}`,
+    isPartOf: {
+      "@type": "WebSite",
+      name: SITE_NAME,
+      url: siteUrl,
+    },
+    inLanguage: "en-US",
+  };
+}
+
 export function buildBrandJsonLd(brand: {
   name: string;
   slug: string;
@@ -275,7 +401,7 @@ export function buildBrandJsonLd(brand: {
     "@type": "Brand",
     name: brand.name,
     url: `${siteUrl}/brands/${brand.slug}`,
-    description: `${brand.name} cannabis brand intel on BoofMap — ${brand.report_count} community reports, trust score ${brand.trust_score}.`,
+    description: `${brand.name} cannabis brand analytics on BoofMap — ${brand.report_count} community reports, trust score ${brand.trust_score}. Strain reviews and verified product signals from real buyers.`,
     aggregateRating:
       brand.report_count > 0
         ? {
@@ -302,11 +428,11 @@ export function buildDispensaryJsonLd(dispo: {
     "@type": "Store",
     name: dispo.name,
     url: `${siteUrl}/dispensaries/${dispo.slug}`,
-    description: `Community intel for ${dispo.name} in ${dispo.city}, Michigan on BoofMap.`,
+    description: `Community cannabis reports for ${dispo.name} in ${dispo.city} on BoofMap — dispensary product reviews, quality signals, and verified buyer intel.`,
     address: {
       "@type": "PostalAddress",
       addressLocality: dispo.city,
-      addressRegion: "MI",
+      addressRegion: LAUNCH_STATE_ABBR,
       addressCountry: "US",
     },
     aggregateRating:

@@ -3,12 +3,13 @@ import { Download, Mail } from "lucide-react";
 import { BoofLogo } from "./BoofLogo";
 import { Disclaimer } from "./Disclaimer";
 import { TAGLINE } from "@/lib/constants";
+import { SEO_COPY_SNIPPETS } from "@/lib/seo";
 import { MEDIA_CONTACT_EMAIL, MEDIA_KIT_PDF_FILENAME, MEDIA_KIT_PDF_PATH } from "@/lib/media";
 
 const exploreLinks = [
-  { href: "/reports", label: "Map & reports" },
-  { href: "/brands", label: "Brands" },
-  { href: "/report", label: "Report boof" },
+  { href: "/reports", label: "Live reports & map" },
+  { href: "/brands", label: "Brand analytics" },
+  { href: "/report", label: "Submit a report" },
 ] as const;
 
 const helpLinks = [
@@ -26,7 +27,8 @@ export function SiteFooter() {
         <div className="sm:col-span-2 lg:col-span-1">
           <BoofLogo size="sm" showBeta />
           <p className="mt-3 max-w-xs text-sm text-[var(--text-muted)]">
-            {TAGLINE} Community-powered cannabis intel for Michigan.
+            {TAGLINE} {SEO_COPY_SNIPPETS.tagline}{" "}
+            {SEO_COPY_SNIPPETS.legalMarkets} Launching in Michigan.
           </p>
           <a
             href={`mailto:${MEDIA_CONTACT_EMAIL}`}
@@ -87,7 +89,8 @@ export function SiteFooter() {
       <div className="mt-10 border-t border-[var(--border-soft)] pt-6">
         <Disclaimer />
         <p className="mt-4 text-[11px] text-[var(--text-muted)]">
-          © {year} BoofMap. Community intel — not medical or legal advice.
+          © {year} BoofMap. {SEO_COPY_SNIPPETS.communityIntel} Not medical or
+          legal advice.
         </p>
       </div>
     </footer>

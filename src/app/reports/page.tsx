@@ -7,15 +7,22 @@ import {
   getSeedApprovedMeetupReports,
   getSeedApprovedReports,
 } from "@/lib/convex/seed";
-import { buildPageMetadata } from "@/lib/seo";
+import {
+  buildBreadcrumbJsonLd,
+  buildCollectionPageJsonLd,
+  buildPageMetadata,
+  LAUNCH_STATE,
+} from "@/lib/seo";
+import { JsonLdScript } from "@/components/seo/JsonLdScript";
 import { ReportsClient } from "./ReportsClient";
 
 export const dynamic = "force-dynamic";
 
+const REPORTS_DESCRIPTION = `Live cannabis transparency reports from the BoofMap community. Real weed reviews, quality signals, and verified buyer intel from legal markets nationwide — launching in ${LAUNCH_STATE}.`;
+
 export const metadata = buildPageMetadata({
-  title: "Map & Reports — Michigan Intel Hub",
-  description:
-    "Tactical Michigan cannabis map plus analytical community reports — boof alerts, fire finds, mold warnings, and full buyer signals. Free community intel.",
+  title: "Live Cannabis Reports & Legal Market Map",
+  description: REPORTS_DESCRIPTION,
   path: "/reports",
 });
 
@@ -30,11 +37,26 @@ export default async function ReportsPage() {
   ]);
 
   return (
-    <ReportsClient
-      preloadedReports={preloadedReports}
-      preloadedMeetupReports={preloadedMeetupReports}
-      seedReports={seedReports}
-      seedMeetupReports={seedMeetupReports}
-    />
+    <>
+      <JsonLdScript
+        data={buildBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Reports", path: "/reports" },
+        ])}
+      />
+      <JsonLdScript
+        data={buildCollectionPageJsonLd({
+          name: "BoofMap Live Cannabis Reports",
+          description: REPORTS_DESCRIPTION,
+          path: "/reports",
+        })}
+      />
+      <ReportsClient
+        preloadedReports={preloadedReports}
+        preloadedMeetupReports={preloadedMeetupReports}
+        seedReports={seedReports}
+        seedMeetupReports={seedMeetupReports}
+      />
+    </>
   );
 }

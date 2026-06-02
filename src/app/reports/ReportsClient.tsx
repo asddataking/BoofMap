@@ -23,6 +23,7 @@ import { filterReports } from "@/lib/data/reports";
 import { filterMeetupReports } from "@/lib/data/meetupReports";
 import { getMarkerTier } from "@/lib/markers";
 import type { MeetupReport, Report } from "@/lib/types";
+import { LAUNCH_STATE } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 import { usePreloadedMeetupReports } from "@/hooks/useRealtimeMeetupReports";
 import { usePreloadedReports } from "@/hooks/useRealtimeReports";
@@ -298,13 +299,14 @@ function ReportsClientView({
       <PageTransition>
         <div className="py-4 lg:py-6">
           <header>
-            <p className="section-kicker">Intel Hub</p>
+            <p className="section-kicker">Transparency Hub</p>
             <h1 className="font-display text-2xl font-extrabold uppercase tracking-tight text-[var(--text-main)] sm:text-3xl">
-              Map &amp; Reports
+              Live Cannabis Reports
             </h1>
             <p className="mt-1 max-w-2xl text-sm text-[var(--text-muted)]">
-              Tactical map plus analytical community signals — what was reported,
-              where, and how the crowd scored it.
+              Live cannabis transparency reports from the BoofMap community.
+              Community cannabis reports from legal markets nationwide — launching
+              in {LAUNCH_STATE}.
             </p>
           </header>
 

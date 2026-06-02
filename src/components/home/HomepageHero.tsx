@@ -58,7 +58,7 @@ export function HomepageHero({
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#39FF88]" />
               </span>
               <span className="font-display text-[10px] font-bold uppercase tracking-[0.2em] text-[#39FF88]">
-                Community Powered · Live
+                Community-Powered Cannabis Transparency
               </span>
             </div>
 
@@ -72,11 +72,13 @@ export function HomepageHero({
             </h1>
 
             <p className="mt-4 max-w-lg text-base leading-relaxed text-[var(--text-muted)]">
-              Real-time community intel on cannabis products, dispensaries, and
-              seller flags. Find the fire. Skip the boof.
+              Real cannabis reports from real consumers. Track quality, value,
+              flavor, effects, and trust across legal markets — not pay-to-play
+              menus.
             </p>
             <p className="mt-2 text-sm text-[var(--text-muted)]/80">
-              The live weed scoreboard — Michigan community signals, updated
+              The cannabis transparency platform for legal markets. Community
+              intelligence nationwide — launching in Michigan — updated
               continuously.
             </p>
           </motion.div>

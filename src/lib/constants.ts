@@ -7,7 +7,7 @@ export const BOOFMAP_LOGO = {
   src: "/boofmaplogo.png",
   width: 1774,
   height: 887,
-  alt: "BoofMap — Find Fire. Avoid Boof. Live cannabis intelligence",
+  alt: "BoofMap — Find Fire. Avoid Boof. Community-powered cannabis transparency platform",
 } as const;
 
 /** Open Graph / Twitter / link preview image. */
@@ -15,7 +15,7 @@ export const BOOFMAP_SOCIAL_SHARE = {
   src: "/boofmapsocial.png",
   width: 1254,
   height: 1254,
-  alt: "BoofMap — Find Fire. Avoid Boof. Michigan cannabis community intel",
+  alt: "BoofMap — Find Fire. Avoid Boof. Cannabis transparency and community reports for legal markets",
 } as const;
 
 export const DISCLAIMER =

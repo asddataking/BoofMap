@@ -2,7 +2,7 @@
   "id": "/",
   "name": "BoofMap — Find Fire. Avoid Boof.",
   "short_name": "BoofMap",
-  "description": "Michigan cannabis community intel — live map, boof alerts, and fire finds. Free alternative to menu-only apps.",
+  "description": "Community-powered cannabis transparency — real reports, quality signals, and market intelligence for legal markets. Launching in Michigan.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -43,13 +43,13 @@
   "screenshots": [],
   "shortcuts": [
     {
-      "name": "Open the Map",
-      "short_name": "Map",
+      "name": "Browse Reports",
+      "short_name": "Reports",
       "url": "/reports",
       "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Report Boof",
+      "name": "Submit Report",
       "short_name": "Report",
       "url": "/report",
       "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]

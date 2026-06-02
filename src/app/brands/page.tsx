@@ -2,16 +2,24 @@ import Link from "next/link";
 import { fetchBrandNames } from "@/lib/convex/queries";
 import { AppShell } from "@/components/AppShell";
 import { PageTransition } from "@/components/PageTransition";
+import { JsonLdScript } from "@/components/seo/JsonLdScript";
 import { slugify } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
-import { buildPageMetadata } from "@/lib/seo";
+import {
+  buildBreadcrumbJsonLd,
+  buildCollectionPageJsonLd,
+  buildPageMetadata,
+  LAUNCH_STATE,
+  SEO_COPY_SNIPPETS,
+} from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
+const BRANDS_DESCRIPTION = `Strain and brand analytics from real cannabis consumers — community trust scores, quality reports, and verified product signals. ${SEO_COPY_SNIPPETS.legalMarkets} Launching in ${LAUNCH_STATE}.`;
+
 export const metadata = buildPageMetadata({
-  title: "Brands",
-  description:
-    "Michigan cannabis brand intel — community trust scores, boof reports, and fire finds. Compare brands without pay-to-play listings.",
+  title: "Strain & Brand Analytics — Cannabis Quality Reports",
+  description: BRANDS_DESCRIPTION,
   path: "/brands",
 });
 
@@ -20,13 +28,36 @@ export default async function BrandsPage() {
 
   return (
     <AppShell>
+      <JsonLdScript
+        data={buildBreadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Brands", path: "/brands" },
+        ])}
+      />
+      <JsonLdScript
+        data={buildCollectionPageJsonLd({
+          name: "BoofMap Cannabis Brand Analytics",
+          description: BRANDS_DESCRIPTION,
+          path: "/brands",
+        })}
+      />
       <PageTransition>
         <div className="py-4 lg:py-8">
           <h1 className="font-display text-2xl font-bold text-white sm:text-3xl">
-            Cannabis Brands
+            Strain &amp; Brand Analytics
           </h1>
-          <p className="mt-1 text-sm text-zinc-500">
-            Community trust scores by brand
+          <p className="mt-1 max-w-2xl text-sm text-zinc-500">
+            {SEO_COPY_SNIPPETS.realReports}{" "}
+            {SEO_COPY_SNIPPETS.trackProducts}
+          </p>
+          <p className="mt-2 text-xs text-zinc-600">
+            <Link href="/reports" className="text-emerald-500 hover:underline">
+              Browse live reports
+            </Link>
+            {" · "}
+            <Link href="/report" className="text-emerald-500 hover:underline">
+              Submit a report
+            </Link>
           </p>
           <ul className="mt-6 space-y-2">
             {brands.map((name) => (

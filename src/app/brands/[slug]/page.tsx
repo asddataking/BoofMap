@@ -25,8 +25,8 @@ export async function generateMetadata({
   }
 
   return buildPageMetadata({
-    title: `${brand.name} — Brand Profile`,
-    description: `${brand.name} has ${brand.report_count} community reports on BoofMap. Trust score ${brand.trust_score}, avg boof score ${brand.avg_boof_score.toFixed(1)}. See mold alerts, complaints, and recent reports.`,
+    title: `${brand.name} — Strain & Brand Analytics`,
+    description: `${brand.name} cannabis quality reports on BoofMap — ${brand.report_count} community reviews, trust score ${brand.trust_score}. Verified product signals, strain reviews, and buyer intel from real consumers.`,
     path: `/brands/${slug}`,
   });
 }
