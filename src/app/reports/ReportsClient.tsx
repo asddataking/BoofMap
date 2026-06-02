@@ -24,50 +24,105 @@ import { filterMeetupReports } from "@/lib/data/meetupReports";
 import { getMarkerTier } from "@/lib/markers";
 import type { MeetupReport, Report } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { useMeetupReports } from "@/hooks/useMeetupReports";
+import { usePreloadedMeetupReports } from "@/hooks/useRealtimeMeetupReports";
 import { usePreloadedReports } from "@/hooks/useRealtimeReports";
 import { isConvexConfigured } from "@/lib/convex/config";
 
 export function ReportsClient({
   preloadedReports,
+  preloadedMeetupReports,
   seedReports,
+  seedMeetupReports,
 }: {
   preloadedReports: Preloaded<typeof api.reports.listApproved> | null;
+  preloadedMeetupReports: Preloaded<
+    typeof api.meetupReports.listApproved
+  > | null;
   seedReports: Report[];
+  seedMeetupReports: MeetupReport[];
 }) {
-  if (preloadedReports) {
+  if (preloadedReports && preloadedMeetupReports) {
     return (
       <ReportsClientLive
         preloadedReports={preloadedReports}
+        preloadedMeetupReports={preloadedMeetupReports}
         seedReports={seedReports}
+        seedMeetupReports={seedMeetupReports}
       />
     );
   }
-  return <ReportsClientView reports={seedReports} />;
+  return (
+    <ReportsClientView
+      reports={seedReports}
+      meetupReports={seedMeetupReports}
+    />
+  );
 }
 
 function ReportsClientLive({
   preloadedReports,
+  preloadedMeetupReports,
   seedReports,
+  seedMeetupReports,
 }: {
   preloadedReports: Preloaded<typeof api.reports.listApproved>;
+  preloadedMeetupReports: Preloaded<typeof api.meetupReports.listApproved>;
   seedReports: Report[];
+  seedMeetupReports: MeetupReport[];
 }) {
   const reports = usePreloadedReports(preloadedReports, seedReports);
-  return <ReportsClientView reports={reports} />;
+  const meetupReports = usePreloadedMeetupReports(
+    preloadedMeetupReports,
+    seedMeetupReports
+  );
+  const { isAuthenticated } = useAuth();
+  const voteMutation = useMutation(api.reports.vote);
+  const confirmMeetupMutation = useMutation(api.meetupReports.confirm);
+
+  const voteProduct = async (
+    reportId: string,
+    voteType: "confirm" | "downvote"
+  ) => {
+    if (!isAuthenticated || !isConvexConfigured()) return;
+    await voteMutation({
+      reportId: reportId as Id<"reports">,
+      voteType,
+    });
+  };
+
+  const confirmMeetup = async (reportId: string) => {
+    if (!isAuthenticated || !isConvexConfigured()) return;
+    await confirmMeetupMutation({
+      reportId: reportId as Id<"meetupReports">,
+    });
+  };
+
+  return (
+    <ReportsClientView
+      reports={reports}
+      meetupReports={meetupReports}
+      onVoteProduct={voteProduct}
+      onConfirmMeetup={confirmMeetup}
+    />
+  );
 }
 
-function ReportsClientView({ reports }: { reports: Report[] }) {
-  const meetupReports = useMeetupReports();
+function ReportsClientView({
+  reports,
+  meetupReports,
+  onVoteProduct,
+  onConfirmMeetup,
+}: {
+  reports: Report[];
+  meetupReports: MeetupReport[];
+  onVoteProduct?: (reportId: string, voteType: "confirm" | "downvote") => void;
+  onConfirmMeetup?: (reportId: string) => void;
+}) {
   const searchParams = useSearchParams();
   const tabParam = searchParams.get("tab");
   const [feedTab, setFeedTab] = useState<"product" | "meetup">(
     tabParam === "meetup" ? "meetup" : "product"
   );
-
-  const { isAuthenticated } = useAuth();
-  const voteMutation = useMutation(api.reports.vote);
-  const confirmMeetupMutation = useMutation(api.meetupReports.confirm);
 
   const [activeFilter, setActiveFilter] = useState("latest");
   const [search, setSearch] = useState("");
@@ -172,24 +227,6 @@ function ReportsClientView({ reports }: { reports: Report[] }) {
 
   const filters =
     feedTab === "product" ? FEED_FILTERS : MEETUP_FEED_FILTERS;
-
-  const voteProduct = async (
-    reportId: string,
-    voteType: "confirm" | "downvote"
-  ) => {
-    if (!isAuthenticated || !isConvexConfigured()) return;
-    await voteMutation({
-      reportId: reportId as Id<"reports">,
-      voteType,
-    });
-  };
-
-  const confirmMeetup = async (reportId: string) => {
-    if (!isAuthenticated || !isConvexConfigured()) return;
-    await confirmMeetupMutation({
-      reportId: reportId as Id<"meetupReports">,
-    });
-  };
 
   return (
     <AppShell showFab>
@@ -326,8 +363,8 @@ function ReportsClientView({ reports }: { reports: Report[] }) {
                       key={report.id}
                       report={report}
                       index={i}
-                      onConfirm={() => voteProduct(report.id, "confirm")}
-                      onDownvote={() => voteProduct(report.id, "downvote")}
+                      onConfirm={() => onVoteProduct?.(report.id, "confirm")}
+                      onDownvote={() => onVoteProduct?.(report.id, "downvote")}
                     />
                   ))}
                 {feedTab === "meetup" &&
@@ -336,7 +373,7 @@ function ReportsClientView({ reports }: { reports: Report[] }) {
                       key={report.id}
                       report={report}
                       index={i}
-                      onConfirm={() => confirmMeetup(report.id)}
+                      onConfirm={() => onConfirmMeetup?.(report.id)}
                     />
                   ))}
                 {((feedTab === "product" && filteredProduct.length === 0) ||
@@ -344,7 +381,9 @@ function ReportsClientView({ reports }: { reports: Report[] }) {
                   <p className="py-12 text-center text-sm text-[var(--text-muted)]">
                     {feedTab === "meetup" && meetupReports.length > 0
                       ? "No meetup reports match this filter. Try Latest or clear search."
-                      : "No signals match this filter."}
+                      : feedTab === "meetup"
+                        ? "No meetup or seller reports yet. Be the first to flag a bad experience."
+                        : "No signals match this filter."}
                   </p>
                 )}
               </div>

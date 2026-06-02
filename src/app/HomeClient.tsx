@@ -13,42 +13,68 @@ import { IntelBoard } from "@/components/home/IntelBoard";
 import { AnalystRankTeaser } from "@/components/home/AnalystRankTeaser";
 import { api } from "../../convex/_generated/api";
 import { useAuth } from "@/components/BoofAuthProvider";
-import type { Report } from "@/lib/types";
+import type { MeetupReport, Report } from "@/lib/types";
+import { usePreloadedMeetupReports } from "@/hooks/useRealtimeMeetupReports";
 import { usePreloadedReports } from "@/hooks/useRealtimeReports";
-import { useMeetupReports } from "@/hooks/useMeetupReports";
 
 export function HomeClient({
   preloadedReports,
+  preloadedMeetupReports,
   seedReports,
+  seedMeetupReports,
 }: {
   preloadedReports: Preloaded<typeof api.reports.listApproved> | null;
+  preloadedMeetupReports: Preloaded<
+    typeof api.meetupReports.listApproved
+  > | null;
   seedReports: Report[];
+  seedMeetupReports: MeetupReport[];
 }) {
-  if (preloadedReports) {
+  if (preloadedReports && preloadedMeetupReports) {
     return (
       <HomeClientLive
         preloadedReports={preloadedReports}
+        preloadedMeetupReports={preloadedMeetupReports}
         seedReports={seedReports}
+        seedMeetupReports={seedMeetupReports}
       />
     );
   }
-  return <HomeClientView reports={seedReports} />;
+  return (
+    <HomeClientView
+      reports={seedReports}
+      meetups={seedMeetupReports}
+    />
+  );
 }
 
 function HomeClientLive({
   preloadedReports,
+  preloadedMeetupReports,
   seedReports,
+  seedMeetupReports,
 }: {
   preloadedReports: Preloaded<typeof api.reports.listApproved>;
+  preloadedMeetupReports: Preloaded<typeof api.meetupReports.listApproved>;
   seedReports: Report[];
+  seedMeetupReports: MeetupReport[];
 }) {
   const reports = usePreloadedReports(preloadedReports, seedReports);
-  return <HomeClientView reports={reports} />;
+  const meetups = usePreloadedMeetupReports(
+    preloadedMeetupReports,
+    seedMeetupReports
+  );
+  return <HomeClientView reports={reports} meetups={meetups} />;
 }
 
-function HomeClientView({ reports }: { reports: Report[] }) {
+function HomeClientView({
+  reports,
+  meetups,
+}: {
+  reports: Report[];
+  meetups: MeetupReport[];
+}) {
   const { isAuthenticated } = useAuth();
-  const meetups = useMeetupReports();
 
   return (
     <AppShell showFab variant="landing">
@@ -59,7 +85,7 @@ function HomeClientView({ reports }: { reports: Report[] }) {
           <HomepageHero
             reports={reports}
             meetups={meetups}
-            totalReports={reports.length}
+            totalReports={reports.length + meetups.length}
           />
 
           <IntelBoard reports={reports} meetups={meetups} />

@@ -22,7 +22,7 @@ export function useMeetupReports(): MeetupReport[] {
 
   const seed = allowLocalSeedFallback() ? getSeedApprovedMeetupReports() : [];
   if (!configured) return seed;
-  if (approved === undefined) return seed;
+  if (approved === undefined) return [];
 
   return mergeMeetupFeed(approved as MeetupReport[], mine as MeetupReport[] | undefined);
 }

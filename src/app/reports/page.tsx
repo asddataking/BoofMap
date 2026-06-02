@@ -1,6 +1,12 @@
-import { preloadApprovedReports } from "@/lib/convex/queries";
+import {
+  preloadApprovedMeetupReports,
+  preloadApprovedReports,
+} from "@/lib/convex/queries";
 import { allowLocalSeedFallback } from "@/lib/convex/config";
-import { getSeedApprovedReports } from "@/lib/convex/seed";
+import {
+  getSeedApprovedMeetupReports,
+  getSeedApprovedReports,
+} from "@/lib/convex/seed";
 import { buildPageMetadata } from "@/lib/seo";
 import { ReportsClient } from "./ReportsClient";
 
@@ -13,9 +19,20 @@ export const metadata = buildPageMetadata({
 
 export default async function ReportsPage() {
   const seedReports = allowLocalSeedFallback() ? getSeedApprovedReports() : [];
-  const preloadedReports = await preloadApprovedReports();
+  const seedMeetupReports = allowLocalSeedFallback()
+    ? getSeedApprovedMeetupReports()
+    : [];
+  const [preloadedReports, preloadedMeetupReports] = await Promise.all([
+    preloadApprovedReports(),
+    preloadApprovedMeetupReports(),
+  ]);
 
   return (
-    <ReportsClient preloadedReports={preloadedReports} seedReports={seedReports} />
+    <ReportsClient
+      preloadedReports={preloadedReports}
+      preloadedMeetupReports={preloadedMeetupReports}
+      seedReports={seedReports}
+      seedMeetupReports={seedMeetupReports}
+    />
   );
 }

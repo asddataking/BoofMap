@@ -19,7 +19,7 @@ export function usePreloadedMeetupReports(
   );
 
   if (approved === undefined) {
-    return seedFallback;
+    return seedFallback.length > 0 ? seedFallback : [];
   }
 
   return mergeMeetupFeed(

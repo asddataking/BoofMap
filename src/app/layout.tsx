@@ -6,6 +6,7 @@ import { ConvexClientProvider } from "@/components/ConvexClientProvider";
 import { BoofAuthProvider } from "@/components/BoofAuthProvider";
 import { PwaRegister } from "@/components/PwaRegister";
 import { SkipToMain } from "@/components/a11y/SkipToMain";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { SiteJsonLd } from "@/components/SiteJsonLd";
 import { rootMetadata } from "@/lib/seo";
 import "./globals.css";
@@ -63,6 +64,7 @@ export default function RootLayout({
             <BoofAuthProvider>{children}</BoofAuthProvider>
           </ConvexClientProvider>
         </ClerkProvider>
+        <GoogleAnalytics />
         <Analytics />
       </body>
     </html>

@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
 import { HomePageJsonLd } from "@/components/seo/HomePageSeo";
 import { HomeClient } from "./HomeClient";
-import { preloadApprovedReports } from "@/lib/convex/queries";
+import {
+  preloadApprovedMeetupReports,
+  preloadApprovedReports,
+} from "@/lib/convex/queries";
 import { allowLocalSeedFallback } from "@/lib/convex/config";
-import { getSeedApprovedReports } from "@/lib/convex/seed";
+import {
+  getSeedApprovedMeetupReports,
+  getSeedApprovedReports,
+} from "@/lib/convex/seed";
 import { buildPageMetadata, SITE_DESCRIPTION_LONG } from "@/lib/seo";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -14,14 +20,22 @@ export const metadata: Metadata = buildPageMetadata({
 
 export default async function HomePage() {
   const seedReports = allowLocalSeedFallback() ? getSeedApprovedReports() : [];
-  const preloadedReports = await preloadApprovedReports();
+  const seedMeetupReports = allowLocalSeedFallback()
+    ? getSeedApprovedMeetupReports()
+    : [];
+  const [preloadedReports, preloadedMeetupReports] = await Promise.all([
+    preloadApprovedReports(),
+    preloadApprovedMeetupReports(),
+  ]);
 
   return (
     <>
       <HomePageJsonLd />
       <HomeClient
         preloadedReports={preloadedReports}
+        preloadedMeetupReports={preloadedMeetupReports}
         seedReports={seedReports}
+        seedMeetupReports={seedMeetupReports}
       />
     </>
   );
