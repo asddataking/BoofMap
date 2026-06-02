@@ -6,6 +6,8 @@ import { slugify } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import { buildPageMetadata } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = buildPageMetadata({
   title: "Brands",
   description:

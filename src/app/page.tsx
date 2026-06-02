@@ -12,6 +12,8 @@ import {
 } from "@/lib/convex/seed";
 import { buildPageMetadata, SITE_DESCRIPTION_LONG } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = buildPageMetadata({
   title: "Michigan Cannabis Map & Community Reports",
   description: SITE_DESCRIPTION_LONG,

@@ -10,6 +10,8 @@ import {
 import { buildPageMetadata } from "@/lib/seo";
 import { ReportsClient } from "./ReportsClient";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = buildPageMetadata({
   title: "Map & Reports — Michigan Intel Hub",
   description:

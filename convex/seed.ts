@@ -55,11 +55,73 @@ export const seedDemo = internalMutation({
       await ctx.db.insert("reports", r);
     }
 
+    const meetupSeed = await seedMeetupDemoData(ctx, now);
     const liveSeed = await seedLiveMvpData(ctx, now);
 
-    return { inserted: demoReports.length, ...liveSeed };
+    return { inserted: demoReports.length, ...meetupSeed, ...liveSeed };
   },
 });
+
+/** Approved meetup/seller demo rows when the table is empty. CLI only. */
+export const seedMeetupDemo = internalMutation({
+  args: {},
+  handler: async (ctx) => seedMeetupDemoData(ctx, Date.now()),
+});
+
+async function seedMeetupDemoData(
+  ctx: { db: import("./_generated/server").MutationCtx["db"] },
+  now: number
+) {
+  const existing = await ctx.db.query("meetupReports").take(1);
+  if (existing.length > 0) {
+    return { meetup_skipped: true, meetup_inserted: 0 };
+  }
+
+  const demoMeetups = [
+    {
+      userId: "seed",
+      sellerDisplayName: "GreenGhost23",
+      platform: "Telegram",
+      city: "Hazel Park",
+      area: "East side",
+      meetupType: "in-person",
+      issueTags: ["Changed Price", "Bad Communication"],
+      sellerSignal: "orange",
+      notes:
+        "User-submitted experience: quoted one price in chat, different amount at meetup.",
+      latitude: 42.5125,
+      longitude: -83.1041,
+      confirmCount: 4,
+      status: "approved" as const,
+      moderationFlags: [] as string[],
+      publicWarning:
+        '3 community reports mention changed price near Hazel Park for "GreenGhost23".',
+      createdAt: now - 86400000,
+    },
+    {
+      userId: "seed",
+      sellerDisplayName: "DankDeals_MI",
+      platform: "Snapchat",
+      city: "Detroit",
+      meetupType: "delivery",
+      issueTags: ["No Show"],
+      sellerSignal: "yellow",
+      notes: "Community-reported concern: seller did not arrive at agreed window.",
+      latitude: 42.3314,
+      longitude: -83.0458,
+      confirmCount: 2,
+      status: "approved" as const,
+      moderationFlags: [] as string[],
+      createdAt: now - 172800000,
+    },
+  ];
+
+  for (const row of demoMeetups) {
+    await ctx.db.insert("meetupReports", row);
+  }
+
+  return { meetup_skipped: false, meetup_inserted: demoMeetups.length };
+}
 
 /** Demo ticker + rankings when those tables are empty. Run via CLI only. */
 export const seedLiveMvp = internalMutation({

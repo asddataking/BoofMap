@@ -11,6 +11,8 @@ import { BreadcrumbJsonLd } from "@/components/SiteJsonLd";
 import { fetchBrandProfile } from "@/lib/convex/queries";
 import { buildBrandJsonLd, buildPageMetadata } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: {

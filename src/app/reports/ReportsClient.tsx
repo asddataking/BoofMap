@@ -27,6 +27,8 @@ import { cn } from "@/lib/utils";
 import { usePreloadedMeetupReports } from "@/hooks/useRealtimeMeetupReports";
 import { usePreloadedReports } from "@/hooks/useRealtimeReports";
 import { isConvexConfigured } from "@/lib/convex/config";
+import { useQuery } from "convex/react";
+import { mergeMeetupFeed } from "@/lib/data/mergeMeetupFeed";
 
 export function ReportsClient({
   preloadedReports,
@@ -51,10 +53,73 @@ export function ReportsClient({
       />
     );
   }
+  if (isConvexConfigured()) {
+    return (
+      <ReportsClientQuery
+        seedReports={seedReports}
+        seedMeetupReports={seedMeetupReports}
+      />
+    );
+  }
   return (
     <ReportsClientView
       reports={seedReports}
       meetupReports={seedMeetupReports}
+    />
+  );
+}
+
+/** Convex is configured but SSR preload failed — still subscribe on the client. */
+function ReportsClientQuery({
+  seedReports,
+  seedMeetupReports,
+}: {
+  seedReports: Report[];
+  seedMeetupReports: MeetupReport[];
+}) {
+  const { isAuthenticated } = useAuth();
+  const reports =
+    (useQuery(api.reports.listApproved, {}) as Report[] | undefined) ??
+    seedReports;
+  const approved = useQuery(api.meetupReports.listApproved, {}) as
+    | MeetupReport[]
+    | undefined;
+  const mine = useQuery(
+    api.meetupReports.listMine,
+    isAuthenticated ? {} : "skip"
+  );
+  const meetupReports =
+    approved === undefined
+      ? seedMeetupReports
+      : mergeMeetupFeed(approved, mine as MeetupReport[] | undefined);
+
+  const voteMutation = useMutation(api.reports.vote);
+  const confirmMeetupMutation = useMutation(api.meetupReports.confirm);
+
+  const voteProduct = async (
+    reportId: string,
+    voteType: "confirm" | "downvote"
+  ) => {
+    if (!isAuthenticated) return;
+    await voteMutation({
+      reportId: reportId as Id<"reports">,
+      voteType,
+    });
+  };
+
+  const confirmMeetup = async (reportId: string) => {
+    if (!isAuthenticated) return;
+    await confirmMeetupMutation({
+      reportId: reportId as Id<"meetupReports">,
+    });
+  };
+
+  return (
+    <ReportsClientView
+      reports={reports}
+      meetupReports={meetupReports}
+      onVoteProduct={voteProduct}
+      onConfirmMeetup={confirmMeetup}
     />
   );
 }

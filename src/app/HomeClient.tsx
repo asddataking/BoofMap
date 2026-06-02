@@ -16,6 +16,9 @@ import { useAuth } from "@/components/BoofAuthProvider";
 import type { MeetupReport, Report } from "@/lib/types";
 import { usePreloadedMeetupReports } from "@/hooks/useRealtimeMeetupReports";
 import { usePreloadedReports } from "@/hooks/useRealtimeReports";
+import { isConvexConfigured } from "@/lib/convex/config";
+import { useQuery } from "convex/react";
+import { mergeMeetupFeed } from "@/lib/data/mergeMeetupFeed";
 
 export function HomeClient({
   preloadedReports,
@@ -40,12 +43,46 @@ export function HomeClient({
       />
     );
   }
+  if (isConvexConfigured()) {
+    return (
+      <HomeClientQuery
+        seedReports={seedReports}
+        seedMeetupReports={seedMeetupReports}
+      />
+    );
+  }
   return (
     <HomeClientView
       reports={seedReports}
       meetups={seedMeetupReports}
     />
   );
+}
+
+function HomeClientQuery({
+  seedReports,
+  seedMeetupReports,
+}: {
+  seedReports: Report[];
+  seedMeetupReports: MeetupReport[];
+}) {
+  const { isAuthenticated } = useAuth();
+  const reports =
+    (useQuery(api.reports.listApproved, {}) as Report[] | undefined) ??
+    seedReports;
+  const approved = useQuery(api.meetupReports.listApproved, {}) as
+    | MeetupReport[]
+    | undefined;
+  const mine = useQuery(
+    api.meetupReports.listMine,
+    isAuthenticated ? {} : "skip"
+  );
+  const meetups =
+    approved === undefined
+      ? seedMeetupReports
+      : mergeMeetupFeed(approved, mine as MeetupReport[] | undefined);
+
+  return <HomeClientView reports={reports} meetups={meetups} />;
 }
 
 function HomeClientLive({

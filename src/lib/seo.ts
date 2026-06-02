@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { BOOFMAP_LOGO, BOOFMAP_SOCIAL_SHARE, TAGLINE } from "./constants";
-import { CANONICAL_SITE_URL, normalizeSiteUrl } from "./site";
+import {
+  CANONICAL_SITE_URL,
+  normalizeSiteUrl,
+  parsePublicSiteUrl,
+} from "./site";
 
 export const SITE_NAME = "BoofMap";
 export const SITE_TITLE = `${SITE_NAME} — ${TAGLINE}`;
@@ -54,8 +58,8 @@ export const SEO_FAQ = [
 ] as const;
 
 export function getSiteUrl(): string {
-  const fromEnv = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-  if (fromEnv) return normalizeSiteUrl(fromEnv);
+  const fromEnv = parsePublicSiteUrl(process.env.NEXT_PUBLIC_SITE_URL ?? "");
+  if (fromEnv) return fromEnv;
   if (process.env.VERCEL_ENV === "production") {
     return CANONICAL_SITE_URL;
   }

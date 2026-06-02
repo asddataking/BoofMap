@@ -1,6 +1,16 @@
+export function getConvexDeploymentUrl(): string | null {
+  const url = process.env.NEXT_PUBLIC_CONVEX_URL?.trim() ?? "";
+  if (!url || url.includes("placeholder")) return null;
+  return url;
+}
+
 export function isConvexConfigured(): boolean {
-  const url = process.env.NEXT_PUBLIC_CONVEX_URL ?? "";
-  return Boolean(url && !url.includes("placeholder"));
+  return getConvexDeploymentUrl() !== null;
+}
+
+export function convexQueryOptions() {
+  const url = getConvexDeploymentUrl();
+  return url ? { url } : undefined;
 }
 
 export function isClerkConfigured(): boolean {

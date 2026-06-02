@@ -10,6 +10,8 @@ import { BreadcrumbJsonLd } from "@/components/SiteJsonLd";
 import { fetchDispensaryProfile } from "@/lib/convex/queries";
 import { buildDispensaryJsonLd, buildPageMetadata } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: {

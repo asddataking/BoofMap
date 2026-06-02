@@ -1,7 +1,11 @@
 import { fetchQuery, preloadQuery } from "convex/nextjs";
 import type { Preloaded } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import { allowLocalSeedFallback, isConvexConfigured } from "./config";
+import {
+  allowLocalSeedFallback,
+  convexQueryOptions,
+  isConvexConfigured,
+} from "./config";
 import {
   getSeedApprovedMeetupReports,
   getSeedApprovedReports,
@@ -10,34 +14,68 @@ import type { MeetupReport, Report } from "@/lib/types";
 import type { BrandProfile, DispensaryProfile } from "@/lib/types";
 import type { RankingType } from "@/lib/types";
 import { getBrandsFromReports } from "@/lib/data/reports";
-import { slugify } from "@/lib/utils";
+
+function logConvexQueryFailure(label: string, error: unknown) {
+  const message = error instanceof Error ? error.message : String(error);
+  console.error(`[convex] ${label} failed:`, message || error);
+}
 
 export async function preloadApprovedReports(): Promise<Preloaded<
   typeof api.reports.listApproved
 > | null> {
-  if (!isConvexConfigured()) return null;
-  return preloadQuery(api.reports.listApproved, {});
+  const options = convexQueryOptions();
+  if (!options) return null;
+  try {
+    return await preloadQuery(api.reports.listApproved, {}, options);
+  } catch (error) {
+    logConvexQueryFailure("preloadApprovedReports", error);
+    return null;
+  }
 }
 
 export async function preloadApprovedMeetupReports(): Promise<Preloaded<
   typeof api.meetupReports.listApproved
 > | null> {
-  if (!isConvexConfigured()) return null;
-  return preloadQuery(api.meetupReports.listApproved, {});
+  const options = convexQueryOptions();
+  if (!options) return null;
+  try {
+    return await preloadQuery(api.meetupReports.listApproved, {}, options);
+  } catch (error) {
+    logConvexQueryFailure("preloadApprovedMeetupReports", error);
+    return null;
+  }
 }
 
 export async function fetchApprovedReports(): Promise<Report[]> {
   if (!isConvexConfigured()) {
     return allowLocalSeedFallback() ? getSeedApprovedReports() : [];
   }
-  return (await fetchQuery(api.reports.listApproved, {})) as Report[];
+  const options = convexQueryOptions();
+  if (!options) return [];
+  try {
+    return (await fetchQuery(api.reports.listApproved, {}, options)) as Report[];
+  } catch (error) {
+    logConvexQueryFailure("fetchApprovedReports", error);
+    return allowLocalSeedFallback() ? getSeedApprovedReports() : [];
+  }
 }
 
 export async function fetchApprovedMeetupReports(): Promise<MeetupReport[]> {
   if (!isConvexConfigured()) {
     return allowLocalSeedFallback() ? getSeedApprovedMeetupReports() : [];
   }
-  return (await fetchQuery(api.meetupReports.listApproved, {})) as MeetupReport[];
+  const options = convexQueryOptions();
+  if (!options) return [];
+  try {
+    return (await fetchQuery(
+      api.meetupReports.listApproved,
+      {},
+      options
+    )) as MeetupReport[];
+  } catch (error) {
+    logConvexQueryFailure("fetchApprovedMeetupReports", error);
+    return allowLocalSeedFallback() ? getSeedApprovedMeetupReports() : [];
+  }
 }
 
 export async function fetchBrandNames(): Promise<string[]> {
@@ -45,7 +83,15 @@ export async function fetchBrandNames(): Promise<string[]> {
     if (!allowLocalSeedFallback()) return [];
     return getBrandsFromReports(getSeedApprovedReports());
   }
-  return fetchQuery(api.reports.listBrandNames, {});
+  const options = convexQueryOptions();
+  if (!options) return [];
+  try {
+    return await fetchQuery(api.reports.listBrandNames, {}, options);
+  } catch (error) {
+    logConvexQueryFailure("fetchBrandNames", error);
+    if (!allowLocalSeedFallback()) return [];
+    return getBrandsFromReports(getSeedApprovedReports());
+  }
 }
 
 export async function fetchBrandProfile(
@@ -58,7 +104,22 @@ export async function fetchBrandProfile(
     );
     return getBrandProfileFromReports(slug, getSeedApprovedReports());
   }
-  return (await fetchQuery(api.reports.getBrandProfile, { slug })) as BrandProfile | null;
+  const options = convexQueryOptions();
+  if (!options) return null;
+  try {
+    return (await fetchQuery(
+      api.reports.getBrandProfile,
+      { slug },
+      options
+    )) as BrandProfile | null;
+  } catch (error) {
+    logConvexQueryFailure("fetchBrandProfile", error);
+    if (!allowLocalSeedFallback()) return null;
+    const { getBrandProfileFromReports } = await import(
+      "@/lib/data/profileFallback"
+    );
+    return getBrandProfileFromReports(slug, getSeedApprovedReports());
+  }
 }
 
 export async function fetchDispensaryProfile(
@@ -71,21 +132,46 @@ export async function fetchDispensaryProfile(
     );
     return getDispensaryProfileFromReports(slug, getSeedApprovedReports());
   }
-  return (await fetchQuery(api.reports.getDispensaryProfile, {
-    slug,
-  })) as DispensaryProfile | null;
+  const options = convexQueryOptions();
+  if (!options) return null;
+  try {
+    return (await fetchQuery(
+      api.reports.getDispensaryProfile,
+      { slug },
+      options
+    )) as DispensaryProfile | null;
+  } catch (error) {
+    logConvexQueryFailure("fetchDispensaryProfile", error);
+    if (!allowLocalSeedFallback()) return null;
+    const { getDispensaryProfileFromReports } = await import(
+      "@/lib/data/profileFallback"
+    );
+    return getDispensaryProfileFromReports(slug, getSeedApprovedReports());
+  }
 }
 
 export async function preloadTickerItems(): Promise<Preloaded<
   typeof api.ticker.listActiveTickerItems
 > | null> {
-  if (!isConvexConfigured()) return null;
-  return preloadQuery(api.ticker.listActiveTickerItems, {});
+  const options = convexQueryOptions();
+  if (!options) return null;
+  try {
+    return await preloadQuery(api.ticker.listActiveTickerItems, {}, options);
+  } catch (error) {
+    logConvexQueryFailure("preloadTickerItems", error);
+    return null;
+  }
 }
 
 export async function preloadRankings(
   type: RankingType
 ): Promise<Preloaded<typeof api.rankings.listRankingsByType> | null> {
-  if (!isConvexConfigured()) return null;
-  return preloadQuery(api.rankings.listRankingsByType, { type });
+  const options = convexQueryOptions();
+  if (!options) return null;
+  try {
+    return await preloadQuery(api.rankings.listRankingsByType, { type }, options);
+  } catch (error) {
+    logConvexQueryFailure("preloadRankings", error);
+    return null;
+  }
 }

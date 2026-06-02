@@ -3,6 +3,8 @@ import { fetchApprovedReports, fetchBrandNames } from "@/lib/convex/queries";
 import { getSiteUrl } from "@/lib/seo";
 import { slugify } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = getSiteUrl();
   const lastModified = new Date();
