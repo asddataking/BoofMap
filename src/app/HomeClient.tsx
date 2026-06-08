@@ -10,6 +10,7 @@ import { LandingPwaSection } from "@/components/LandingPwaSection";
 import { HomeSeoSections } from "@/components/seo/HomeSeoSections";
 import { PageTransition } from "@/components/PageTransition";
 import { DetectionTicker } from "@/components/intelligence/DetectionTicker";
+import { IntelligenceErrorBoundary } from "@/components/intelligence/IntelligenceErrorBoundary";
 import { MarketStatusModule } from "@/components/intelligence/MarketStatusModule";
 import { DetectionFeed } from "@/components/intelligence/DetectionFeed";
 import { HomepageHero } from "@/components/home/HomepageHero";
@@ -120,14 +121,22 @@ function HomeClientView({
   return (
     <AppShell showFab variant="landing">
       <PageTransition>
-        <DetectionTicker />
+        <IntelligenceErrorBoundary>
+          <DetectionTicker />
+        </IntelligenceErrorBoundary>
 
         <div className="space-y-12 pb-8 pt-4 lg:space-y-16 lg:pb-12 lg:pt-6">
-          <HomepageHero reports={reports} meetups={meetups} />
+          <IntelligenceErrorBoundary>
+            <HomepageHero reports={reports} meetups={meetups} />
+          </IntelligenceErrorBoundary>
 
-          <MarketStatusModule state="MI" />
+          <IntelligenceErrorBoundary>
+            <MarketStatusModule state="MI" />
+          </IntelligenceErrorBoundary>
 
-          <DetectionFeed reports={reports} meetups={meetups} />
+          <IntelligenceErrorBoundary>
+            <DetectionFeed reports={reports} meetups={meetups} />
+          </IntelligenceErrorBoundary>
 
           <HowItWorksSection />
 

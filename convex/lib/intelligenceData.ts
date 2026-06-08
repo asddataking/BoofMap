@@ -14,7 +14,8 @@ type ReportRow = {
 };
 
 export function detectionTypeFromReport(r: ReportRow) {
-  if (r.issue_tags.some((t) => /mold|fake|crc/i.test(t))) return "warning" as const;
+  const tags = r.issue_tags ?? [];
+  if (tags.some((t) => /mold|fake|crc/i.test(t))) return "warning" as const;
   if (r.boof_score >= 4.5) return "fire" as const;
   if (r.boof_score <= 2) return "boof" as const;
   if (

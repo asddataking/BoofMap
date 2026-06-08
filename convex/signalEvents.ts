@@ -37,22 +37,47 @@ function signalToApi(s: {
   };
 }
 
+function computedSignalsFromReports(
+  reports: ReturnType<typeof reportToApi>[],
+  limit: number
+) {
+  return buildSignalEventsFromReports(reports).slice(0, limit).map((e, i) => ({
+    id: `computed-${i}`,
+    type: e.type,
+    title: e.title,
+    detail: e.detail ?? null,
+    brand_name: e.brandName ?? null,
+    product_name: e.productName ?? null,
+    city: e.city ?? null,
+    state: "MI",
+    movement: e.movement ?? null,
+    severity: null,
+    created_at: new Date().toISOString(),
+  }));
+}
+
 export const listActive = query({
   args: { limit: v.optional(v.number()) },
   handler: async (ctx, { limit }) => {
+    const cap = limit ?? 20;
     const now = Date.now();
-    const stored = await ctx.db
-      .query("signalEvents")
-      .withIndex("by_active_created", (q) => q.eq("isActive", true))
-      .order("desc")
-      .take(limit ?? 20);
 
-    const active = stored.filter(
-      (s) => s.expiresAt == null || s.expiresAt > now
-    );
+    try {
+      const stored = await ctx.db
+        .query("signalEvents")
+        .withIndex("by_active_created", (q) => q.eq("isActive", true))
+        .order("desc")
+        .take(cap);
 
-    if (active.length > 0) {
-      return active.map(signalToApi);
+      const active = stored.filter(
+        (s) => s.expiresAt == null || s.expiresAt > now
+      );
+
+      if (active.length > 0) {
+        return active.map(signalToApi);
+      }
+    } catch {
+      // Table may be missing on older deployments — fall through to reports.
     }
 
     const reports = await ctx.db
@@ -61,20 +86,7 @@ export const listActive = query({
       .order("desc")
       .take(40);
 
-    const apiReports = reports.map(reportToApi);
-    return buildSignalEventsFromReports(apiReports).map((e, i) => ({
-      id: `computed-${i}`,
-      type: e.type,
-      title: e.title,
-      detail: e.detail ?? null,
-      brand_name: e.brandName ?? null,
-      product_name: e.productName ?? null,
-      city: e.city ?? null,
-      state: "MI",
-      movement: e.movement ?? null,
-      severity: null,
-      created_at: new Date().toISOString(),
-    }));
+    return computedSignalsFromReports(reports.map(reportToApi), cap);
   },
 });
 
