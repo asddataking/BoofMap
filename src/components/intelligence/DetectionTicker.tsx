@@ -27,8 +27,10 @@ function formatLine(event: SignalEvent): { label: string; body: string; classNam
 
 export function DetectionTicker() {
   const events = useSignalEvents();
-  const lines = events.map(formatLine);
-  const loop = [...lines, ...lines];
+  const lines = events
+    .filter((event) => Boolean(event.title?.trim()))
+    .map(formatLine);
+  const loop = lines.length > 0 ? [...lines, ...lines] : [];
 
   return (
     <div
@@ -54,22 +56,28 @@ export function DetectionTicker() {
         </div>
 
         <div className="ticker-track flex min-w-0 flex-1 items-center gap-8 py-2 sm:gap-12 sm:py-2.5">
-          {loop.map((line, i) => (
-            <div
-              key={`${i}-${line.body.slice(0, 16)}`}
-              className="flex shrink-0 items-center gap-2 whitespace-nowrap text-xs sm:text-sm"
-            >
-              <span
-                className={`font-display text-[10px] font-extrabold uppercase tracking-wider sm:text-xs ${line.className}`}
-              >
-                {line.label}
-              </span>
-              <span className="text-[var(--text-muted)]">·</span>
-              <span className="font-medium text-[var(--text-main)]">
-                {line.body}
-              </span>
+          {loop.length === 0 ? (
+            <div className="px-4 text-xs text-[var(--text-muted)] sm:text-sm">
+              Community intel loading…
             </div>
-          ))}
+          ) : (
+            loop.map((line, i) => (
+              <div
+                key={`${i}-${line.body.slice(0, 16)}`}
+                className="flex shrink-0 items-center gap-2 whitespace-nowrap text-xs sm:text-sm"
+              >
+                <span
+                  className={`font-display text-[10px] font-extrabold uppercase tracking-wider sm:text-xs ${line.className}`}
+                >
+                  {line.label}
+                </span>
+                <span className="text-[var(--text-muted)]">·</span>
+                <span className="font-medium text-[var(--text-main)]">
+                  {line.body}
+                </span>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>

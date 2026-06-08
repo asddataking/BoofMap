@@ -11,6 +11,20 @@ import {
   DEMO_TOP_FLOWER,
   DEMO_VALUE_PICKS,
 } from "@/lib/intelligence/rankings";
+import {
+  resolvePlatformStats,
+  resolveRankingList,
+} from "@/lib/intelligence/resolveIntelligence";
+import {
+  getSeedBiggestMovers,
+  getSeedFallingBrands,
+  getSeedFallingProducts,
+  getSeedHotDrops,
+  getSeedPlatformStats,
+  getSeedRisingBrands,
+  getSeedTopFlower,
+  getSeedValuePicks,
+} from "@/lib/intelligence/seedIntelligence";
 import type {
   IntelligenceRankingEntry,
   PlatformStats,
@@ -21,7 +35,11 @@ export function usePlatformStats(): PlatformStats {
     api.intelligence.getPlatformStats,
     isConvexConfigured() ? {} : "skip"
   );
-  return (data as PlatformStats | undefined) ?? DEMO_PLATFORM_STATS;
+  return resolvePlatformStats(
+    data as PlatformStats | undefined,
+    getSeedPlatformStats(),
+    DEMO_PLATFORM_STATS
+  );
 }
 
 export function useTopFlowerThisWeek(): IntelligenceRankingEntry[] {
@@ -29,7 +47,11 @@ export function useTopFlowerThisWeek(): IntelligenceRankingEntry[] {
     api.intelligence.getTopFlowerThisWeek,
     isConvexConfigured() ? { limit: 10 } : "skip"
   );
-  return (data as IntelligenceRankingEntry[] | undefined) ?? DEMO_TOP_FLOWER;
+  return resolveRankingList(
+    data as IntelligenceRankingEntry[] | undefined,
+    getSeedTopFlower(10),
+    DEMO_TOP_FLOWER
+  );
 }
 
 export function useBiggestMovers(): IntelligenceRankingEntry[] {
@@ -37,7 +59,11 @@ export function useBiggestMovers(): IntelligenceRankingEntry[] {
     api.intelligence.getBiggestMovers,
     isConvexConfigured() ? { limit: 8 } : "skip"
   );
-  return (data as IntelligenceRankingEntry[] | undefined) ?? DEMO_MOVERS;
+  return resolveRankingList(
+    data as IntelligenceRankingEntry[] | undefined,
+    getSeedBiggestMovers(8),
+    DEMO_MOVERS
+  );
 }
 
 export function useHotDrops(): IntelligenceRankingEntry[] {
@@ -45,7 +71,11 @@ export function useHotDrops(): IntelligenceRankingEntry[] {
     api.intelligence.getHotDrops,
     isConvexConfigured() ? { limit: 8 } : "skip"
   );
-  return (data as IntelligenceRankingEntry[] | undefined) ?? DEMO_HOT_DROPS;
+  return resolveRankingList(
+    data as IntelligenceRankingEntry[] | undefined,
+    getSeedHotDrops(8),
+    DEMO_HOT_DROPS
+  );
 }
 
 export function useValuePicks(): IntelligenceRankingEntry[] {
@@ -53,7 +83,11 @@ export function useValuePicks(): IntelligenceRankingEntry[] {
     api.intelligence.getValuePicks,
     isConvexConfigured() ? { limit: 8 } : "skip"
   );
-  return (data as IntelligenceRankingEntry[] | undefined) ?? DEMO_VALUE_PICKS;
+  return resolveRankingList(
+    data as IntelligenceRankingEntry[] | undefined,
+    getSeedValuePicks(8),
+    DEMO_VALUE_PICKS
+  );
 }
 
 export function useRisingBrands(): IntelligenceRankingEntry[] {
@@ -61,7 +95,11 @@ export function useRisingBrands(): IntelligenceRankingEntry[] {
     api.intelligence.getRisingBrands,
     isConvexConfigured() ? { limit: 6 } : "skip"
   );
-  return (data as IntelligenceRankingEntry[] | undefined) ?? [];
+  return resolveRankingList(
+    data as IntelligenceRankingEntry[] | undefined,
+    getSeedRisingBrands(6),
+    []
+  );
 }
 
 export function useFallingBrands(): IntelligenceRankingEntry[] {
@@ -69,7 +107,11 @@ export function useFallingBrands(): IntelligenceRankingEntry[] {
     api.intelligence.getFallingBrands,
     isConvexConfigured() ? { limit: 6 } : "skip"
   );
-  return (data as IntelligenceRankingEntry[] | undefined) ?? [];
+  return resolveRankingList(
+    data as IntelligenceRankingEntry[] | undefined,
+    getSeedFallingBrands(6),
+    []
+  );
 }
 
 export function useFallingProducts(): IntelligenceRankingEntry[] {
@@ -77,5 +119,9 @@ export function useFallingProducts(): IntelligenceRankingEntry[] {
     api.intelligence.getFallingProducts,
     isConvexConfigured() ? { limit: 8 } : "skip"
   );
-  return (data as IntelligenceRankingEntry[] | undefined) ?? DEMO_FALLING_PRODUCTS;
+  return resolveRankingList(
+    data as IntelligenceRankingEntry[] | undefined,
+    getSeedFallingProducts(8),
+    DEMO_FALLING_PRODUCTS
+  );
 }

@@ -12,6 +12,8 @@ import type {
   SignalEvent,
 } from "@/lib/intelligence/types";
 import { LEADERBOARD_CATEGORIES } from "@/lib/intelligence/constants";
+import { resolveRankingList } from "@/lib/intelligence/resolveIntelligence";
+import { getSeedSignalEvents } from "@/lib/intelligence/seedIntelligence";
 
 const DEMO_SIGNALS: SignalEvent[] = [
   {
@@ -77,7 +79,11 @@ export function useSignalEvents(): SignalEvent[] {
     api.signalEvents.listActive,
     isConvexConfigured() ? { limit: 20 } : "skip"
   );
-  return (data as SignalEvent[] | undefined) ?? DEMO_SIGNALS;
+  return resolveRankingList(
+    data as SignalEvent[] | undefined,
+    getSeedSignalEvents(20),
+    DEMO_SIGNALS
+  );
 }
 
 export function useIntelligenceStats(): IntelligenceStats {

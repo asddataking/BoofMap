@@ -9,6 +9,7 @@ import { SiteFooter } from "./SiteFooter";
 import { BoofLogo } from "./BoofLogo";
 import { useAuth } from "@/components/BoofAuthProvider";
 import { NotificationBell } from "@/components/intelligence/NotificationBell";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
 import { useId, useState } from "react";
 
@@ -83,6 +84,7 @@ export function AppShell({
           </nav>
 
           <div className="flex items-center gap-2">
+            <ThemeToggle className="hidden sm:inline-flex" />
             {isAdmin && (
               <Link
                 href="/admin"
@@ -186,6 +188,9 @@ export function AppShell({
               >
                 Report Boof
               </Link>
+              <div className="mt-2 border-t border-[var(--border-soft)] pt-3">
+                <ThemeToggle showLabel className="w-full justify-center" />
+              </div>
             </div>
           </nav>
         )}

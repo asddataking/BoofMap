@@ -20,9 +20,9 @@ export function useActiveForecastMarkets(limit = 8): ForecastMarket[] {
   );
   const markets = data as ForecastMarket[] | undefined;
   if (!FORECAST_PULSE_ENABLED) return [];
-  if (markets) return markets;
-  if (!isConvexConfigured()) return DEMO_FORECAST_MARKETS.slice(0, limit);
-  return [];
+  if (markets && markets.length > 0) return markets;
+  if (markets === undefined) return DEMO_FORECAST_MARKETS.slice(0, limit);
+  return DEMO_FORECAST_MARKETS.slice(0, limit);
 }
 
 export function useProductForecastMarkets(
@@ -80,27 +80,28 @@ export function useForecastStats() {
     api.forecast.getForecastStats,
     isConvexConfigured() && FORECAST_PULSE_ENABLED ? {} : "skip"
   );
-  if (data) {
-    return data as {
-      active_markets: number;
-      open_forecasts: number;
-      total_forecasts: number;
-    };
+  const demoTotal = DEMO_FORECAST_MARKETS.reduce(
+    (s, m) => s + m.total_forecasts,
+    0
+  );
+  const demoStats = {
+    active_markets: DEMO_FORECAST_MARKETS.length,
+    open_forecasts: demoTotal,
+    total_forecasts: demoTotal,
+  };
+
+  if (!data) {
+    return demoStats;
   }
 
-  if (!isConvexConfigured()) {
-    const demoTotal = DEMO_FORECAST_MARKETS.reduce(
-      (s, m) => s + m.total_forecasts,
-      0
-    );
-    return {
-      active_markets: DEMO_FORECAST_MARKETS.length,
-      open_forecasts: demoTotal,
-      total_forecasts: demoTotal,
-    };
-  }
+  const live = data as {
+    active_markets: number;
+    open_forecasts: number;
+    total_forecasts: number;
+  };
 
-  return { active_markets: 0, open_forecasts: 0, total_forecasts: 0 };
+  if (live.total_forecasts > 0) return live;
+  return demoStats;
 }
 
 export function useVoteOnForecast() {

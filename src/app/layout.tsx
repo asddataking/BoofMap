@@ -10,7 +10,7 @@ import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { SiteJsonLd } from "@/components/SiteJsonLd";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ThemeScript } from "@/components/ThemeScript";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { FloatingThemeToggle } from "@/components/ThemeToggle";
 import { rootMetadata } from "@/lib/seo";
 import "./globals.css";
 
@@ -72,7 +72,7 @@ export default function RootLayout({
               <BoofAuthProvider>{children}</BoofAuthProvider>
             </ConvexClientProvider>
           </ClerkProvider>
-          <ThemeToggle />
+          <FloatingThemeToggle />
         </ThemeProvider>
         <GoogleAnalytics />
         <Analytics />
