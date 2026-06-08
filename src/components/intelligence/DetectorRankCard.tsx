@@ -63,7 +63,7 @@ export function DetectorRankCard({
             {rank.label}
           </h3>
           <p className="mt-1 text-xs text-[var(--text-muted)]">
-            {rank.minPoints.toLocaleString()}+ detection points
+            {rank.minPoints.toLocaleString()}+ report points
           </p>
 
           {isCurrent && (

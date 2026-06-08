@@ -50,13 +50,13 @@ const PILLARS = [
   {
     icon: BarChart3,
     title: "Market Analytics",
-    body: "Access aggregated community intelligence — trends, detections, and category signals you won't get from ad dashboards.",
+    body: "Access aggregated community intelligence — trends, reports, and category signals you won't get from ad dashboards.",
     accent: "border-[var(--border-soft)]",
   },
   {
     icon: MessageSquare,
     title: "Official Responses",
-    body: "Respond to community detections with accountability. You cannot remove reports or hide alerts.",
+    body: "Respond to community reports with accountability. You cannot remove reports or hide alerts.",
     accent: "border-[var(--border-soft)]",
   },
 ];

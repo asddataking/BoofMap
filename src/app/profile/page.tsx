@@ -25,7 +25,7 @@ export default function ProfilePage() {
               Profile
             </h1>
             <p className="mt-1 text-sm text-zinc-500">
-              Your intelligence profile, detections, alerts, and reputation.
+              Your intelligence profile, reports, alerts, and reputation.
             </p>
           </div>
 
@@ -74,7 +74,7 @@ export default function ProfilePage() {
                 href="/report"
                 className="rounded-2xl border border-zinc-800 bg-zinc-900/50 px-6 py-3.5 text-center text-sm font-semibold text-white hover:border-zinc-700"
               >
-                Submit Detection
+                Report Boof
               </Link>
             </div>
           </div>

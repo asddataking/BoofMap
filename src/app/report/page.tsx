@@ -44,18 +44,18 @@ export default function ReportPage() {
       <PageTransition>
         <div className="py-4">
           <h2 className="font-heading text-2xl font-bold text-white">
-            {lane === "picker" ? "Submit Detection" : "New Detection"}
+            {lane === "picker" ? "Report Boof" : "New Report"}
           </h2>
           <p className="mt-1 text-sm text-zinc-500">
             {lane === "picker"
               ? "Find fire. Expose boof. Contribute intelligence."
-              : "Sign in to submit — keeps detections accountable"}
+              : "Sign in to submit — keeps reports accountable"}
           </p>
 
           {lane === "picker" && (
             <div className="mt-6 space-y-3">
               <p className="text-sm font-medium text-zinc-300">
-                What are you detecting?
+                What are you reporting?
               </p>
               {LANES.map(({ id, title, description, icon: Icon, accent }) => (
                 <button

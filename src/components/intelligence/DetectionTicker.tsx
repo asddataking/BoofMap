@@ -34,7 +34,7 @@ export function DetectionTicker() {
     <div
       className="relative -mx-4 overflow-hidden border-y border-[var(--border-soft)] bg-[var(--bg-panel)] sm:-mx-6 lg:-mx-8"
       role="region"
-      aria-label="Live detection ticker"
+      aria-label="Live report ticker"
     >
       <div className="sr-only" aria-live="polite">
         Live cannabis intelligence signals

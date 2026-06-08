@@ -81,7 +81,7 @@ export function StateOfMarketClient() {
                 </p>
               )}
               <p className="mt-4 max-w-2xl text-base text-[var(--text-muted)]">
-                Generated from community detections. Snapshots stored in Convex.
+                Generated from community reports. Snapshots stored in Convex.
                 Updated weekly with market intelligence you won&apos;t find on
                 pay-to-play directories.
               </p>

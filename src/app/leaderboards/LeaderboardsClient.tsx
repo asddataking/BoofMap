@@ -28,7 +28,7 @@ export function LeaderboardsClient() {
                 Leaderboards
               </h1>
               <p className="mt-3 max-w-xl text-sm text-[var(--text-muted)]">
-                Community-powered rankings. Updated continuously from detections.
+                Community-powered rankings. Updated continuously from reports.
                 Dispensaries cannot pay to be cool.
               </p>
             </div>
@@ -93,7 +93,7 @@ export function LeaderboardsClient() {
                 ))
               ) : (
                 <p className="py-8 text-center text-sm text-[var(--text-muted)]">
-                  Rankings populate as community detections roll in.
+                  Rankings populate as community reports roll in.
                 </p>
               )}
             </div>

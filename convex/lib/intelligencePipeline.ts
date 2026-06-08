@@ -129,12 +129,12 @@ async function awardAchievement(
   });
 
   const labels: Record<string, string> = {
-    first_detection: "First Detection",
+    first_detection: "First Report",
     boof_buster: "Boof Buster",
     fire_finder: "Fire Finder",
     value_hunter: "Value Hunter",
     market_analyst: "Market Analyst",
-    top_detector: "Top Detector",
+    top_detector: "Top Reporter",
   };
 
   await ctx.db.insert("notifications", {
@@ -397,8 +397,8 @@ export async function processApprovedReport(
   if (GAMIFICATION_ENABLED && options?.isNew !== false) {
     await addDetectionPoints(ctx, report.userId, DETECTION_POINTS.verified_detection, {
       type: "points_earned",
-      title: "Detection verified",
-      body: `+${DETECTION_POINTS.verified_detection} detection points`,
+      title: "Report verified",
+      body: `+${DETECTION_POINTS.verified_detection} report points`,
     });
     await checkAchievements(ctx, report.userId, detectionType);
   }
@@ -433,7 +433,7 @@ export async function processConfirmation(
       {
         type: "points_earned",
         title: "Alert confirmed",
-        body: `+${DETECTION_POINTS.confirmed_alert} detection points`,
+        body: `+${DETECTION_POINTS.confirmed_alert} report points`,
       }
     );
   }
@@ -441,7 +441,7 @@ export async function processConfirmation(
   await ctx.db.insert("notifications", {
     userId: report.userId,
     type: "detection_confirmed",
-    title: "Your detection was confirmed",
+    title: "Your report was confirmed",
     body: `${report.strainName} · ${report.brandName} — community verified`,
     read: false,
     createdAt: Date.now(),

@@ -160,7 +160,7 @@ function HomeClientView({
                     Join the intelligence network
                   </h3>
                   <p className="mt-2 max-w-lg text-sm text-[var(--text-muted)]">
-                    Browse live detections free. Sign up to submit intelligence,
+                    Browse live reports free. Sign up to submit intelligence,
                     confirm alerts, and earn status in the cannabis intelligence
                     network.
                   </p>

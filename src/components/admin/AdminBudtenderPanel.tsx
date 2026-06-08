@@ -15,7 +15,7 @@ export function AdminBudtenderPanel() {
     <section>
       <AdminPageHeader
         title="Budtender applications"
-        description="Review Boof Detection Network insider applications"
+        description="Review Boof Insider Network applications"
       />
 
       {!applications?.length ? (

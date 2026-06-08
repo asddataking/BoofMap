@@ -156,7 +156,7 @@ export function DetectionFeed({
   const meetupCount = meetups.length;
 
   return (
-    <section id="detections" className="scroll-mt-24" aria-label="Latest detections">
+    <section id="reports" className="scroll-mt-24" aria-label="Latest reports">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <div className="mb-2 flex items-center gap-2">
@@ -167,7 +167,7 @@ export function DetectionFeed({
             <p className="section-kicker !mb-0">Live Feed</p>
           </div>
           <h2 className="font-display text-2xl font-extrabold uppercase tracking-tight text-[var(--text-main)] sm:text-3xl">
-            Latest Detections
+            Latest Reports
           </h2>
           <p className="mt-1 text-sm text-[var(--text-muted)]">
             Community intelligence streaming in real time
@@ -185,7 +185,7 @@ export function DetectionFeed({
 
       <div
         role="tablist"
-        aria-label="Filter detections"
+        aria-label="Filter reports"
         className="mt-5 flex gap-2 overflow-x-auto pb-1 scrollbar-thin"
       >
         {TABS.map((tab) => {
@@ -229,10 +229,10 @@ export function DetectionFeed({
           ) : (
             <div className="relative overflow-hidden rounded-xl border border-[var(--border-soft)] bg-[var(--bg-card)] p-10 text-center">
               <p className="text-sm text-[var(--text-muted)]">
-                No detections in this channel yet. Be the first signal.
+                No reports in this channel yet. Be the first signal.
               </p>
               <Link href="/report" className="btn-primary mt-4 inline-flex px-6 py-3">
-                Submit Detection
+                Report Boof
               </Link>
             </div>
           )}

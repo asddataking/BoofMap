@@ -26,14 +26,14 @@ function CustomerProfileCard({
             {displayName ?? "Community Member"}
           </h2>
           <p className="mt-2 text-sm text-[var(--text-muted)]">
-            Reddit-style reputation profile. Submit detections, save products,
+            Reddit-style reputation profile. Submit reports, save products,
             and build trust through community intelligence.
           </p>
         </div>
       </div>
       <div className="mt-6 flex flex-wrap gap-2">
         <Link href="/report" className="btn-primary !px-5 !py-2.5 text-sm">
-          Submit detection
+          Report Boof
         </Link>
         <Link href="/reports" className="btn-secondary !px-5 !py-2.5 text-sm">
           Intel map
@@ -60,7 +60,7 @@ function BudtenderProfileCard({
           <Users className="h-8 w-8 text-[#39FF88]" />
         </div>
         <div>
-          <p className="section-kicker !mb-1">Boof Detection</p>
+          <p className="section-kicker !mb-1">Boof Insiders</p>
           <h2 className="font-display text-2xl font-black uppercase tracking-tight text-[var(--text-main)]">
             {displayName ?? "Insider"}
           </h2>
@@ -78,7 +78,7 @@ function BudtenderProfileCard({
       </div>
       <div className="mt-6 grid gap-2 sm:grid-cols-3">
         {[
-          { icon: Target, label: "Submit detections" },
+          { icon: Target, label: "Submit reports" },
           { icon: Shield, label: "Verify alerts" },
           { icon: Users, label: "Insider network" },
         ].map(({ icon: Icon, label }) => (
@@ -97,7 +97,7 @@ function BudtenderProfileCard({
         href="/insiders"
         className="mt-4 inline-flex text-sm font-semibold text-[#39FF88] hover:underline"
       >
-        Boof Detection program →
+        Insiders program →
       </Link>
     </div>
   );
@@ -133,7 +133,7 @@ function BrandProfileCard({
           <span className="text-[#39FF88]">✓</span> Submit batch & COA data
         </li>
         <li className="flex gap-2">
-          <span className="text-[#39FF88]">✓</span> Respond to community detections
+          <span className="text-[#39FF88]">✓</span> Respond to community reports
         </li>
       </ul>
       <Link

@@ -17,13 +17,13 @@ const ROLE_META: Record<
     label: "Customer",
     icon: User,
     applyHref: "/report",
-    applyLabel: "Submit detections",
+    applyLabel: "Submit reports",
   },
   budtender: {
     label: "Budtender",
     icon: Users,
     applyHref: "/insiders",
-    applyLabel: "Apply to Boof Detection",
+    applyLabel: "Apply to Insiders",
   },
   brand: {
     label: "Brand",
@@ -105,7 +105,7 @@ export function ProfileRoleSwitcher({
         <p className="mt-2 px-3 text-[11px] text-[var(--text-muted)]">
           Budtender view locked.{" "}
           <Link href="/insiders" className="text-[#39FF88] hover:underline">
-            Apply to Boof Detection
+            Apply to Insiders
           </Link>
         </p>
       )}

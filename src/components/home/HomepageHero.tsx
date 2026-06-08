@@ -48,7 +48,7 @@ export function HomepageHero({
 
             <p className="mt-4 max-w-lg text-base leading-relaxed text-[var(--text-muted)]">
               {PLATFORM_TAGLINE} Watch the cannabis market in real time.
-              Community-powered detections surface fire, expose boof, and track
+              Community-powered reports surface fire, expose boof, and track
               value — brands cannot buy trust.
             </p>
             <p className="mt-2 text-sm text-[var(--text-muted)]/80">
@@ -68,7 +68,7 @@ export function HomepageHero({
               className="btn-primary inline-flex flex-1 items-center justify-center gap-2 px-6 py-3.5 sm:flex-none"
             >
               <Zap className="h-4 w-4" aria-hidden />
-              Submit Detection
+              Report Boof
             </Link>
             <Link
               href="/reports"

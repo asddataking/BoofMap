@@ -260,8 +260,8 @@ export const addDetectionPoints = mutation({
     await ctx.db.insert("notifications", {
       userId,
       type: "points_earned",
-      title: "Detection points earned",
-      body: `+${points} detection points`,
+      title: "Report points earned",
+      body: `+${points} report points`,
       read: false,
       createdAt: Date.now(),
     });
@@ -383,8 +383,8 @@ export const reviewBudtenderApplication = mutation({
       await ctx.db.insert("notifications", {
         userId: app.userId,
         type: "budtender_approved",
-        title: "Welcome to Boof Detection",
-        body: "Your insider application was approved. You are now a verified detector.",
+        title: "Welcome to Boof Insiders",
+        body: "Your insider application was approved. You are now a verified insider.",
         read: false,
         createdAt: Date.now(),
       });

@@ -32,7 +32,7 @@ export function BudtenderApplicationForm() {
     return (
       <div className="rounded-xl border border-[var(--border-soft)] bg-[var(--bg-card)] p-6">
         <p className="text-sm text-[var(--text-muted)]">
-          Sign in to apply for the Boof Detection Network.
+          Sign in to apply for the Boof Insider Network.
         </p>
         <SignInButton mode="modal">
           <button type="button" className="btn-primary mt-4 px-8 py-3">
@@ -64,7 +64,7 @@ export function BudtenderApplicationForm() {
           Verified Insider
         </p>
         <p className="mt-2 text-sm text-[var(--text-muted)]">
-          You&apos;re an active member of the Boof Detection Network.
+          You&apos;re an active member of the Boof Insider Network.
         </p>
       </div>
     );
@@ -92,10 +92,10 @@ export function BudtenderApplicationForm() {
       className="rounded-xl border border-[var(--border-soft)] bg-[var(--bg-card)] p-6"
     >
       <h3 className="font-display text-lg font-extrabold uppercase tracking-tight text-[var(--text-main)]">
-        Apply to Boof Detection
+        Apply to Insiders
       </h3>
       <p className="mt-2 text-sm text-[var(--text-muted)]">
-        Verified budtenders get insider status, detection tools, and leaderboard
+        Verified budtenders get insider status, reporting tools, and leaderboard
         visibility.
       </p>
 
@@ -169,7 +169,7 @@ export function BudtenderApplicationForm() {
             onChange={(e) =>
               setForm({ ...form, experience: e.target.value })
             }
-            placeholder="Years in cannabis, specialties, why you want to detect boof..."
+            placeholder="Years in cannabis, specialties, why you want to report boof..."
           />
         </div>
       </div>

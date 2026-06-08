@@ -15,8 +15,8 @@ const ACHIEVEMENT_META: Record<
   { label: string; description: string }
 > = {
   first_detection: {
-    label: "First Detection",
-    description: "Submitted your first community detection",
+    label: "First Report",
+    description: "Submitted your first community report",
   },
   boof_buster: {
     label: "Boof Buster",
@@ -28,14 +28,14 @@ const ACHIEVEMENT_META: Record<
   },
   value_hunter: {
     label: "Value Hunter",
-    description: "Surfaced 5+ value detections",
+    description: "Surfaced 5+ value reports",
   },
   market_analyst: {
     label: "Market Analyst",
     description: "Reached Analyst rank",
   },
   top_detector: {
-    label: "Top Detector",
+    label: "Top Reporter",
     description: "Top monthly contributor",
   },
 };

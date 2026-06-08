@@ -21,7 +21,7 @@ const landingLinks = [
 const appLinks = [
   { href: "/reports", label: "Intel Map" },
   { href: "/brands", label: "Brands" },
-  { href: "/report", label: "Detect" },
+  { href: "/report", label: "Report" },
 ] as const;
 
 export function AppShell({
@@ -97,7 +97,7 @@ export function AppShell({
               className="btn-dark hidden items-center gap-2 !px-4 !py-2 text-sm sm:inline-flex"
             >
               <Target className="h-4 w-4" aria-hidden />
-              Submit Detection
+              Report Boof
             </Link>
 
             {!loading && (
@@ -184,7 +184,7 @@ export function AppShell({
                 onClick={() => setMenuOpen(false)}
                 className="mt-1 rounded-xl bg-zinc-900 px-3 py-2.5 text-sm font-semibold text-white"
               >
-                Submit Detection
+                Report Boof
               </Link>
             </div>
           </nav>
@@ -198,11 +198,11 @@ export function AppShell({
       {showFab && (
         <Link
           href="/report"
-          aria-label="Submit detection — contribute product intelligence"
+          aria-label="Report boof — contribute product intelligence"
           className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] right-4 z-40 flex min-h-[48px] items-center gap-2 rounded-lg bg-[#FF3B3B] px-5 py-3.5 font-display text-sm font-extrabold uppercase tracking-wide text-white shadow-[0_8px_32px_rgba(255,59,59,0.4)] transition hover:scale-[1.02] hover:shadow-[0_8px_40px_rgba(255,59,59,0.55)] active:scale-[0.98] lg:bottom-8 lg:right-8"
         >
           <Target className="h-4 w-4" aria-hidden />
-          <span className="hidden sm:inline">Detect</span>
+          <span className="hidden sm:inline">Report Boof</span>
         </Link>
       )}
 

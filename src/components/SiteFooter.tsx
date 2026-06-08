@@ -9,7 +9,7 @@ import { MEDIA_CONTACT_EMAIL, MEDIA_KIT_PDF_FILENAME, MEDIA_KIT_PDF_PATH } from 
 const exploreLinks = [
   { href: "/reports", label: "Live reports & map" },
   { href: "/brands", label: "Brand analytics" },
-  { href: "/report", label: "Submit detection" },
+  { href: "/report", label: "Report Boof" },
 ] as const;
 
 const intelligenceLinks = [

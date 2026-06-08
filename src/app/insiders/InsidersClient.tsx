@@ -23,7 +23,7 @@ import { useAuth } from "@/components/BoofAuthProvider";
 const RESPONSIBILITIES = [
   {
     icon: Target,
-    title: "Submit detections",
+    title: "Submit reports",
     body: "Flag fire, boof, value, and batch warnings from the counter.",
   },
   {
@@ -39,7 +39,7 @@ const RESPONSIBILITIES = [
   {
     icon: Users,
     title: "Refer insiders",
-    body: "Bring trusted budtenders into the detection network.",
+    body: "Bring trusted budtenders into the insider network.",
   },
   {
     icon: Radar,
@@ -58,7 +58,7 @@ const BENEFITS = [
 const STEPS = [
   { step: "01", title: "Apply", body: "Tell us where you work and what you see on shelves." },
   { step: "02", title: "Verify", body: "We review applications from active budtenders." },
-  { step: "03", title: "Detect", body: "Submit and verify product intelligence for your market." },
+  { step: "03", title: "Report", body: "Submit and verify product intelligence for your market." },
 ];
 
 export function InsidersClient() {
@@ -69,7 +69,7 @@ export function InsidersClient() {
       <PageTransition>
         <div className="space-y-20 pb-16 pt-4">
           <IntelLandingHero
-            kicker="Boof Detection"
+            kicker="Boof Insiders"
             title="Become a Cannabis"
             titleAccent="Intelligence Insider"
             subtitle="Help identify fire. Expose boof. Contribute real product intelligence the community can trust — not pay-to-play listings."
@@ -88,7 +88,7 @@ export function InsidersClient() {
                   href="/report"
                   className="btn-secondary inline-flex items-center gap-2 px-8 py-4"
                 >
-                  Submit Detection
+                  Report Boof
                 </Link>
               </div>
             ) : (
@@ -98,7 +98,7 @@ export function InsidersClient() {
                   className="btn-primary inline-flex items-center gap-2 px-10 py-4"
                 >
                   <Target className="h-4 w-4" />
-                  Become a Detector
+                  Become an Insider
                 </button>
               </SignUpButton>
             )}
@@ -108,7 +108,7 @@ export function InsidersClient() {
             <div className="mb-8 text-center lg:text-left">
               <p className="section-kicker">Responsibilities</p>
               <h2 className="font-display text-3xl font-extrabold uppercase tracking-tight text-[var(--text-main)]">
-                What Detectors Do
+                What Insiders Do
               </h2>
               <p className="mt-2 max-w-2xl text-sm text-[var(--text-muted)]">
                 You&apos;re not writing reviews. You&apos;re submitting field
@@ -146,7 +146,7 @@ export function InsidersClient() {
             <div className="relative">
               <p className="section-kicker">Process</p>
               <h2 className="font-display text-2xl font-extrabold uppercase tracking-tight text-[var(--text-main)]">
-                How Boof Detection Works
+                How Insiders Work
               </h2>
               <div className="mt-8 grid gap-6 lg:grid-cols-3">
                 {STEPS.map((s, i) => (
@@ -196,10 +196,10 @@ export function InsidersClient() {
             <div className="mb-6">
               <p className="section-kicker">Join the network</p>
               <h2 className="font-display text-3xl font-extrabold uppercase tracking-tight text-[var(--text-main)]">
-                Apply to Boof Detection
+                Apply to Insiders
               </h2>
               <p className="mt-2 max-w-xl text-sm text-[var(--text-muted)]">
-                Verified budtenders unlock the insider profile view, detection
+                Verified budtenders unlock the insider profile view, reporting
                 tools, and network visibility. Applications reviewed manually.
               </p>
             </div>

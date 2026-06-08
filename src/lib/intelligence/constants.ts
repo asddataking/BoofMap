@@ -28,21 +28,21 @@ export const DETECTOR_RANKS: {
     label: "Observer",
     minPoints: 0,
     badge: "👁",
-    unlocks: ["View live detections", "Save products & brands"],
+    unlocks: ["View live reports", "Save products & brands"],
   },
   {
     id: "detector",
-    label: "Detector",
+    label: "Reporter",
     minPoints: 100,
     badge: "📡",
-    unlocks: ["Submit detections", "Earn detection points"],
+    unlocks: ["Submit reports", "Earn report points"],
   },
   {
     id: "investigator",
     label: "Investigator",
     minPoints: 300,
     badge: "🔍",
-    unlocks: ["Verify detections", "Confirm alerts"],
+    unlocks: ["Verify reports", "Confirm alerts"],
   },
   {
     id: "analyst",
@@ -68,8 +68,8 @@ export const ACHIEVEMENTS: {
 }[] = [
   {
     id: "first_detection",
-    label: "First Detection",
-    description: "Submitted your first community detection",
+    label: "First Report",
+    description: "Submitted your first community report",
     emoji: "🎯",
   },
   {
@@ -87,7 +87,7 @@ export const ACHIEVEMENTS: {
   {
     id: "value_hunter",
     label: "Value Hunter",
-    description: "Surfaced 5+ value detections",
+    description: "Surfaced 5+ value reports",
     emoji: "💰",
   },
   {
@@ -98,7 +98,7 @@ export const ACHIEVEMENTS: {
   },
   {
     id: "top_detector",
-    label: "Top Detector",
+    label: "Top Reporter",
     description: "Top monthly contributor",
     emoji: "🏆",
   },
