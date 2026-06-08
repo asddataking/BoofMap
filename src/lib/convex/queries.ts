@@ -48,34 +48,42 @@ export async function preloadApprovedMeetupReports(): Promise<Preloaded<
 }
 
 export async function fetchApprovedReports(): Promise<Report[]> {
+  const seed = getSeedApprovedReports();
   if (!isConvexConfigured()) {
-    return allowLocalSeedFallback() ? getSeedApprovedReports() : [];
+    return seed;
   }
   const options = convexQueryOptions();
-  if (!options) return [];
+  if (!options) return seed;
   try {
-    return (await fetchQuery(api.reports.listApproved, {}, options)) as Report[];
+    const live = (await fetchQuery(
+      api.reports.listApproved,
+      {},
+      options
+    )) as Report[];
+    return live.length > 0 ? live : seed;
   } catch (error) {
     logConvexQueryFailure("fetchApprovedReports", error);
-    return allowLocalSeedFallback() ? getSeedApprovedReports() : [];
+    return seed;
   }
 }
 
 export async function fetchApprovedMeetupReports(): Promise<MeetupReport[]> {
+  const seed = getSeedApprovedMeetupReports();
   if (!isConvexConfigured()) {
-    return allowLocalSeedFallback() ? getSeedApprovedMeetupReports() : [];
+    return seed;
   }
   const options = convexQueryOptions();
-  if (!options) return [];
+  if (!options) return seed;
   try {
-    return (await fetchQuery(
+    const live = (await fetchQuery(
       api.meetupReports.listApproved,
       {},
       options
     )) as MeetupReport[];
+    return live.length > 0 ? live : seed;
   } catch (error) {
     logConvexQueryFailure("fetchApprovedMeetupReports", error);
-    return allowLocalSeedFallback() ? getSeedApprovedMeetupReports() : [];
+    return seed;
   }
 }
 

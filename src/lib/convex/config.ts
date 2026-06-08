@@ -18,7 +18,7 @@ export function isClerkConfigured(): boolean {
   return Boolean(key && !key.includes("placeholder"));
 }
 
-/** True on Vercel production deploys — never serve local Michigan seed data there. */
+/** True on Vercel production deploys. */
 export function isProductionDeployment(): boolean {
   return (
     process.env.NODE_ENV === "production" &&
@@ -26,7 +26,10 @@ export function isProductionDeployment(): boolean {
   );
 }
 
-/** Local seed JSON is for dev only when Convex is not wired up. */
+/**
+ * @deprecated Prefer resolveFeedList — seed data is always available as a
+ * fallback when Convex returns empty results, including in production.
+ */
 export function allowLocalSeedFallback(): boolean {
-  return !isProductionDeployment();
+  return true;
 }

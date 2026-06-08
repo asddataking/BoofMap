@@ -2,7 +2,8 @@
 
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { allowLocalSeedFallback, isConvexConfigured } from "@/lib/convex/config";
+import { isConvexConfigured } from "@/lib/convex/config";
+import { resolveFeedList } from "@/lib/data/resolveFeed";
 import {
   getSeedAlertSettings,
   getSeedMarketMovers,
@@ -60,8 +61,10 @@ export function useTickerItems(): TickerItem[] {
     api.ticker.listActiveTickerItems,
     configured ? {} : "skip"
   );
-  const items =
-    live ?? (allowLocalSeedFallback() ? getSeedTickerItems() : []);
+  const items = resolveFeedList(
+    live as TickerItem[] | undefined,
+    getSeedTickerItems()
+  );
   return items.map(normalizeTickerItem);
 }
 
@@ -71,8 +74,8 @@ export function useRankingsByType(type: RankingType): RankingEntry[] {
     api.rankings.listRankingsByType,
     configured ? { type } : "skip"
   );
-  if (!live) {
-    return allowLocalSeedFallback() ? getSeedRankings(type) : [];
+  if (!live || live.length === 0) {
+    return getSeedRankings(type);
   }
   return live.map((row, i) => ({
     ...row,
@@ -84,10 +87,10 @@ export function useRankingsByType(type: RankingType): RankingEntry[] {
 export function useMarketMovers() {
   const configured = isConvexConfigured();
   const live = useQuery(api.rankings.getMarketMovers, configured ? {} : "skip");
-  if (live) return live;
-  return allowLocalSeedFallback()
-    ? getSeedMarketMovers()
-    : { trending: [], falling: [] };
+  if (live && (live.trending.length > 0 || live.falling.length > 0)) {
+    return live;
+  }
+  return getSeedMarketMovers();
 }
 
 /** Signed-in analyst profile; `undefined` while loading, `null` when signed out or unavailable. */

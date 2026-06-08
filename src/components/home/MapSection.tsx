@@ -20,7 +20,7 @@ export function MapSection({
         href="/reports"
         linkLabel="Open full map"
       />
-      <div className="min-h-[360px] lg:min-h-[480px]">
+      <div className="min-h-[280px] lg:min-h-[360px]">
         <TacticalMapPanel reports={reports} meetups={meetups} />
       </div>
     </section>

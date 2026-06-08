@@ -1,4 +1,3 @@
-import { allowLocalSeedFallback } from "@/lib/convex/config";
 import type { PlatformStats } from "./types";
 
 export function resolvePlatformStats(
@@ -7,7 +6,7 @@ export function resolvePlatformStats(
   demo: PlatformStats
 ): PlatformStats {
   if (live && live.reports > 0) return live;
-  if (allowLocalSeedFallback() && seed.reports > 0) return seed;
+  if (seed.reports > 0) return seed;
   return demo;
 }
 
@@ -17,7 +16,7 @@ export function resolveRankingList<T>(
   demo: T[]
 ): T[] {
   if (live && live.length > 0) return live;
-  if (allowLocalSeedFallback() && seed.length > 0) return seed;
+  if (seed.length > 0) return seed;
   if (live === undefined) return demo;
   return demo;
 }

@@ -1,5 +1,4 @@
 import { getSeedApprovedReports } from "@/lib/convex/seed";
-import { allowLocalSeedFallback } from "@/lib/convex/config";
 import type { Report } from "@/lib/types";
 import { slugify } from "@/lib/utils";
 import {
@@ -67,7 +66,6 @@ function rankingEntryToApi(entry: RankingEntry): IntelligenceRankingEntry {
 }
 
 function getSeedReportRows(): ReportRow[] {
-  if (!allowLocalSeedFallback()) return [];
   return getSeedApprovedReports().map(reportToRow);
 }
 

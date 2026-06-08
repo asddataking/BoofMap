@@ -2,9 +2,10 @@
 
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { allowLocalSeedFallback, isConvexConfigured } from "@/lib/convex/config";
+import { isConvexConfigured } from "@/lib/convex/config";
 import { getSeedApprovedMeetupReports } from "@/lib/convex/seed";
 import { mergeMeetupFeed } from "@/lib/data/mergeMeetupFeed";
+import { resolveFeedList } from "@/lib/data/resolveFeed";
 import { useAuth } from "@/components/BoofAuthProvider";
 import type { MeetupReport } from "@/lib/types";
 
@@ -20,9 +21,14 @@ export function useMeetupReports(): MeetupReport[] {
     configured && isAuthenticated ? {} : "skip"
   );
 
-  const seed = allowLocalSeedFallback() ? getSeedApprovedMeetupReports() : [];
+  const seed = getSeedApprovedMeetupReports();
   if (!configured) return seed;
-  if (approved === undefined) return [];
 
-  return mergeMeetupFeed(approved as MeetupReport[], mine as MeetupReport[] | undefined);
+  return resolveFeedList(
+    mergeMeetupFeed(
+      approved as MeetupReport[] | undefined,
+      mine as MeetupReport[] | undefined
+    ),
+    seed
+  );
 }

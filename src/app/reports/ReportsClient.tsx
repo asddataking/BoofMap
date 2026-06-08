@@ -30,6 +30,7 @@ import { usePreloadedReports } from "@/hooks/useRealtimeReports";
 import { isConvexConfigured } from "@/lib/convex/config";
 import { useQuery } from "convex/react";
 import { mergeMeetupFeed } from "@/lib/data/mergeMeetupFeed";
+import { resolveFeedList } from "@/lib/data/resolveFeed";
 
 export function ReportsClient({
   preloadedReports,
@@ -79,9 +80,9 @@ function ReportsClientQuery({
   seedMeetupReports: MeetupReport[];
 }) {
   const { isAuthenticated } = useAuth();
-  const reports =
-    (useQuery(api.reports.listApproved, {}) as Report[] | undefined) ??
-    seedReports;
+  const liveReports = useQuery(api.reports.listApproved, {}) as
+    | Report[]
+    | undefined;
   const approved = useQuery(api.meetupReports.listApproved, {}) as
     | MeetupReport[]
     | undefined;
@@ -89,10 +90,11 @@ function ReportsClientQuery({
     api.meetupReports.listMine,
     isAuthenticated ? {} : "skip"
   );
-  const meetupReports =
-    approved === undefined
-      ? seedMeetupReports
-      : mergeMeetupFeed(approved, mine as MeetupReport[] | undefined);
+  const reports = resolveFeedList(liveReports, seedReports);
+  const meetupReports = resolveFeedList(
+    mergeMeetupFeed(approved, mine as MeetupReport[] | undefined),
+    seedMeetupReports
+  );
 
   const voteMutation = useMutation(api.reports.vote);
   const confirmMeetupMutation = useMutation(api.meetupReports.confirm);
@@ -363,7 +365,7 @@ function ReportsClientView({
                   {stats.mapped} pins
                 </span>
               </div>
-              <div className="h-[42vh] min-h-[280px] lg:h-[calc(100vh-12rem)] lg:min-h-[520px]">
+              <div className="h-[32vh] min-h-[220px] lg:h-[50vh] lg:min-h-[360px]">
                 <MapViewDynamic
                   reports={searchFiltered}
                   meetups={searchFilteredMeetups}

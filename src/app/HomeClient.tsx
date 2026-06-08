@@ -29,6 +29,7 @@ import { usePreloadedReports } from "@/hooks/useRealtimeReports";
 import { isConvexConfigured } from "@/lib/convex/config";
 import { useQuery } from "convex/react";
 import { mergeMeetupFeed } from "@/lib/data/mergeMeetupFeed";
+import { resolveFeedList } from "@/lib/data/resolveFeed";
 
 export function HomeClient({
   preloadedReports,
@@ -77,9 +78,9 @@ function HomeClientQuery({
   seedMeetupReports: MeetupReport[];
 }) {
   const { isAuthenticated } = useAuth();
-  const reports =
-    (useQuery(api.reports.listApproved, {}) as Report[] | undefined) ??
-    seedReports;
+  const liveReports = useQuery(api.reports.listApproved, {}) as
+    | Report[]
+    | undefined;
   const approved = useQuery(api.meetupReports.listApproved, {}) as
     | MeetupReport[]
     | undefined;
@@ -87,10 +88,11 @@ function HomeClientQuery({
     api.meetupReports.listMine,
     isAuthenticated ? {} : "skip"
   );
-  const meetups =
-    approved === undefined
-      ? seedMeetupReports
-      : mergeMeetupFeed(approved, mine as MeetupReport[] | undefined);
+  const reports = resolveFeedList(liveReports, seedReports);
+  const meetups = resolveFeedList(
+    mergeMeetupFeed(approved, mine as MeetupReport[] | undefined),
+    seedMeetupReports
+  );
 
   return <HomeClientView reports={reports} meetups={meetups} />;
 }

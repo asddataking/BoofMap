@@ -2,9 +2,11 @@ import type { MeetupReport } from "@/lib/types";
 
 /** Approved feed + reporter's pending/flagged (deduped, newest first). */
 export function mergeMeetupFeed(
-  approved: MeetupReport[],
+  approved: MeetupReport[] | undefined,
   mine: MeetupReport[] | undefined
-): MeetupReport[] {
+): MeetupReport[] | undefined {
+  if (approved === undefined) return undefined;
+
   if (!mine?.length) {
     return [...approved].sort(
       (a, b) =>
