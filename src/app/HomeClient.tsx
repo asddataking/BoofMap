@@ -13,10 +13,7 @@ import { IntelligenceErrorBoundary } from "@/components/intelligence/Intelligenc
 import { IntelligenceHero } from "@/components/home/IntelligenceHero";
 import { TopFlowerSection } from "@/components/home/TopFlowerSection";
 import { ForecastPulseSection } from "@/components/forecast/ForecastPulseSection";
-import { BiggestMoversSection } from "@/components/home/BiggestMoversSection";
-import { FallingProductsSection } from "@/components/home/FallingProductsSection";
-import { HotDropsSection } from "@/components/home/HotDropsSection";
-import { BudgetBeastSection } from "@/components/home/BudgetBeastSection";
+import { IntelligenceScoreboard } from "@/components/home/IntelligenceScoreboard";
 import { CommunityFeedSection } from "@/components/home/CommunityFeedSection";
 import { MapSection } from "@/components/home/MapSection";
 import { AnalystRankTeaser } from "@/components/home/AnalystRankTeaser";
@@ -146,19 +143,7 @@ function HomeClientView({
           </IntelligenceErrorBoundary>
 
           <IntelligenceErrorBoundary>
-            <BiggestMoversSection />
-          </IntelligenceErrorBoundary>
-
-          <IntelligenceErrorBoundary>
-            <FallingProductsSection />
-          </IntelligenceErrorBoundary>
-
-          <IntelligenceErrorBoundary>
-            <HotDropsSection />
-          </IntelligenceErrorBoundary>
-
-          <IntelligenceErrorBoundary>
-            <BudgetBeastSection />
+            <IntelligenceScoreboard />
           </IntelligenceErrorBoundary>
 
           <IntelligenceErrorBoundary>
