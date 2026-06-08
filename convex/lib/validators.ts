@@ -19,7 +19,8 @@ export const rankingType = v.union(
   v.literal("hot_drops"),
   v.literal("value_picks"),
   v.literal("rising_brands"),
-  v.literal("falling_brands")
+  v.literal("falling_brands"),
+  v.literal("falling_products")
 );
 
 export const rankingTrend = v.union(

@@ -12,6 +12,7 @@ import {
 } from "./seed";
 import type { MeetupReport, Report } from "@/lib/types";
 import type { BrandProfile, DispensaryProfile } from "@/lib/types";
+import type { ProductIntelligence, ProductProfile } from "@/lib/intelligence/types";
 import type { RankingType } from "@/lib/types";
 import { getBrandsFromReports } from "@/lib/data/reports";
 
@@ -189,5 +190,79 @@ export async function fetchProductScore(productSlug: string) {
   } catch (error) {
     logConvexQueryFailure("fetchProductScore", error);
     return null;
+  }
+}
+
+export async function fetchProductIntelligence(
+  productSlug: string
+): Promise<ProductIntelligence | null> {
+  if (!isConvexConfigured()) {
+    if (!allowLocalSeedFallback()) return null;
+    const { getProductProfileFromReports } = await import(
+      "@/lib/data/profileFallback"
+    );
+    const profile = getProductProfileFromReports(
+      productSlug,
+      getSeedApprovedReports()
+    );
+    if (!profile) return null;
+    const { recent_reports: _, ...intelligence } = profile;
+    return intelligence;
+  }
+  const options = convexQueryOptions();
+  if (!options) return null;
+  try {
+    return (await fetchQuery(
+      api.intelligence.getProductIntelligence,
+      { productSlug },
+      options
+    )) as ProductIntelligence | null;
+  } catch (error) {
+    logConvexQueryFailure("fetchProductIntelligence", error);
+    if (!allowLocalSeedFallback()) return null;
+    const { getProductProfileFromReports } = await import(
+      "@/lib/data/profileFallback"
+    );
+    const profile = getProductProfileFromReports(
+      productSlug,
+      getSeedApprovedReports()
+    );
+    if (!profile) return null;
+    const { recent_reports: _, ...intelligence } = profile;
+    return intelligence;
+  }
+}
+
+export async function fetchProductProfile(
+  productSlug: string
+): Promise<ProductProfile | null> {
+  if (!isConvexConfigured()) {
+    if (!allowLocalSeedFallback()) return null;
+    const { getProductProfileFromReports } = await import(
+      "@/lib/data/profileFallback"
+    );
+    return getProductProfileFromReports(
+      productSlug,
+      getSeedApprovedReports()
+    );
+  }
+  const options = convexQueryOptions();
+  if (!options) return null;
+  try {
+    return (await fetchQuery(
+      api.intelligence.getProductProfile,
+      { productSlug },
+      options
+    )) as ProductProfile | null;
+  } catch (error) {
+    logConvexQueryFailure("fetchProductProfile", error);
+    if (!allowLocalSeedFallback()) return null;
+    const { getProductProfileFromReports } = await import(
+      "@/lib/data/profileFallback"
+    );
+    return getProductProfileFromReports(
+      productSlug,
+      getSeedApprovedReports()
+    );
   }
 }

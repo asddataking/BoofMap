@@ -86,5 +86,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.65,
   }));
 
-  return [...staticPages, ...brandPages, ...dispensaryPages];
+  const productSlugs = [
+    ...new Set(
+      reports.map((r) => slugify(`${r.strain_name}-${r.brand_name}`))
+    ),
+  ];
+  const productPages: MetadataRoute.Sitemap = productSlugs.map((productSlug) => ({
+    url: `${baseUrl}/products/${productSlug}`,
+    lastModified,
+    changeFrequency: "weekly",
+    priority: 0.7,
+  }));
+
+  return [...staticPages, ...brandPages, ...dispensaryPages, ...productPages];
 }

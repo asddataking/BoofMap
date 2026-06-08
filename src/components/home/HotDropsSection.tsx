@@ -26,7 +26,7 @@ export function HotDropsSection() {
             subtitle={drop.brand_name}
             score={drop.score}
             movement={drop.movement}
-            href={`/brands/${drop.brand_slug}`}
+            href={`/products/${drop.product_slug}`}
             meta={`${drop.report_count} new reports`}
             index={i}
             featured={i === 0}

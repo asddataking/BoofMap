@@ -10,13 +10,16 @@
 
 import type * as achievements from "../achievements.js";
 import type * as admin from "../admin.js";
+import type * as crons from "../crons.js";
 import type * as detections from "../detections.js";
+import type * as forecast from "../forecast.js";
 import type * as intelligence from "../intelligence.js";
 import type * as intelligenceNotifications from "../intelligenceNotifications.js";
 import type * as leaderboards from "../leaderboards.js";
 import type * as lib_auth from "../lib/auth.js";
 import type * as lib_cityCoords from "../lib/cityCoords.js";
 import type * as lib_featureFlags from "../lib/featureFlags.js";
+import type * as lib_forecastUtils from "../lib/forecastUtils.js";
 import type * as lib_homeData from "../lib/homeData.js";
 import type * as lib_intelligenceData from "../lib/intelligenceData.js";
 import type * as lib_intelligencePipeline from "../lib/intelligencePipeline.js";
@@ -52,13 +55,16 @@ import type {
 declare const fullApi: ApiFromModules<{
   achievements: typeof achievements;
   admin: typeof admin;
+  crons: typeof crons;
   detections: typeof detections;
+  forecast: typeof forecast;
   intelligence: typeof intelligence;
   intelligenceNotifications: typeof intelligenceNotifications;
   leaderboards: typeof leaderboards;
   "lib/auth": typeof lib_auth;
   "lib/cityCoords": typeof lib_cityCoords;
   "lib/featureFlags": typeof lib_featureFlags;
+  "lib/forecastUtils": typeof lib_forecastUtils;
   "lib/homeData": typeof lib_homeData;
   "lib/intelligenceData": typeof lib_intelligenceData;
   "lib/intelligencePipeline": typeof lib_intelligencePipeline;

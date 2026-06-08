@@ -95,7 +95,11 @@ function MoverPanel({
               transition={{ delay: i * 0.04 }}
             >
               <Link
-                href={`/brands/${item.brand_slug}`}
+                href={
+                  brandMode
+                    ? `/brands/${item.brand_slug}`
+                    : `/products/${item.product_slug}`
+                }
                 className="flex items-center justify-between gap-3 px-4 py-3 transition hover:bg-[var(--surface-hover)]"
               >
                 <div className="min-w-0">

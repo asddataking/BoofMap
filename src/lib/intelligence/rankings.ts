@@ -94,6 +94,33 @@ export const DEMO_HOT_DROPS: IntelligenceRankingEntry[] = [
   },
 ];
 
+export const DEMO_FALLING_PRODUCTS: IntelligenceRankingEntry[] = [
+  {
+    id: "midz-jeeter",
+    rank: 1,
+    product_name: "Midz",
+    brand_name: "Jeeter",
+    brand_slug: "jeeter",
+    product_slug: "midz-jeeter",
+    score: 2.8,
+    movement: -1.1,
+    report_count: 4,
+    product_type: "pre-roll",
+  },
+  {
+    id: "garlic-cookies-common-citizen",
+    rank: 2,
+    product_name: "Garlic Cookies",
+    brand_name: "Common Citizen",
+    brand_slug: "common-citizen",
+    product_slug: "garlic-cookies-common-citizen",
+    score: 3.1,
+    movement: -0.7,
+    report_count: 3,
+    product_type: "flower",
+  },
+];
+
 export const DEMO_VALUE_PICKS: IntelligenceRankingEntry[] = [
   {
     id: "budget-kush-common-citizen",

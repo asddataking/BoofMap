@@ -12,7 +12,9 @@ import { DetectionTicker } from "@/components/intelligence/DetectionTicker";
 import { IntelligenceErrorBoundary } from "@/components/intelligence/IntelligenceErrorBoundary";
 import { IntelligenceHero } from "@/components/home/IntelligenceHero";
 import { TopFlowerSection } from "@/components/home/TopFlowerSection";
+import { ForecastPulseSection } from "@/components/forecast/ForecastPulseSection";
 import { BiggestMoversSection } from "@/components/home/BiggestMoversSection";
+import { FallingProductsSection } from "@/components/home/FallingProductsSection";
 import { HotDropsSection } from "@/components/home/HotDropsSection";
 import { BudgetBeastSection } from "@/components/home/BudgetBeastSection";
 import { CommunityFeedSection } from "@/components/home/CommunityFeedSection";
@@ -138,7 +140,15 @@ function HomeClientView({
           </IntelligenceErrorBoundary>
 
           <IntelligenceErrorBoundary>
+            <ForecastPulseSection />
+          </IntelligenceErrorBoundary>
+
+          <IntelligenceErrorBoundary>
             <BiggestMoversSection />
+          </IntelligenceErrorBoundary>
+
+          <IntelligenceErrorBoundary>
+            <FallingProductsSection />
           </IntelligenceErrorBoundary>
 
           <IntelligenceErrorBoundary>

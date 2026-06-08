@@ -2,9 +2,14 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 import {
   achievementId,
+  analystTier,
   applicationStatus,
   detectionType,
   detectorRank,
+  forecastConfidence,
+  forecastMarketStatus,
+  forecastTargetType,
+  forecastVoteChoice,
   leaderboardCategory,
   profileRole,
   signalEventType,
@@ -389,4 +394,48 @@ export default defineSchema({
   })
     .index("by_active_created", ["isActive", "createdAt"])
     .index("by_type_active", ["type", "isActive"]),
+
+  markets: defineTable({
+    question: v.string(),
+    targetType: forecastTargetType,
+    productSlug: v.optional(v.string()),
+    productName: v.optional(v.string()),
+    brandSlug: v.optional(v.string()),
+    brandName: v.optional(v.string()),
+    status: forecastMarketStatus,
+    closesAt: v.number(),
+    yesCount: v.number(),
+    noCount: v.number(),
+    totalForecasts: v.number(),
+    bullishPercent: v.number(),
+    baselineRank: v.optional(v.number()),
+    outcome: v.optional(v.boolean()),
+    createdAt: v.number(),
+    resolvedAt: v.optional(v.number()),
+  })
+    .index("by_status_closes", ["status", "closesAt"])
+    .index("by_product_status", ["productSlug", "status"])
+    .index("by_brand_status", ["brandSlug", "status"]),
+
+  marketVotes: defineTable({
+    marketId: v.id("markets"),
+    userId: v.string(),
+    vote: forecastVoteChoice,
+    confidence: forecastConfidence,
+    createdAt: v.number(),
+  }).index("by_market_user", ["marketId", "userId"]),
+
+  forecastProfiles: defineTable({
+    userId: v.string(),
+    totalForecasts: v.number(),
+    correctForecasts: v.number(),
+    incorrectForecasts: v.number(),
+    accuracyPercent: v.number(),
+    forecastPoints: v.number(),
+    analystTier: analystTier,
+    updatedAt: v.number(),
+  })
+    .index("by_user_id", ["userId"])
+    .index("by_accuracy", ["accuracyPercent"])
+    .index("by_points", ["forecastPoints"]),
 });

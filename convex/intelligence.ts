@@ -1,15 +1,19 @@
 import { v } from "convex/values";
 import type { QueryCtx } from "./_generated/server";
 import { query } from "./_generated/server";
+import { getBullishPercentForProduct } from "./forecast";
 import { reportToApi } from "./lib/mappers";
 import { slugify } from "./lib/slugify";
 import {
   buildBiggestMovers,
   buildFallingBrands,
+  buildFallingProducts,
   buildHotDrops,
   buildRisingBrands,
   buildTopFlowerThisWeek,
   buildValuePicks,
+  computeProductMomentum,
+  computeTrendDirection,
   findProductScores,
   type RankingEntry,
 } from "./lib/scoreEngine";
@@ -119,40 +123,145 @@ export const getFallingBrands = query({
   },
 });
 
+export const getFallingProducts = query({
+  args: { limit: v.optional(v.number()) },
+  handler: async (ctx, { limit }) => {
+    const reports = await loadApprovedReports(ctx);
+    return buildFallingProducts(reports)
+      .slice(0, limit ?? 8)
+      .map(rankingToApi);
+  },
+});
+
+async function productScorePayload(
+  ctx: QueryCtx,
+  productSlug: string,
+  reports: Awaited<ReturnType<typeof loadApprovedReports>>,
+  stored?: {
+    productName: string;
+    brandName: string;
+    brandSlug: string;
+    productType: string;
+    communityScore?: number;
+    trustScore: number;
+    flavorScore?: number;
+    fireScore: number;
+    burnScore?: number;
+    valueScore: number;
+    freshnessScore?: number;
+    reportCount: number;
+  } | null
+) {
+  const momentum = computeProductMomentum(reports, productSlug);
+  const trendDirection = computeTrendDirection(momentum.movement);
+  const forecastBullishPercent = await getBullishPercentForProduct(
+    ctx,
+    productSlug
+  );
+
+  if (stored) {
+    return {
+      product_slug: productSlug,
+      product_name: stored.productName,
+      brand_name: stored.brandName,
+      brand_slug: stored.brandSlug,
+      product_type: stored.productType,
+      community_score: stored.communityScore ?? stored.trustScore,
+      flavor_score: stored.flavorScore ?? Math.round(stored.fireScore * 20),
+      burn_score: stored.burnScore ?? Math.round(stored.fireScore * 18),
+      value_score: stored.valueScore,
+      freshness_score: stored.freshnessScore ?? 0,
+      report_count: stored.reportCount,
+      movement: Math.round(momentum.movement * 10) / 10,
+      trend_direction: trendDirection,
+      avg_boof_score: momentum.currentScore,
+      forecast_bullish_percent: forecastBullishPercent,
+    };
+  }
+
+  const computed = findProductScores(reports, productSlug);
+  if (!computed) return null;
+
+  const productReports = reports.filter(
+    (r) => slugify(`${r.strain_name}-${r.brand_name}`) === productSlug
+  );
+
+  return {
+    product_slug: productSlug,
+    product_name: computed.productName,
+    brand_name: computed.brandName,
+    brand_slug: slugify(computed.brandName),
+    product_type: productReports[0]?.product_type ?? "flower",
+    community_score: computed.communityScore,
+    flavor_score: computed.flavorScore,
+    burn_score: computed.burnScore,
+    value_score: computed.valueScore,
+    freshness_score: computed.freshnessScore,
+    report_count: computed.reportCount,
+    movement: Math.round(momentum.movement * 10) / 10,
+    trend_direction: trendDirection,
+    avg_boof_score: momentum.currentScore,
+    forecast_bullish_percent: forecastBullishPercent,
+  };
+}
+
 export const getProductScore = query({
   args: { productSlug: v.string() },
   handler: async (ctx, { productSlug }) => {
+    const reports = await loadApprovedReports(ctx);
     const stored = await ctx.db
       .query("productScores")
       .withIndex("by_product_slug", (q) => q.eq("productSlug", productSlug))
       .unique();
 
-    if (stored) {
-      return {
-        product_name: stored.productName,
-        brand_name: stored.brandName,
-        community_score: stored.communityScore ?? stored.trustScore,
-        flavor_score: stored.flavorScore ?? Math.round(stored.fireScore * 20),
-        burn_score: stored.burnScore ?? Math.round(stored.fireScore * 18),
-        value_score: stored.valueScore,
-        freshness_score: stored.freshnessScore ?? 0,
-        report_count: stored.reportCount,
-      };
-    }
-
-    const reports = await loadApprovedReports(ctx);
-    const computed = findProductScores(reports, productSlug);
-    if (!computed) return null;
+    const payload = await productScorePayload(ctx, productSlug, reports, stored);
+    if (!payload) return null;
 
     return {
-      product_name: computed.productName,
-      brand_name: computed.brandName,
-      community_score: computed.communityScore,
-      flavor_score: computed.flavorScore,
-      burn_score: computed.burnScore,
-      value_score: computed.valueScore,
-      freshness_score: computed.freshnessScore,
-      report_count: computed.reportCount,
+      product_name: payload.product_name,
+      brand_name: payload.brand_name,
+      community_score: payload.community_score,
+      flavor_score: payload.flavor_score,
+      burn_score: payload.burn_score,
+      value_score: payload.value_score,
+      freshness_score: payload.freshness_score,
+      report_count: payload.report_count,
+    };
+  },
+});
+
+export const getProductIntelligence = query({
+  args: { productSlug: v.string() },
+  handler: async (ctx, { productSlug }) => {
+    const reports = await loadApprovedReports(ctx);
+    const stored = await ctx.db
+      .query("productScores")
+      .withIndex("by_product_slug", (q) => q.eq("productSlug", productSlug))
+      .unique();
+
+    return await productScorePayload(ctx, productSlug, reports, stored);
+  },
+});
+
+export const getProductProfile = query({
+  args: { productSlug: v.string() },
+  handler: async (ctx, { productSlug }) => {
+    const reports = await loadApprovedReports(ctx);
+    const stored = await ctx.db
+      .query("productScores")
+      .withIndex("by_product_slug", (q) => q.eq("productSlug", productSlug))
+      .unique();
+
+    const payload = await productScorePayload(ctx, productSlug, reports, stored);
+    if (!payload) return null;
+
+    const productReports = reports.filter(
+      (r) => slugify(`${r.strain_name}-${r.brand_name}`) === productSlug
+    );
+
+    return {
+      ...payload,
+      recent_reports: productReports.slice(0, 10),
     };
   },
 });
@@ -179,6 +288,7 @@ export const getHomepageIntelligence = query({
       value_picks: buildValuePicks(reports).map(rankingToApi),
       rising_brands: buildRisingBrands(reports).map(rankingToApi),
       falling_brands: buildFallingBrands(reports).map(rankingToApi),
+      falling_products: buildFallingProducts(reports).map(rankingToApi),
     };
   },
 });

@@ -2,26 +2,39 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BarChart3, FileText, Package, Users, Zap } from "lucide-react";
+import { BarChart3, FileText, Package, Target, Users, Zap } from "lucide-react";
 import { AnimatedCounter } from "@/components/intelligence/AnimatedCounter";
+import { useForecastStats } from "@/hooks/useForecastPulse";
 import { usePlatformStats } from "@/hooks/useIntelligenceRankings";
 import { PLATFORM_TAGLINE } from "@/lib/intelligence/constants";
+import { FORECAST_PULSE_ENABLED } from "@/lib/intelligence/featureFlags";
 
 const STAT_ICONS = {
   reports: FileText,
   products: Package,
   brands: BarChart3,
   active_users: Users,
+  forecasts: Target,
 } as const;
 
 export function IntelligenceHero() {
   const stats = usePlatformStats();
+  const forecastStats = useForecastStats();
 
   const statItems = [
     { key: "reports" as const, label: "Reports", value: stats.reports },
     { key: "products" as const, label: "Products", value: stats.products },
     { key: "brands" as const, label: "Brands", value: stats.brands },
     { key: "active_users" as const, label: "Active Users", value: stats.active_users },
+    ...(FORECAST_PULSE_ENABLED
+      ? [
+          {
+            key: "forecasts" as const,
+            label: "Forecasts",
+            value: forecastStats.total_forecasts,
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -86,7 +99,7 @@ export function IntelligenceHero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.18 }}
-          className="mt-8 grid grid-cols-2 gap-3 lg:grid-cols-4"
+          className="mt-8 grid grid-cols-2 gap-3 lg:grid-cols-5"
         >
           {statItems.map((item, i) => {
             const Icon = STAT_ICONS[item.key];

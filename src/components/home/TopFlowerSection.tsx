@@ -3,12 +3,21 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Crown, Flame } from "lucide-react";
+import { ForecastPulseAnnotation } from "@/components/forecast/ForecastPulseAnnotation";
+import { useActiveForecastMarkets } from "@/hooks/useForecastPulse";
 import { useTopFlowerThisWeek } from "@/hooks/useIntelligenceRankings";
+import { FORECAST_PULSE_ENABLED } from "@/lib/intelligence/featureFlags";
 import { MovementBadge } from "./intelligence/MovementBadge";
 import { SectionHeader } from "./intelligence/SectionHeader";
 
 export function TopFlowerSection() {
   const rankings = useTopFlowerThisWeek();
+  const forecastMarkets = useActiveForecastMarkets(10);
+  const forecastByProduct = new Map(
+    forecastMarkets
+      .filter((m) => m.product_slug)
+      .map((m) => [m.product_slug!, m.bullish_percent])
+  );
   const featured = rankings[0];
   const carousel = rankings.slice(1);
 
@@ -24,14 +33,30 @@ export function TopFlowerSection() {
       />
 
       <div className="grid gap-4 lg:grid-cols-[1.2fr_1fr]">
-        <FeaturedCard entry={featured} />
+        <FeaturedCard
+          entry={featured}
+          bullishPercent={
+            FORECAST_PULSE_ENABLED
+              ? forecastByProduct.get(featured.product_slug)
+              : undefined
+          }
+        />
         <div className="flex flex-col gap-2">
           <p className="font-display text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--text-muted)]">
             Top 10
           </p>
           <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin lg:flex-col lg:overflow-visible">
             {carousel.map((entry, i) => (
-              <CarouselRow key={entry.id} entry={entry} index={i} />
+              <CarouselRow
+                key={entry.id}
+                entry={entry}
+                index={i}
+                bullishPercent={
+                  FORECAST_PULSE_ENABLED
+                    ? forecastByProduct.get(entry.product_slug)
+                    : undefined
+                }
+              />
             ))}
           </div>
         </div>
@@ -42,11 +67,13 @@ export function TopFlowerSection() {
 
 function FeaturedCard({
   entry,
+  bullishPercent,
 }: {
   entry: ReturnType<typeof useTopFlowerThisWeek>[number];
+  bullishPercent?: number;
 }) {
   return (
-    <Link href={`/brands/${entry.brand_slug}`}>
+    <Link href={`/products/${entry.product_slug}`}>
       <motion.article
         initial={{ opacity: 0, scale: 0.98 }}
         whileInView={{ opacity: 1, scale: 1 }}
@@ -84,6 +111,12 @@ function FeaturedCard({
               {entry.report_count} reports
               {entry.price_per_gram != null && ` · $${entry.price_per_gram}/g`}
             </p>
+            {bullishPercent != null && (
+              <ForecastPulseAnnotation
+                bullishPercent={bullishPercent}
+                className="mt-2"
+              />
+            )}
           </div>
         </div>
       </motion.article>
@@ -94,13 +127,15 @@ function FeaturedCard({
 function CarouselRow({
   entry,
   index,
+  bullishPercent,
 }: {
   entry: ReturnType<typeof useTopFlowerThisWeek>[number];
   index: number;
+  bullishPercent?: number;
 }) {
   return (
     <Link
-      href={`/brands/${entry.brand_slug}`}
+      href={`/products/${entry.product_slug}`}
       className="block min-w-[220px] lg:min-w-0"
     >
       <motion.div
@@ -121,6 +156,12 @@ function CarouselRow({
             <p className="truncate text-xs text-[var(--text-muted)]">
               {entry.brand_name}
             </p>
+            {bullishPercent != null && (
+              <ForecastPulseAnnotation
+                bullishPercent={bullishPercent}
+                className="mt-0.5"
+              />
+            )}
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-3">

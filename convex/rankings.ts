@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import type { QueryCtx } from "./_generated/server";
+import type { MutationCtx, QueryCtx } from "./_generated/server";
 import { action, internalMutation, mutation, query } from "./_generated/server";
 import { internal } from "./_generated/api";
 import { requireAdmin } from "./lib/auth";
@@ -10,6 +10,16 @@ import {
 } from "./lib/homeData";
 import { rankingToApi, reportToApi } from "./lib/mappers";
 import { slugify } from "./lib/slugify";
+import {
+  buildBiggestMovers,
+  buildFallingBrands,
+  buildFallingProducts,
+  buildHotDrops,
+  buildRisingBrands,
+  buildTopFlowerThisWeek,
+  buildValuePicks,
+  type RankingEntry,
+} from "./lib/scoreEngine";
 import { rankingTrend, rankingType } from "./lib/validators";
 import type { Doc } from "./_generated/dataModel";
 
@@ -49,8 +59,93 @@ async function loadApprovedReports(ctx: QueryCtx) {
     .query("reports")
     .withIndex("by_status_created", (q) => q.eq("status", "approved"))
     .order("desc")
-    .take(200);
+    .take(500);
   return rows.map(reportToApi);
+}
+
+function movementToTrend(
+  movement: number,
+  score: number
+): Doc<"rankings">["trend"] {
+  if (movement > 0.3) return score >= 4 ? "hot" : "rising";
+  if (movement < -0.3) return "falling";
+  if (Math.abs(movement) > 0.8) return "volatile";
+  return "steady";
+}
+
+function rankingEntryToRow(
+  entry: RankingEntry,
+  rankingTypeValue: Doc<"rankings">["rankingType"]
+) {
+  const isBrandRanking =
+    rankingTypeValue === "rising_brands" ||
+    rankingTypeValue === "falling_brands";
+
+  return {
+    productId: entry.productSlug,
+    productName: isBrandRanking ? entry.brandName : entry.productName,
+    brandName: entry.brandName,
+    category: entry.productType,
+    score: entry.score,
+    previousScore: entry.previousScore,
+    movement: entry.movement,
+    reportCount: entry.reportCount,
+    trend: movementToTrend(entry.movement, entry.score),
+  };
+}
+
+function homeEntryToRow(
+  entry: ReturnType<typeof buildRankings>[number],
+  rankingTypeValue: Doc<"rankings">["rankingType"]
+) {
+  return {
+    productId: entry.slug,
+    productName: entry.name,
+    brandName: entry.name,
+    category: "brand",
+    score: entry.score,
+    previousScore: entry.change != null ? entry.score - entry.change : undefined,
+    movement: entry.change ?? 0,
+    reportCount: entry.report_count,
+    trend: movementToTrend(entry.change ?? 0, entry.score),
+  };
+}
+
+async function replaceRankingsForType(
+  ctx: MutationCtx,
+  rankingTypeValue: Doc<"rankings">["rankingType"],
+  rows: Array<{
+    productId?: string;
+    productName: string;
+    brandName?: string;
+    category: string;
+    score: number;
+    previousScore?: number;
+    movement: number;
+    reportCount: number;
+    trend: Doc<"rankings">["trend"];
+  }>,
+  now: number
+) {
+  const existing = await ctx.db
+    .query("rankings")
+    .withIndex("by_ranking_type_updated", (q) =>
+      q.eq("rankingType", rankingTypeValue)
+    )
+    .collect();
+
+  for (const row of existing) {
+    await ctx.db.delete(row._id);
+  }
+
+  for (const row of rows) {
+    await ctx.db.insert("rankings", {
+      ...row,
+      rankingType: rankingTypeValue,
+      state: "MI",
+      updatedAt: now,
+    });
+  }
 }
 
 export const listRankingsByType = query({
@@ -169,22 +264,78 @@ export const upsertRanking = mutation({
   },
 });
 
-export const recalculateRankings = action({
+export const internalRecalculateRankings = internalMutation({
   args: {},
   handler: async (ctx) => {
-    await requireAdmin(ctx);
-    // TODO: Aggregate approved reports by brand/product/category and upsert rankings.
-    await ctx.runMutation(internal.rankings.internalRecalculatePlaceholder, {});
+    const reports = await loadApprovedReports(ctx);
+    const now = Date.now();
+
+    const productRankingConfigs: Array<{
+      type: Doc<"rankings">["rankingType"];
+      entries: RankingEntry[];
+    }> = [
+      { type: "top_flower_week", entries: buildTopFlowerThisWeek(reports) },
+      { type: "biggest_movers", entries: buildBiggestMovers(reports) },
+      { type: "falling_products", entries: buildFallingProducts(reports) },
+      { type: "hot_drops", entries: buildHotDrops(reports) },
+      { type: "value_picks", entries: buildValuePicks(reports) },
+      { type: "rising_brands", entries: buildRisingBrands(reports) },
+      { type: "falling_brands", entries: buildFallingBrands(reports) },
+    ];
+
+    for (const { type, entries } of productRankingConfigs) {
+      await replaceRankingsForType(
+        ctx,
+        type,
+        entries.map((entry) => rankingEntryToRow(entry, type)),
+        now
+      );
+    }
+
+    const legacyHomeConfigs: Array<{
+      homeType: HomeRankingType;
+      dbType: Doc<"rankings">["rankingType"];
+    }> = [
+      { homeType: "fire_right_now", dbType: "fire" },
+      { homeType: "biggest_fallers", dbType: "fallers" },
+      { homeType: "most_reported", dbType: "reported" },
+      { homeType: "budget_bargers", dbType: "budget" },
+      { homeType: "fraud_watch", dbType: "fraud" },
+    ];
+
+    for (const { homeType, dbType } of legacyHomeConfigs) {
+      const entries = buildRankings(reports, homeType);
+      await replaceRankingsForType(
+        ctx,
+        dbType,
+        entries.map((entry) => homeEntryToRow(entry, dbType)),
+        now
+      );
+    }
+
+    await ctx.scheduler.runAfter(0, internal.forecast.internalSeedMarkets, {});
+
     return {
       ok: true,
-      message: "Placeholder recalculation — implement report aggregation",
+      updated_at: now,
+      report_count: reports.length,
     };
   },
 });
 
-export const internalRecalculatePlaceholder = internalMutation({
+export const recalculateRankings = action({
   args: {},
-  handler: async () => {
-    // TODO: wire real aggregation from reports table
+  handler: async (
+    ctx
+  ): Promise<{
+    ok: boolean;
+    updated_at: number;
+    report_count: number;
+  }> => {
+    await requireAdmin(ctx);
+    return await ctx.runMutation(
+      internal.rankings.internalRecalculateRankings,
+      {}
+    );
   },
 });

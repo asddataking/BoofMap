@@ -237,6 +237,41 @@ export function buildTopFlowerThisWeek(reports: ReportRow[]): RankingEntry[] {
     });
 }
 
+export type TrendDirection = "up" | "down" | "steady";
+
+export function computeTrendDirection(movement: number): TrendDirection {
+  if (movement > 0.1) return "up";
+  if (movement < -0.1) return "down";
+  return "steady";
+}
+
+export function computeProductMomentum(
+  reports: ReportRow[],
+  productSlug: string
+): { movement: number; previousScore?: number; currentScore: number } {
+  const thisWeek = filterByWindow(reports, WEEK_MS);
+  const lastWeek = filterPreviousWindow(reports, WEEK_MS);
+  const current = aggregateProducts(thisWeek).find(
+    (p) => p.productSlug === productSlug
+  );
+  const previous = aggregateProducts(lastWeek).find(
+    (p) => p.productSlug === productSlug
+  );
+
+  if (!current) {
+    const all = aggregateProducts(reports).find(
+      (p) => p.productSlug === productSlug
+    );
+    if (!all) return { movement: 0, currentScore: 0 };
+    const score = avg(all.scores);
+    return { movement: 0, currentScore: score };
+  }
+
+  const score = avg(current.scores);
+  const prev = previous ? avg(previous.scores) : score;
+  return { movement: score - prev, previousScore: prev, currentScore: score };
+}
+
 export function buildBiggestMovers(reports: ReportRow[]): RankingEntry[] {
   const thisWeek = filterByWindow(reports, WEEK_MS);
   const lastWeek = filterPreviousWindow(reports, WEEK_MS);
@@ -254,6 +289,29 @@ export function buildBiggestMovers(reports: ReportRow[]): RankingEntry[] {
     })
     .filter((x) => x.movement > 0 && x.p.scores.length >= 1)
     .sort((a, b) => b.movement - a.movement || b.score - a.score)
+    .slice(0, 8)
+    .map((x, i) =>
+      toRankingEntry(x.p, i + 1, x.score, x.movement, x.prev)
+    );
+}
+
+export function buildFallingProducts(reports: ReportRow[]): RankingEntry[] {
+  const thisWeek = filterByWindow(reports, WEEK_MS);
+  const lastWeek = filterPreviousWindow(reports, WEEK_MS);
+
+  const current = aggregateProducts(thisWeek);
+  const previous = aggregateProducts(lastWeek);
+  const prevMap = new Map(previous.map((p) => [p.productSlug, avg(p.scores)]));
+
+  return current
+    .map((p) => {
+      const score = avg(p.scores);
+      const prev = prevMap.get(p.productSlug) ?? score + 0.5;
+      const movement = score - prev;
+      return { p, score, movement, prev };
+    })
+    .filter((x) => x.movement < 0 && x.p.scores.length >= 1)
+    .sort((a, b) => a.movement - b.movement || a.score - b.score)
     .slice(0, 8)
     .map((x, i) =>
       toRankingEntry(x.p, i + 1, x.score, x.movement, x.prev)

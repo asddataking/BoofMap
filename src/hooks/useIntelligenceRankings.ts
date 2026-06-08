@@ -4,6 +4,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { isConvexConfigured } from "@/lib/convex/config";
 import {
+  DEMO_FALLING_PRODUCTS,
   DEMO_HOT_DROPS,
   DEMO_MOVERS,
   DEMO_PLATFORM_STATS,
@@ -69,4 +70,12 @@ export function useFallingBrands(): IntelligenceRankingEntry[] {
     isConvexConfigured() ? { limit: 6 } : "skip"
   );
   return (data as IntelligenceRankingEntry[] | undefined) ?? [];
+}
+
+export function useFallingProducts(): IntelligenceRankingEntry[] {
+  const data = useQuery(
+    api.intelligence.getFallingProducts,
+    isConvexConfigured() ? { limit: 8 } : "skip"
+  );
+  return (data as IntelligenceRankingEntry[] | undefined) ?? DEMO_FALLING_PRODUCTS;
 }

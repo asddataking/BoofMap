@@ -6,6 +6,7 @@ import { AppShell } from "@/components/AppShell";
 import { InstallPrompt } from "@/components/InstallPrompt";
 import { PageTransition } from "@/components/PageTransition";
 import { AnalystCard } from "@/components/profile/AnalystCard";
+import { ForecastAnalystCard } from "@/components/forecast/ForecastAnalystCard";
 import { ProfileIntelligencePanel } from "@/components/profile/ProfileIntelligencePanel";
 import { GAMIFICATION_ENABLED } from "@/lib/intelligence/featureFlags";
 import { useAuth } from "@/components/BoofAuthProvider";
@@ -48,6 +49,8 @@ export default function ProfilePage() {
           )}
 
           <ProfileIntelligencePanel />
+
+          {isAuthenticated && <ForecastAnalystCard />}
 
           {GAMIFICATION_ENABLED && <AnalystCard />}
 

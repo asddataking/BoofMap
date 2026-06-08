@@ -172,6 +172,8 @@ export interface IntelligenceRankingEntry {
   product_type: string;
 }
 
+export type TrendDirection = "up" | "down" | "steady";
+
 export interface ProductIntelligenceScore {
   product_name: string;
   brand_name: string;
@@ -181,4 +183,68 @@ export interface ProductIntelligenceScore {
   value_score: number;
   freshness_score?: number;
   report_count: number;
+}
+
+export interface ProductIntelligence extends ProductIntelligenceScore {
+  product_slug: string;
+  brand_slug: string;
+  product_type: string;
+  freshness_score: number;
+  movement: number;
+  trend_direction: TrendDirection;
+  avg_boof_score: number;
+  forecast_bullish_percent: number | null;
+}
+
+export interface ProductProfile extends ProductIntelligence {
+  recent_reports: import("@/lib/types").Report[];
+}
+
+export type ForecastVoteChoice = "yes" | "no";
+export type ForecastConfidence = "low" | "medium" | "high";
+export type ForecastTargetType = "product" | "brand";
+export type AnalystTier =
+  | "rookie_analyst"
+  | "trend_watcher"
+  | "market_scout"
+  | "senior_analyst"
+  | "top_analyst"
+  | "community_oracle";
+
+export interface ForecastUserVote {
+  vote: ForecastVoteChoice;
+  confidence: ForecastConfidence;
+}
+
+export interface ForecastMarket {
+  id: string;
+  question: string;
+  target_type: ForecastTargetType;
+  product_slug: string | null;
+  product_name: string | null;
+  brand_slug: string | null;
+  brand_name: string | null;
+  status: "open" | "closed" | "resolved";
+  closes_at: string;
+  days_left: number;
+  yes_count: number;
+  no_count: number;
+  total_forecasts: number;
+  bullish_percent: number;
+  bearish_percent: number;
+  outcome: boolean | null;
+  user_vote: ForecastUserVote | null;
+  created_at: string;
+}
+
+export interface ForecastProfile {
+  user_id: string;
+  total_forecasts: number;
+  correct_forecasts: number;
+  incorrect_forecasts: number;
+  accuracy_percent: number;
+  forecast_points: number;
+  analyst_tier: AnalystTier;
+  analyst_tier_label: string;
+  forecast_rank: number;
 }

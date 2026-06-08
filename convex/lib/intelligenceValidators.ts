@@ -55,3 +55,31 @@ export const applicationStatus = v.union(
   v.literal("approved"),
   v.literal("rejected")
 );
+
+export const forecastTargetType = v.union(
+  v.literal("product"),
+  v.literal("brand")
+);
+
+export const forecastMarketStatus = v.union(
+  v.literal("open"),
+  v.literal("closed"),
+  v.literal("resolved")
+);
+
+export const forecastVoteChoice = v.union(v.literal("yes"), v.literal("no"));
+
+export const forecastConfidence = v.union(
+  v.literal("low"),
+  v.literal("medium"),
+  v.literal("high")
+);
+
+export const analystTier = v.union(
+  v.literal("rookie_analyst"),
+  v.literal("trend_watcher"),
+  v.literal("market_scout"),
+  v.literal("senior_analyst"),
+  v.literal("top_analyst"),
+  v.literal("community_oracle")
+);

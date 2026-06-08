@@ -31,7 +31,7 @@ export function BudgetBeastSection() {
           {picks.map((pick, i) => (
             <Link
               key={pick.id}
-              href={`/brands/${pick.brand_slug}`}
+              href={`/products/${pick.product_slug}`}
               className="block bg-[var(--bg-card)]"
             >
               <motion.div

@@ -6,6 +6,7 @@ import { AppShell } from "@/components/AppShell";
 import { PageTransition } from "@/components/PageTransition";
 import { ReportCard } from "@/components/ReportCard";
 import { BoofMapIntelligenceSection } from "@/components/brands/BoofMapIntelligenceSection";
+import { BrandForecastPulse } from "@/components/forecast/ForecastPulseBlock";
 import { ScoreBadge } from "@/components/ScoreBadge";
 import { JsonLdScript } from "@/components/seo/JsonLdScript";
 import { BreadcrumbJsonLd } from "@/components/SiteJsonLd";
@@ -128,6 +129,8 @@ export default async function BrandPage({
           </section>
 
           <BoofMapIntelligenceSection brandName={brand.name} brandSlug={slug} />
+
+          <BrandForecastPulse brandSlug={slug} />
 
           <section className="mt-8">
             <h3 className="font-heading text-sm font-semibold uppercase tracking-wider text-[var(--text-muted)]">
