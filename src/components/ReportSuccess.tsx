@@ -33,7 +33,7 @@ export function ReportSuccess({
       <h3 className="mt-5 font-heading text-xl font-bold text-white">
         Report is live
       </h3>
-      <p className="mt-2 text-sm text-zinc-400">
+      <p className="mt-2 text-sm text-[var(--text-muted)]">
         It&apos;s on the map and feed now. Check Profile → Your reports anytime,
         or browse the live feed.
       </p>
@@ -51,7 +51,7 @@ export function ReportSuccess({
           <button
             type="button"
             onClick={onReportAnother}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl border border-zinc-700 bg-zinc-900/60 px-6 py-3.5 text-sm font-semibold text-white hover:border-zinc-600"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-elevated)]/60 px-6 py-3.5 text-sm font-semibold text-white hover:border-[var(--accent-border)]"
           >
             <Plus className="h-4 w-4" />
             Submit another report

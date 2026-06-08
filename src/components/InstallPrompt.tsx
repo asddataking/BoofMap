@@ -61,7 +61,7 @@ export function InstallPrompt() {
       <button
         type="button"
         onClick={() => setDismissed(true)}
-        className="absolute right-3 top-3 rounded-lg p-1 text-zinc-500 hover:text-zinc-300"
+        className="absolute right-3 top-3 rounded-lg p-1 text-[var(--text-muted)] hover:text-[var(--text-main)]"
         aria-label="Dismiss"
       >
         <X className="h-4 w-4" />
@@ -75,7 +75,7 @@ export function InstallPrompt() {
           <p className="font-heading text-sm font-semibold text-white">
             Add to Home Screen
           </p>
-          <p className="mt-0.5 text-xs text-zinc-500">
+          <p className="mt-0.5 text-xs text-[var(--text-muted)]">
             Install BoofMap for a full-screen, app-like experience — no app
             store needed.
           </p>

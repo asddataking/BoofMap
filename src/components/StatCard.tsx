@@ -40,7 +40,7 @@ export function StatCard({
         <p className="font-heading text-2xl font-bold tracking-tight text-white">
           {value}
         </p>
-        <p className="text-[11px] font-medium uppercase tracking-wider text-zinc-500">
+        <p className="text-[11px] font-medium uppercase tracking-wider text-[var(--text-muted)]">
           {label}
         </p>
       </div>

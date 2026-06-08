@@ -66,23 +66,24 @@ export function LandingPwaSection() {
 
   return (
     <section
-      className="relative overflow-hidden rounded-3xl border border-zinc-800/60 bg-zinc-950/80 py-12 lg:py-16"
+      className="relative overflow-hidden rounded-3xl border border-[var(--border-soft)] bg-[var(--bg-card)] py-12 lg:py-16"
+      style={{ boxShadow: "var(--card-shadow)" }}
       aria-label="Install BoofMap"
     >
       <div className="leaf-watermark pointer-events-none absolute inset-0 opacity-[0.04]" />
 
       <div className="relative mx-auto max-w-2xl px-6 text-center">
-        <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">
+        <h2 className="font-heading text-2xl font-bold text-[var(--text-main)] sm:text-3xl">
           BoofMap runs right in your browser.
         </h2>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-6 sm:gap-10">
           {features.map(({ icon: Icon, label }) => (
             <div key={label} className="flex flex-col items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-900 text-emerald-400">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent-subtle)] text-[var(--fire-green)]">
                 <Icon className="h-5 w-5" />
               </div>
-              <span className="text-xs font-medium text-zinc-500">{label}</span>
+              <span className="text-xs font-medium text-[var(--text-muted)]">{label}</span>
             </div>
           ))}
         </div>

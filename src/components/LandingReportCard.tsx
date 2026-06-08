@@ -27,7 +27,7 @@ export function LandingReportCard({
       transition={{ delay: index * 0.05, duration: 0.35 }}
       className="glass-card w-[280px] shrink-0 overflow-hidden sm:w-[300px]"
     >
-      <div className="relative aspect-[4/3] bg-zinc-900">
+      <div className="relative aspect-[4/3] bg-[var(--bg-elevated)]">
         {report.image_url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
@@ -36,7 +36,7 @@ export function LandingReportCard({
             className="h-full w-full object-cover"
           />
         ) : (
-          <div className="flex h-full items-center justify-center bg-gradient-to-br from-zinc-800 to-zinc-950 text-xs text-zinc-600">
+          <div className="flex h-full items-center justify-center bg-gradient-to-br from-zinc-800 to-zinc-950 text-xs text-[var(--text-muted)]">
             No photo
           </div>
         )}
@@ -53,7 +53,7 @@ export function LandingReportCard({
             <h3 className="truncate font-heading text-base font-bold text-white">
               {report.strain_name}
             </h3>
-            <p className="mt-0.5 truncate text-sm text-zinc-400">
+            <p className="mt-0.5 truncate text-sm text-[var(--text-muted)]">
               <Link
                 href={`/brands/${slugify(report.brand_name)}`}
                 className="hover:text-emerald-400"
@@ -61,7 +61,7 @@ export function LandingReportCard({
                 {report.brand_name}
               </Link>
             </p>
-            <p className="mt-1 flex items-center gap-1 text-xs text-zinc-500">
+            <p className="mt-1 flex items-center gap-1 text-xs text-[var(--text-muted)]">
               <MapPin className="h-3 w-3 shrink-0" />
               {report.city}, MI ·{" "}
               <span className="capitalize">{report.product_type}</span>
@@ -78,7 +78,7 @@ export function LandingReportCard({
           </div>
         )}
 
-        <p className="mt-3 text-[11px] text-zinc-600">
+        <p className="mt-3 text-[11px] text-[var(--text-muted)]">
           {formatTimeAgo(report.created_at)}
         </p>
       </div>

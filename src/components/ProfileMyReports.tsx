@@ -38,7 +38,7 @@ export function ProfileMyReports() {
   if (products === undefined || meetups === undefined) {
     return (
       <div className="glass-card p-4">
-        <p className="text-sm text-zinc-500">Loading your reports…</p>
+        <p className="text-sm text-[var(--text-muted)]">Loading your reports…</p>
       </div>
     );
   }
@@ -49,7 +49,7 @@ export function ProfileMyReports() {
       <section>
         <h3 className="section-kicker mb-3">Your reports</h3>
         <div className="glass-card p-5 text-center">
-          <p className="text-sm text-zinc-500">You haven&apos;t submitted any reports yet.</p>
+          <p className="text-sm text-[var(--text-muted)]">You haven&apos;t submitted any reports yet.</p>
           <Link href="/report" className="btn-primary mt-4 inline-block px-5 py-2.5 text-sm">
             Submit a report
           </Link>
@@ -75,7 +75,7 @@ export function ProfileMyReports() {
             <Link
               key={report.id}
               href="/reports"
-              className="glass-card flex items-center gap-3 p-3.5 transition hover:border-zinc-700/70"
+              className="glass-card flex items-center gap-3 p-3.5 transition hover:border-[var(--accent-border)]"
             >
               <div
                 className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${tierStyle.badge}`}
@@ -86,10 +86,10 @@ export function ProfileMyReports() {
                 <p className="truncate font-heading text-sm font-semibold text-white">
                   {report.strain_name}
                 </p>
-                <p className="truncate text-xs text-zinc-500">
+                <p className="truncate text-xs text-[var(--text-muted)]">
                   {report.brand_name} · {report.city}
                 </p>
-                <p className="mt-0.5 text-[11px] text-zinc-600">
+                <p className="mt-0.5 text-[11px] text-[var(--text-muted)]">
                   {formatTimeAgo(report.created_at)}
                 </p>
               </div>
@@ -116,10 +116,10 @@ export function ProfileMyReports() {
                 <p className="truncate font-heading text-sm font-semibold text-white">
                   {meetup.seller_display_name}
                 </p>
-                <p className="truncate text-xs text-zinc-500">
+                <p className="truncate text-xs text-[var(--text-muted)]">
                   Meetup · {meetup.city}
                 </p>
-                <p className="mt-0.5 text-[11px] text-zinc-600">
+                <p className="mt-0.5 text-[11px] text-[var(--text-muted)]">
                   {formatTimeAgo(meetup.created_at)}
                 </p>
               </div>

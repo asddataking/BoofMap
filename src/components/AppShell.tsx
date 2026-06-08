@@ -72,7 +72,7 @@ export function AppShell({
                   className={cn(
                     "font-display rounded-lg px-4 py-2 text-sm font-bold uppercase tracking-wide transition",
                     active
-                      ? "text-[#39FF88]"
+                      ? "text-[var(--fire-green)]"
                       : "text-[var(--text-muted)] hover:text-[var(--text-main)]"
                   )}
                 >
@@ -116,7 +116,7 @@ export function AppShell({
                     <SignInButton mode="modal">
                       <button
                         type="button"
-                        className="rounded-xl px-3 py-2 text-sm font-medium text-zinc-400 transition hover:text-white"
+                        className="interactive-muted rounded-xl px-3 py-2 text-sm font-medium"
                       >
                         Sign in
                       </button>
@@ -134,7 +134,7 @@ export function AppShell({
             <button
               type="button"
               onClick={() => setMenuOpen((o) => !o)}
-              className="rounded-xl p-2 text-zinc-400 hover:bg-zinc-900 hover:text-white lg:hidden"
+              className="interactive-muted rounded-xl p-2 lg:hidden"
               aria-expanded={menuOpen}
               aria-controls={menuId}
               aria-label={menuOpen ? "Close menu" : "Open menu"}
@@ -147,7 +147,7 @@ export function AppShell({
         {menuOpen && (
           <nav
             id={menuId}
-            className="border-t border-zinc-900 px-4 py-3 lg:hidden"
+            className="border-t border-[var(--border-soft)] px-4 py-3 lg:hidden"
             aria-label="Mobile menu"
           >
             <div className="flex flex-col gap-1">
@@ -164,7 +164,7 @@ export function AppShell({
                     href={href}
                     aria-current={active ? "page" : undefined}
                     onClick={() => setMenuOpen(false)}
-                    className="rounded-xl px-3 py-2.5 text-sm font-medium text-zinc-400 hover:bg-zinc-900 hover:text-white"
+                    className="interactive-muted rounded-xl px-3 py-2.5 text-sm font-medium"
                   >
                     {label}
                   </Link>
@@ -182,7 +182,7 @@ export function AppShell({
               <Link
                 href="/report"
                 onClick={() => setMenuOpen(false)}
-                className="mt-1 rounded-xl bg-zinc-900 px-3 py-2.5 text-sm font-semibold text-white"
+                className="btn-dark mt-1 rounded-xl px-3 py-2.5 text-sm font-semibold"
               >
                 Report Boof
               </Link>

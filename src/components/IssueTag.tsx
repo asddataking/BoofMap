@@ -20,7 +20,7 @@ export function IssueTag({
     <span
       className={cn(
         "inline-block rounded-full border font-medium",
-        tagColors[tag] ?? "bg-zinc-800/80 text-zinc-400 border-zinc-700/50",
+        tagColors[tag] ?? "bg-[var(--bg-elevated)]/80 text-[var(--text-muted)] border-[var(--border-soft)]/50",
         small ? "px-2 py-0.5 text-[10px]" : "px-2.5 py-0.5 text-xs"
       )}
     >

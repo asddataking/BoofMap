@@ -59,7 +59,7 @@ export default async function DispensaryPage({
       />
       <PageTransition>
         <div className="py-4">
-          <p className="text-xs text-zinc-500">{dispo.city}</p>
+          <p className="text-xs text-[var(--text-muted)]">{dispo.city}</p>
           <h1 className="mt-1 font-display text-2xl font-bold text-white">
             {dispo.name}
           </h1>
@@ -81,7 +81,7 @@ export default async function DispensaryPage({
 
           <div className="mt-6 grid grid-cols-2 gap-3">
             <div className="glass-card p-4">
-              <p className="text-[10px] uppercase tracking-wider text-zinc-500">
+              <p className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
                 Value score
               </p>
               <p className="mt-1 font-heading text-3xl font-bold text-amber-400">
@@ -89,18 +89,18 @@ export default async function DispensaryPage({
               </p>
             </div>
             <div className="glass-card p-4">
-              <p className="text-[10px] uppercase tracking-wider text-zinc-500">
+              <p className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
                 Avg reported price
               </p>
-              <p className="mt-1 font-heading text-2xl font-bold text-zinc-200">
+              <p className="mt-1 font-heading text-2xl font-bold text-[var(--text-main)]">
                 ${dispo.avg_reported_price}
               </p>
             </div>
             <div className="glass-card col-span-2 p-4">
-              <p className="text-[10px] uppercase tracking-wider text-zinc-500">
+              <p className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
                 Community sentiment
               </p>
-              <p className="mt-1 text-sm capitalize text-zinc-300">
+              <p className="mt-1 text-sm capitalize text-[var(--text-main)]">
                 {dispo.sentiment} · {dispo.report_count} reports
               </p>
             </div>
@@ -108,7 +108,7 @@ export default async function DispensaryPage({
 
           {dispo.fire_finds.length > 0 && (
             <section className="mt-8">
-              <h3 className="flex items-center gap-2 font-heading text-sm font-semibold uppercase tracking-wider text-zinc-500">
+              <h3 className="flex items-center gap-2 font-heading text-sm font-semibold uppercase tracking-wider text-[var(--text-muted)]">
                 <Flame className="h-4 w-4 text-amber-400" />
                 Fire finds
               </h3>
@@ -121,7 +121,7 @@ export default async function DispensaryPage({
           )}
 
           <section className="mt-8">
-            <h3 className="font-heading text-sm font-semibold uppercase tracking-wider text-zinc-500">
+            <h3 className="font-heading text-sm font-semibold uppercase tracking-wider text-[var(--text-muted)]">
               Recent community reports
             </h3>
             <div className="mt-4 space-y-4">

@@ -149,3 +149,36 @@ export interface IntelligenceNotification {
   read: boolean;
   created_at: string;
 }
+
+export interface PlatformStats {
+  reports: number;
+  products: number;
+  brands: number;
+  active_users: number;
+}
+
+export interface IntelligenceRankingEntry {
+  id: string;
+  rank: number;
+  product_name: string;
+  brand_name: string;
+  brand_slug: string;
+  product_slug: string;
+  score: number;
+  previous_score?: number | null;
+  movement: number;
+  report_count: number;
+  price_per_gram?: number | null;
+  product_type: string;
+}
+
+export interface ProductIntelligenceScore {
+  product_name: string;
+  brand_name: string;
+  community_score: number;
+  flavor_score: number;
+  burn_score: number;
+  value_score: number;
+  freshness_score?: number;
+  report_count: number;
+}

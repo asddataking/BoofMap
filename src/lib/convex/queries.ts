@@ -175,3 +175,19 @@ export async function preloadRankings(
     return null;
   }
 }
+
+export async function fetchProductScore(productSlug: string) {
+  if (!isConvexConfigured()) return null;
+  const options = convexQueryOptions();
+  if (!options) return null;
+  try {
+    return await fetchQuery(
+      api.intelligence.getProductScore,
+      { productSlug },
+      options
+    );
+  } catch (error) {
+    logConvexQueryFailure("fetchProductScore", error);
+    return null;
+  }
+}

@@ -15,14 +15,14 @@ export function BoofAlertCard({
         {enabled ? (
           <BellRing className="h-5 w-5 text-emerald-400" />
         ) : (
-          <Bell className="h-5 w-5 text-zinc-500" />
+          <Bell className="h-5 w-5 text-[var(--text-muted)]" />
         )}
       </div>
       <div className="min-w-0 flex-1">
         <p className="font-heading text-sm font-bold text-white">
           Boof Alerts {enabled ? "Active" : "Off"}
         </p>
-        <p className="truncate text-xs text-zinc-500">
+        <p className="truncate text-xs text-[var(--text-muted)]">
           {enabled ? `Watching ${city} for new flags` : "Enable alerts below"}
         </p>
       </div>

@@ -95,7 +95,7 @@ export function MeetupReportForm({
 
   if (authLoading) {
     return (
-      <p className="py-12 text-center text-sm text-zinc-500">Loading…</p>
+      <p className="py-12 text-center text-sm text-[var(--text-muted)]">Loading…</p>
     );
   }
 
@@ -190,7 +190,7 @@ export function MeetupReportForm({
                 "rounded-full border px-3 py-1.5 text-xs transition",
                 form.issue_tags.includes(tag)
                   ? "border-purple-500/40 bg-purple-500/15 text-purple-300"
-                  : "border-zinc-800 text-zinc-500 hover:border-zinc-700"
+                  : "border-[var(--border-soft)] text-[var(--text-muted)] hover:border-[var(--border-soft)]"
               )}
             >
               {tag}
@@ -217,7 +217,7 @@ export function MeetupReportForm({
           type="file"
           accept="image/*"
           capture="environment"
-          className="mt-2 block w-full text-sm text-zinc-500 file:mr-3 file:rounded-lg file:border-0 file:bg-zinc-800 file:px-3 file:py-2 file:text-sm file:text-zinc-300"
+          className="mt-2 block w-full text-sm text-[var(--text-muted)] file:mr-3 file:rounded-lg file:border-0 file:bg-[var(--bg-elevated)] file:px-3 file:py-2 file:text-sm file:text-[var(--text-main)]"
           onChange={(e) =>
             setForm((f) => ({
               ...f,

@@ -5,6 +5,7 @@ import { AlertTriangle } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { PageTransition } from "@/components/PageTransition";
 import { ReportCard } from "@/components/ReportCard";
+import { BoofMapIntelligenceSection } from "@/components/brands/BoofMapIntelligenceSection";
 import { ScoreBadge } from "@/components/ScoreBadge";
 import { JsonLdScript } from "@/components/seo/JsonLdScript";
 import { BreadcrumbJsonLd } from "@/components/SiteJsonLd";
@@ -60,7 +61,7 @@ export default async function BrandPage({
       />
       <PageTransition>
         <div className="py-4">
-          <Link href="/brands" className="text-xs text-zinc-500 hover:text-zinc-400">
+          <Link href="/brands" className="text-xs text-[var(--text-muted)] hover:text-[var(--text-muted)]">
             ← All brands
           </Link>
           <h1 className="mt-2 font-display text-2xl font-bold text-white">
@@ -85,7 +86,7 @@ export default async function BrandPage({
 
           <div className="mt-6 grid grid-cols-2 gap-3">
             <div className="glass-card p-4">
-              <p className="text-[10px] uppercase tracking-wider text-zinc-500">
+              <p className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
                 Trust score
               </p>
               <p className="mt-1 font-heading text-3xl font-bold text-emerald-400">
@@ -93,7 +94,7 @@ export default async function BrandPage({
               </p>
             </div>
             <div className="glass-card p-4">
-              <p className="text-[10px] uppercase tracking-wider text-zinc-500">
+              <p className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
                 Avg Boof Score
               </p>
               <div className="mt-2">
@@ -101,24 +102,24 @@ export default async function BrandPage({
               </div>
             </div>
             <div className="glass-card col-span-2 p-4">
-              <p className="text-[10px] uppercase tracking-wider text-zinc-500">
+              <p className="text-[10px] uppercase tracking-wider text-[var(--text-muted)]">
                 Most common reported issue
               </p>
-              <p className="mt-1 text-sm text-zinc-300">
+              <p className="mt-1 text-sm text-[var(--text-main)]">
                 {brand.top_complaint ?? "No major pattern yet"}
               </p>
             </div>
           </div>
 
           <section className="mt-8">
-            <h3 className="font-heading text-sm font-semibold uppercase tracking-wider text-zinc-500">
+            <h3 className="font-heading text-sm font-semibold uppercase tracking-wider text-[var(--text-muted)]">
               Product breakdown
             </h3>
             <div className="mt-3 flex flex-wrap gap-2">
               {Object.entries(brand.product_breakdown).map(([type, count]) => (
                 <span
                   key={type}
-                  className="rounded-xl border border-zinc-800 bg-zinc-900/50 px-3 py-1.5 text-xs capitalize text-zinc-400"
+                  className="rounded-xl border border-[var(--border-soft)] bg-[var(--bg-elevated)] px-3 py-1.5 text-xs capitalize text-[var(--text-muted)]"
                 >
                   {type}: {count}
                 </span>
@@ -126,8 +127,10 @@ export default async function BrandPage({
             </div>
           </section>
 
+          <BoofMapIntelligenceSection brandName={brand.name} brandSlug={slug} />
+
           <section className="mt-8">
-            <h3 className="font-heading text-sm font-semibold uppercase tracking-wider text-zinc-500">
+            <h3 className="font-heading text-sm font-semibold uppercase tracking-wider text-[var(--text-muted)]">
               Recent community reports
             </h3>
             <div className="mt-4 space-y-4">

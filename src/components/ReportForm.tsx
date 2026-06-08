@@ -106,7 +106,7 @@ export function ReportForm({
 
   if (authLoading) {
     return (
-      <p className="py-12 text-center text-sm text-zinc-500">Loading…</p>
+      <p className="py-12 text-center text-sm text-[var(--text-muted)]">Loading…</p>
     );
   }
 
@@ -130,7 +130,7 @@ export function ReportForm({
                 "rounded-xl border px-3 py-2 text-sm transition",
                 form.product_type === value
                   ? "border-emerald-500/50 bg-emerald-500/15 text-emerald-300"
-                  : "border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:border-zinc-700"
+                  : "border-[var(--border-soft)] bg-[var(--bg-elevated)] text-[var(--text-muted)] hover:border-[var(--border-soft)]"
               )}
             >
               {label}
@@ -207,7 +207,7 @@ export function ReportForm({
                   "rounded-full border px-3 py-2 text-xs font-medium transition",
                   isQuickFlagActive(issueTag)
                     ? "border-red-500/40 bg-red-500/15 text-red-300"
-                    : "border-zinc-800 text-zinc-500 hover:border-zinc-700"
+                    : "border-[var(--border-soft)] text-[var(--text-muted)] hover:border-[var(--border-soft)]"
                 )}
               >
                 {label}
@@ -225,7 +225,7 @@ export function ReportForm({
                   "rounded-full border px-3 py-1.5 text-xs transition",
                   form.issue_tags.includes(tag)
                     ? "border-amber-500/40 bg-amber-500/15 text-amber-300"
-                    : "border-zinc-800 text-zinc-500 hover:border-zinc-700"
+                    : "border-[var(--border-soft)] text-[var(--text-muted)] hover:border-[var(--border-soft)]"
                 )}
               >
                 {tag}
@@ -235,7 +235,7 @@ export function ReportForm({
         )}
         {useQuickFlags && (
           <details className="mt-3">
-            <summary className="cursor-pointer text-xs text-zinc-500 hover:text-zinc-400">
+            <summary className="cursor-pointer text-xs text-[var(--text-muted)] hover:text-[var(--text-muted)]">
               More issue tags
             </summary>
             <div className="mt-2 flex flex-wrap gap-2">
@@ -248,7 +248,7 @@ export function ReportForm({
                     "rounded-full border px-3 py-1.5 text-xs transition",
                     form.issue_tags.includes(tag)
                       ? "border-amber-500/40 bg-amber-500/15 text-amber-300"
-                      : "border-zinc-800 text-zinc-500 hover:border-zinc-700"
+                      : "border-[var(--border-soft)] text-[var(--text-muted)] hover:border-[var(--border-soft)]"
                   )}
                 >
                   {tag}
@@ -274,7 +274,7 @@ export function ReportForm({
           }
           className="mt-3 w-full accent-emerald-500"
         />
-        <div className="mt-1 flex justify-between text-[10px] text-zinc-600">
+        <div className="mt-1 flex justify-between text-[10px] text-[var(--text-muted)]">
           <span>Boof</span>
           <span>Fire</span>
         </div>
@@ -286,7 +286,7 @@ export function ReportForm({
           type="file"
           accept="image/*"
           capture="environment"
-          className="mt-2 block w-full text-sm text-zinc-500 file:mr-3 file:rounded-lg file:border-0 file:bg-zinc-800 file:px-3 file:py-2 file:text-sm file:text-zinc-300"
+          className="mt-2 block w-full text-sm text-[var(--text-muted)] file:mr-3 file:rounded-lg file:border-0 file:bg-[var(--bg-elevated)] file:px-3 file:py-2 file:text-sm file:text-[var(--text-main)]"
           onChange={(e) =>
             setForm((f) => ({
               ...f,
@@ -294,7 +294,7 @@ export function ReportForm({
             }))
           }
         />
-        <p className="mt-1 text-[10px] text-zinc-600">
+        <p className="mt-1 text-[10px] text-[var(--text-muted)]">
           Uploaded to Cloudflare R2 when configured.
         </p>
       </div>

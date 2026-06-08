@@ -47,12 +47,12 @@ export function AdminShell({
   return (
     <div className="min-h-screen bg-[#050505]">
       <div className="flex min-h-screen">
-        <aside className="hidden w-64 shrink-0 flex-col border-r border-zinc-900 bg-zinc-950/50 lg:flex">
+        <aside className="hidden w-64 shrink-0 flex-col border-r border-zinc-900 bg-[var(--bg-panel)]/50 lg:flex">
           <div className="border-b border-zinc-900 p-5">
             <BoofLogo size="sm" showBeta={false} className="mb-4" />
             <Link
               href="/"
-              className="mb-4 inline-flex items-center gap-1.5 text-xs text-zinc-500 transition hover:text-zinc-300"
+              className="mb-4 inline-flex items-center gap-1.5 text-xs text-[var(--text-muted)] transition hover:text-[var(--text-main)]"
             >
               <ArrowLeft className="h-3.5 w-3.5" aria-hidden />
               Back to home
@@ -60,7 +60,7 @@ export function AdminShell({
             <h1 className="font-heading text-lg font-bold text-white">
               Admin<span className="text-emerald-400">Panel</span>
             </h1>
-            <p className="mt-0.5 text-xs text-zinc-500">Manage BoofMap</p>
+            <p className="mt-0.5 text-xs text-[var(--text-muted)]">Manage BoofMap</p>
           </div>
 
           <nav className="flex-1 space-y-1 p-3">
@@ -73,7 +73,7 @@ export function AdminShell({
                   "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition",
                   section === id
                     ? "bg-emerald-500/15 text-emerald-300"
-                    : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
+                    : "text-[var(--text-muted)] hover:bg-[var(--bg-elevated)] hover:text-white"
                 )}
               >
                 <Icon className="h-4 w-4 shrink-0" />
@@ -88,9 +88,9 @@ export function AdminShell({
           </nav>
 
           <div className="border-t border-zinc-900 p-4">
-            <div className="flex items-center gap-2 rounded-xl bg-zinc-900/60 px-3 py-2.5">
+            <div className="flex items-center gap-2 rounded-xl bg-[var(--bg-elevated)]/60 px-3 py-2.5">
               <Bot className="h-4 w-4 text-emerald-400" />
-              <span className="text-xs text-zinc-400">AI assistant available</span>
+              <span className="text-xs text-[var(--text-muted)]">AI assistant available</span>
             </div>
           </div>
         </aside>
@@ -98,7 +98,7 @@ export function AdminShell({
         <div className="flex min-w-0 flex-1 flex-col">
           <header className="sticky top-0 z-20 border-b border-zinc-900 bg-[#050505]/90 backdrop-blur-xl lg:hidden">
             <div className="flex items-center gap-2 overflow-x-auto px-4 py-3 scrollbar-thin">
-              <Link href="/" className="shrink-0 text-zinc-500">
+              <Link href="/" className="shrink-0 text-[var(--text-muted)]">
                 <ArrowLeft className="h-4 w-4" />
               </Link>
               {nav.map(({ id, label }) => (
@@ -110,7 +110,7 @@ export function AdminShell({
                     "shrink-0 rounded-full px-3 py-1.5 text-xs font-medium",
                     section === id
                       ? "bg-emerald-500/20 text-emerald-300"
-                      : "bg-zinc-900 text-zinc-400"
+                      : "bg-[var(--bg-elevated)] text-[var(--text-muted)]"
                   )}
                 >
                   {label}
@@ -140,7 +140,7 @@ export function AdminPageHeader({
         {title}
       </h2>
       {description && (
-        <p className="mt-1 text-sm text-zinc-500">{description}</p>
+        <p className="mt-1 text-sm text-[var(--text-muted)]">{description}</p>
       )}
     </div>
   );
@@ -153,7 +153,7 @@ export function StatusBadge({ status }: { status: string }) {
     flagged: "bg-orange-500/15 text-orange-300 border-orange-500/25",
     rejected: "bg-red-500/15 text-red-300 border-red-500/25",
     admin: "bg-purple-500/15 text-purple-300 border-purple-500/25",
-    user: "bg-zinc-800 text-zinc-400 border-zinc-700",
+    user: "bg-[var(--bg-elevated)] text-[var(--text-muted)] border-[var(--border-soft)]",
   };
 
   return (

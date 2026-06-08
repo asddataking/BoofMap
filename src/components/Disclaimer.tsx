@@ -1,7 +1,7 @@
 export function Disclaimer({ className = "" }: { className?: string }) {
   return (
     <p
-      className={`text-[10px] leading-relaxed text-zinc-500 ${className}`}
+      className={`text-[10px] leading-relaxed text-[var(--text-muted)] ${className}`}
       role="note"
     >
       BoofMap is based on community-submitted reports. Always inspect products

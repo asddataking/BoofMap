@@ -24,7 +24,7 @@ export default function ProfilePage() {
             <h1 className="font-heading text-2xl font-bold text-white">
               Profile
             </h1>
-            <p className="mt-1 text-sm text-zinc-500">
+            <p className="mt-1 text-sm text-[var(--text-muted)]">
               Your intelligence profile, reports, alerts, and reputation.
             </p>
           </div>
@@ -56,14 +56,14 @@ export default function ProfilePage() {
           {isAuthenticated && <ProfileMyReports />}
 
           <section>
-            <h2 className="mb-3 text-xs font-medium uppercase tracking-wider text-zinc-500">
+            <h2 className="mb-3 text-xs font-medium uppercase tracking-wider text-[var(--text-muted)]">
               Boof Alerts
             </h2>
             <NotificationSettings compact />
           </section>
 
           <div className="space-y-2">
-            <h2 className="text-xs font-medium uppercase tracking-wider text-zinc-500">
+            <h2 className="text-xs font-medium uppercase tracking-wider text-[var(--text-muted)]">
               Quick actions
             </h2>
             <div className="grid gap-2">
@@ -72,7 +72,7 @@ export default function ProfilePage() {
               </Link>
               <Link
                 href="/report"
-                className="rounded-2xl border border-zinc-800 bg-zinc-900/50 px-6 py-3.5 text-center text-sm font-semibold text-white hover:border-zinc-700"
+                className="rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-elevated)] px-6 py-3.5 text-center text-sm font-semibold text-white hover:border-[var(--border-soft)]"
               >
                 Report Boof
               </Link>
@@ -89,8 +89,8 @@ export default function ProfilePage() {
             </Link>
           )}
 
-          <div className="rounded-2xl border border-zinc-800/50 bg-zinc-900/30 p-4 text-xs leading-relaxed text-zinc-500">
-            <p className="font-medium text-zinc-400">Mobile tips</p>
+          <div className="rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-elevated)] p-4 text-xs leading-relaxed text-[var(--text-muted)]">
+            <p className="font-medium text-[var(--text-muted)]">Mobile tips</p>
             <ul className="mt-2 list-inside list-disc space-y-1">
               <li>Allow location for &quot;Near Me&quot; filters</li>
               <li>Use your camera roll when reporting with photos</li>

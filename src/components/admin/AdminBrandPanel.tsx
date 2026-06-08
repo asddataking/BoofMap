@@ -19,7 +19,7 @@ export function AdminBrandPanel() {
       />
 
       {!applications?.length ? (
-        <p className="text-sm text-zinc-500">No pending brand applications.</p>
+        <p className="text-sm text-[var(--text-muted)]">No pending brand applications.</p>
       ) : (
         <ul className="mt-4 space-y-3">
           {applications.map((app) => (
@@ -29,13 +29,13 @@ export function AdminBrandPanel() {
             >
               <div>
                 <p className="font-semibold text-white">{app.brand_name}</p>
-                <p className="text-sm text-zinc-400">
+                <p className="text-sm text-[var(--text-muted)]">
                   {app.company_email} · {app.state}
                 </p>
                 {app.website && (
-                  <p className="text-xs text-zinc-500">{app.website}</p>
+                  <p className="text-xs text-[var(--text-muted)]">{app.website}</p>
                 )}
-                <p className="mt-1 text-[10px] text-zinc-600">
+                <p className="mt-1 text-[10px] text-[var(--text-muted)]">
                   {formatTimeAgo(app.created_at)}
                 </p>
               </div>

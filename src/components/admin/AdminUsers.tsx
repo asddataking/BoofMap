@@ -28,7 +28,7 @@ export function AdminUsers() {
         <div className="overflow-x-auto">
           <table className="w-full min-w-[640px] text-left text-sm">
             <thead>
-              <tr className="border-b border-zinc-800 text-xs uppercase tracking-wider text-zinc-500">
+              <tr className="border-b border-[var(--border-soft)] text-xs uppercase tracking-wider text-[var(--text-muted)]">
                 <th className="px-4 py-3 font-medium">User</th>
                 <th className="px-4 py-3 font-medium">Clerk ID</th>
                 <th className="px-4 py-3 font-medium">Reports</th>
@@ -41,21 +41,21 @@ export function AdminUsers() {
               {(users ?? []).map((user) => (
                 <tr
                   key={user.id}
-                  className="border-b border-zinc-900/80 transition hover:bg-zinc-900/30"
+                  className="border-b border-zinc-900/80 transition hover:bg-[var(--bg-elevated)]"
                 >
-                  <td className="px-4 py-3 font-medium text-zinc-200">
+                  <td className="px-4 py-3 font-medium text-[var(--text-main)]">
                     {user.display_name ?? "—"}
                   </td>
-                  <td className="px-4 py-3 font-mono text-xs text-zinc-500">
+                  <td className="px-4 py-3 font-mono text-xs text-[var(--text-muted)]">
                     {user.clerk_id.slice(0, 16)}…
                   </td>
-                  <td className="px-4 py-3 text-zinc-400">
+                  <td className="px-4 py-3 text-[var(--text-muted)]">
                     {user.report_count}
                   </td>
-                  <td className="px-4 py-3 text-zinc-400">
+                  <td className="px-4 py-3 text-[var(--text-muted)]">
                     {user.reputation}
                   </td>
-                  <td className="px-4 py-3 text-xs text-zinc-500">
+                  <td className="px-4 py-3 text-xs text-[var(--text-muted)]">
                     {formatTimeAgo(user.created_at)}
                   </td>
                   <td className="px-4 py-3">
@@ -67,7 +67,7 @@ export function AdminUsers() {
                           e.target.value as "user" | "admin"
                         )
                       }
-                      className="rounded-lg border border-zinc-800 bg-zinc-900 px-2 py-1 text-xs text-zinc-300 focus:border-emerald-500/40 focus:outline-none"
+                      className="rounded-lg border border-[var(--border-soft)] bg-[var(--bg-elevated)] px-2 py-1 text-xs text-[var(--text-main)] focus:border-emerald-500/40 focus:outline-none"
                     >
                       <option value="user">user</option>
                       <option value="admin">admin</option>
@@ -79,7 +79,7 @@ export function AdminUsers() {
           </table>
         </div>
         {!users?.length && (
-          <p className="p-6 text-center text-sm text-zinc-500">
+          <p className="p-6 text-center text-sm text-[var(--text-muted)]">
             No users synced yet. Users appear after their first sign-in.
           </p>
         )}

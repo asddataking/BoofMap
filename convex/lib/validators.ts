@@ -13,7 +13,13 @@ export const rankingType = v.union(
   v.literal("fallers"),
   v.literal("reported"),
   v.literal("budget"),
-  v.literal("fraud")
+  v.literal("fraud"),
+  v.literal("top_flower_week"),
+  v.literal("biggest_movers"),
+  v.literal("hot_drops"),
+  v.literal("value_picks"),
+  v.literal("rising_brands"),
+  v.literal("falling_brands")
 );
 
 export const rankingTrend = v.union(

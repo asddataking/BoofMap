@@ -29,7 +29,7 @@ export function NotificationSettings() {
         <h2 className="font-heading text-2xl font-bold text-white sm:text-3xl">
           Boof Alert Settings
         </h2>
-        <p className="mt-1 text-sm text-zinc-500">
+        <p className="mt-1 text-sm text-[var(--text-muted)]">
           Preview — full push notifications coming soon.
         </p>
       </div>
@@ -37,7 +37,7 @@ export function NotificationSettings() {
       <div className="glass-card space-y-4 p-5 sm:p-6">
         <BoofAlertCard enabled={anyEnabled} city={settings.city} />
 
-        <ul className="divide-y divide-zinc-800/60 rounded-xl border border-zinc-800/60">
+        <ul className="divide-y divide-zinc-800/60 rounded-xl border border-[var(--border-soft)]">
           <ToggleRow
             icon={Leaf}
             label="Boof alerts"
@@ -111,7 +111,7 @@ function ToggleRow({
         <Icon className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
         <div>
           <p className="text-sm font-semibold text-white">{label}</p>
-          <p className="text-xs text-zinc-500">{description}</p>
+          <p className="text-xs text-[var(--text-muted)]">{description}</p>
         </div>
       </div>
       <button
@@ -120,7 +120,7 @@ function ToggleRow({
         aria-checked={checked}
         onClick={onChange}
         className={`relative h-7 w-12 shrink-0 rounded-full transition ${
-          checked ? "bg-emerald-500" : "bg-zinc-700"
+          checked ? "bg-emerald-500" : "bg-[var(--bg-elevated)]"
         }`}
       >
         <span

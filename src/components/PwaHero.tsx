@@ -14,9 +14,9 @@ export function PwaHero() {
       <div className="glass-card space-y-4 p-5">
         <div className="flex items-center gap-2 text-emerald-400/90">
           <Globe className="h-4 w-4 shrink-0" />
-          <p className="text-xs font-medium leading-snug text-zinc-400">
+          <p className="text-xs font-medium leading-snug text-[var(--text-muted)]">
             BoofMap runs right in your browser.{" "}
-            <span className="text-zinc-300">No app store required.</span>
+            <span className="text-[var(--text-main)]">No app store required.</span>
           </p>
         </div>
 
@@ -31,7 +31,7 @@ export function PwaHero() {
           </button>
           <Link
             href="/report"
-            className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-zinc-700 bg-zinc-900/60 px-6 py-3.5 text-sm font-semibold text-white transition hover:border-zinc-600 hover:bg-zinc-800/60 active:scale-[0.98]"
+            className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-elevated)]/60 px-6 py-3.5 text-sm font-semibold text-white transition hover:border-[var(--accent-border)] hover:bg-[var(--bg-elevated)] active:scale-[0.98]"
           >
             <PlusCircle className="h-4 w-4 text-red-400" />
             Report Boof

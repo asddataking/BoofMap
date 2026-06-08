@@ -1,12 +1,51 @@
 @import "tailwindcss";
 
-:root {
+/* Light theme (default) */
+:root,
+[data-theme="light"] {
+  --bg-main: #fafafa;
+  --bg-panel: #ffffff;
+  --bg-card: #ffffff;
+  --bg-elevated: #f4f4f5;
+  --border-soft: rgba(0, 0, 0, 0.08);
+  --surface-hover: rgba(0, 0, 0, 0.04);
+  --surface-active: rgba(0, 0, 0, 0.07);
+
+  --fire-green: #16a34a;
+  --fire-green-bright: #22c55e;
+  --draft-green: #65a30d;
+  --boof-red: #dc2626;
+  --alert-orange: #ea580c;
+  --warning-yellow: #ca8a04;
+
+  --text-main: #0a0a0a;
+  --text-muted: #6b7280;
+  --accent-subtle: #ecfdf5;
+  --accent-border: rgba(22, 163, 74, 0.22);
+  --secondary-subtle: #f5f5f4;
+
+  --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  --page-glow-green: rgba(22, 163, 74, 0.07);
+  --page-glow-red: rgba(220, 38, 38, 0.04);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.14);
+  --intel-grid-line: rgba(22, 163, 74, 0.08);
+
+  --bg-deep: var(--bg-main);
+  --foreground: var(--text-main);
+  --neon-green: var(--fire-green);
+}
+
+[data-theme="dark"] {
   --bg-main: #050807;
   --bg-panel: #0b0f0c;
   --bg-card: #111814;
+  --bg-elevated: #151c18;
   --border-soft: rgba(255, 255, 255, 0.1);
+  --surface-hover: rgba(255, 255, 255, 0.06);
+  --surface-active: rgba(255, 255, 255, 0.1);
 
   --fire-green: #39ff88;
+  --fire-green-bright: #39ff88;
   --draft-green: #9ac434;
   --boof-red: #ff3b3b;
   --alert-orange: #ff7a00;
@@ -14,6 +53,15 @@
 
   --text-main: #f5f5f5;
   --text-muted: #a6adb3;
+  --accent-subtle: rgba(57, 255, 136, 0.08);
+  --accent-border: rgba(57, 255, 136, 0.3);
+  --secondary-subtle: #111814;
+
+  --card-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
+  --page-glow-green: rgba(57, 255, 136, 0.08);
+  --page-glow-red: rgba(255, 59, 59, 0.04);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+  --intel-grid-line: rgba(57, 255, 136, 0.06);
 
   --bg-deep: var(--bg-main);
   --foreground: var(--text-main);
@@ -72,22 +120,70 @@ button {
 }
 
 .glass-card {
-  @apply rounded-xl border border-[var(--border-soft)] bg-[var(--bg-card)] shadow-[0_4px_24px_rgba(0,0,0,0.45)] backdrop-blur-xl;
+  @apply rounded-xl border border-[var(--border-soft)] bg-[var(--bg-card)] backdrop-blur-xl;
+  box-shadow: var(--card-shadow);
 }
 
 .section-kicker {
   font-family: var(--font-barlow-condensed), system-ui, sans-serif;
-  @apply text-[10px] font-bold uppercase tracking-[0.22em] text-[#39FF88];
+  @apply text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--fire-green)];
+}
+
+.text-main {
+  color: var(--text-main);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.surface-inset {
+  border: 1px solid var(--border-soft);
+  background: var(--bg-elevated);
+}
+
+.surface-panel {
+  border: 1px solid var(--border-soft);
+  background: var(--bg-card);
+  box-shadow: var(--card-shadow);
+}
+
+.label-caps {
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hover-surface:hover {
+  background-color: var(--surface-hover);
+  border-color: var(--accent-border);
+}
+
+.interactive-muted {
+  color: var(--text-muted);
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.interactive-muted:hover {
+  color: var(--text-main);
+  background-color: var(--surface-hover);
 }
 
 .btn-primary {
   font-family: var(--font-inter), system-ui, sans-serif;
-  @apply rounded-lg bg-[#39FF88] px-6 py-3.5 text-sm font-bold text-[#050807] shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_4px_24px_rgba(57,255,136,0.35)] transition hover:-translate-y-0.5 hover:bg-[#5cff9e] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_8px_32px_rgba(57,255,136,0.45)] active:scale-[0.98];
+  @apply rounded-lg bg-[var(--fire-green-bright)] px-6 py-3.5 text-sm font-bold text-white shadow-[0_4px_20px_rgba(22,163,74,0.25)] transition hover:-translate-y-0.5 hover:brightness-110 hover:shadow-[0_8px_28px_rgba(22,163,74,0.3)] active:scale-[0.98];
+}
+
+[data-theme="dark"] .btn-primary {
+  @apply text-[#050807] shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_4px_24px_rgba(57,255,136,0.35)] hover:bg-[#5cff9e] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_8px_32px_rgba(57,255,136,0.45)];
 }
 
 .btn-secondary {
   font-family: var(--font-inter), system-ui, sans-serif;
-  @apply rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)]/80 px-6 py-3.5 text-sm font-semibold text-[var(--text-main)] shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-[#39FF88]/30 hover:shadow-[0_0_20px_rgba(57,255,136,0.12)] active:scale-[0.98];
+  @apply rounded-lg border border-[var(--border-soft)] bg-[var(--bg-card)]/80 px-6 py-3.5 text-sm font-semibold text-[var(--text-main)] backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-[var(--accent-border)] hover:bg-[var(--accent-subtle)] active:scale-[0.98];
+  box-shadow: var(--card-shadow);
 }
 
 .btn-white {
@@ -97,7 +193,8 @@ button {
 
 .btn-dark {
   font-family: var(--font-inter), system-ui, sans-serif;
-  @apply rounded-lg border border-[var(--border-soft)] bg-[var(--bg-panel)] px-6 py-3.5 text-sm font-semibold text-[var(--text-main)] shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-white/20 hover:bg-[var(--bg-card)] hover:shadow-[0_0_16px_rgba(255,255,255,0.06)] active:scale-[0.98];
+  @apply rounded-lg border border-[var(--border-soft)] bg-[var(--bg-elevated)] px-6 py-3.5 text-sm font-semibold text-[var(--text-main)] backdrop-blur-sm transition hover:-translate-y-0.5 hover:border-[var(--accent-border)] hover:bg-[var(--bg-card)] active:scale-[0.98];
+  box-shadow: var(--card-shadow);
 }
 
 .form-label {
@@ -127,19 +224,19 @@ button {
   width: 4px;
 }
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 
 .page-gradient {
   background: radial-gradient(
       ellipse 90% 55% at 50% -15%,
-      rgba(57, 255, 136, 0.08),
+      var(--page-glow-green),
       transparent 55%
     ),
     radial-gradient(
       ellipse 45% 35% at 100% 80%,
-      rgba(255, 59, 59, 0.04),
+      var(--page-glow-red),
       transparent
     ),
     var(--bg-main);
@@ -216,12 +313,13 @@ button {
 /* ——— Intelligence visuals ——— */
 
 .intel-grid {
-  background-image: linear-gradient(
-      rgba(57, 255, 136, 0.06) 1px,
-      transparent 1px
-    ),
-    linear-gradient(90deg, rgba(57, 255, 136, 0.06) 1px, transparent 1px);
+  background-image: linear-gradient(var(--intel-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--intel-grid-line) 1px, transparent 1px);
   background-size: 24px 24px;
+}
+
+.theme-toggle {
+  color-scheme: light dark;
 }
 
 .intel-scanline {

@@ -124,7 +124,7 @@ export function MapView({
               <Popup className="boof-popup">
                 <div className="min-w-[180px] p-1 text-zinc-900">
                   <p className="font-semibold">{report.strain_name}</p>
-                  <p className="text-xs text-zinc-600">
+                  <p className="text-xs text-[var(--text-muted)]">
                     {report.brand_name} · {report.dispensary_name}
                   </p>
                   <div className="mt-2 flex flex-wrap gap-1">
@@ -152,7 +152,7 @@ export function MapView({
                   Meetup / Seller
                 </p>
                 <p className="font-semibold">{meetup.seller_display_name}</p>
-                <p className="text-xs text-zinc-600">
+                <p className="text-xs text-[var(--text-muted)]">
                   {meetup.platform} · {meetup.city}, MI
                 </p>
                 <div className="mt-2 flex flex-wrap gap-1">
@@ -171,7 +171,7 @@ export function MapView({
         ))}
       </MapContainer>
 
-      <div className="pointer-events-none absolute bottom-3 left-3 flex flex-wrap gap-x-2.5 gap-y-1.5 rounded-xl border border-zinc-800/60 bg-black/75 px-2.5 py-2 backdrop-blur-md">
+      <div className="pointer-events-none absolute bottom-3 left-3 flex flex-wrap gap-x-2.5 gap-y-1.5 rounded-xl border border-[var(--border-soft)] bg-black/75 px-2.5 py-2 backdrop-blur-md">
         {(
           [
             ["boof", "Boof"],
@@ -180,7 +180,7 @@ export function MapView({
             ["fire", "Fire"],
           ] as const
         ).map(([key, label]) => (
-          <span key={key} className="flex items-center gap-1.5 text-[10px] text-zinc-400">
+          <span key={key} className="flex items-center gap-1.5 text-[10px] text-[var(--text-muted)]">
             <span
               className="h-2 w-2 rounded-full border border-white/50"
               style={{ background: MARKER_COLORS[key] }}
@@ -188,7 +188,7 @@ export function MapView({
             {label}
           </span>
         ))}
-        <span className="flex items-center gap-1.5 text-[10px] text-zinc-400">
+        <span className="flex items-center gap-1.5 text-[10px] text-[var(--text-muted)]">
           <span
             className="h-2 w-2 rotate-45 border border-white/50"
             style={{ background: MARKER_COLORS.meetup }}

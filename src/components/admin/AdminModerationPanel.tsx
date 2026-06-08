@@ -39,7 +39,7 @@ export function AdminModerationPanel() {
             className="glass-card border-l-4 border-l-amber-500/50 p-5"
           >
             <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span className="rounded-full bg-zinc-800 px-2 py-0.5 font-medium uppercase text-zinc-400">
+              <span className="rounded-full bg-[var(--bg-elevated)] px-2 py-0.5 font-medium uppercase text-[var(--text-muted)]">
                 {item.source_type}
               </span>
               {item.reasons.map((reason) => (
@@ -52,7 +52,7 @@ export function AdminModerationPanel() {
               ))}
             </div>
 
-            <p className="mt-3 text-sm leading-relaxed text-zinc-300">
+            <p className="mt-3 text-sm leading-relaxed text-[var(--text-main)]">
               {item.preview_text}
             </p>
 
@@ -91,8 +91,8 @@ export function AdminModerationPanel() {
 
         {!queue?.length && (
           <div className="glass-card p-12 text-center">
-            <p className="text-zinc-400">Moderation queue is empty.</p>
-            <p className="mt-1 text-sm text-zinc-600">
+            <p className="text-[var(--text-muted)]">Moderation queue is empty.</p>
+            <p className="mt-1 text-sm text-[var(--text-muted)]">
               Flagged content will appear here automatically.
             </p>
           </div>

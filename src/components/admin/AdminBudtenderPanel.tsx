@@ -19,7 +19,7 @@ export function AdminBudtenderPanel() {
       />
 
       {!applications?.length ? (
-        <p className="text-sm text-zinc-500">No pending applications.</p>
+        <p className="text-sm text-[var(--text-muted)]">No pending applications.</p>
       ) : (
         <ul className="mt-4 space-y-3">
           {applications.map((app) => (
@@ -29,18 +29,18 @@ export function AdminBudtenderPanel() {
             >
               <div>
                 <p className="font-semibold text-white">{app.display_name}</p>
-                <p className="text-sm text-zinc-400">
+                <p className="text-sm text-[var(--text-muted)]">
                   {app.dispensary_name
                     ? `${app.dispensary_name} · `
                     : ""}
                   {app.city}, {app.state}
                 </p>
                 {app.experience && (
-                  <p className="mt-1 text-xs text-zinc-500 line-clamp-2">
+                  <p className="mt-1 text-xs text-[var(--text-muted)] line-clamp-2">
                     {app.experience}
                   </p>
                 )}
-                <p className="mt-1 text-[10px] text-zinc-600">
+                <p className="mt-1 text-[10px] text-[var(--text-muted)]">
                   {formatTimeAgo(app.created_at)}
                 </p>
               </div>

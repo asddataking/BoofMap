@@ -10,9 +10,13 @@ import { LandingPwaSection } from "@/components/LandingPwaSection";
 import { PageTransition } from "@/components/PageTransition";
 import { DetectionTicker } from "@/components/intelligence/DetectionTicker";
 import { IntelligenceErrorBoundary } from "@/components/intelligence/IntelligenceErrorBoundary";
-import { MarketStatusModule } from "@/components/intelligence/MarketStatusModule";
-import { DetectionFeed } from "@/components/intelligence/DetectionFeed";
-import { HomepageHero } from "@/components/home/HomepageHero";
+import { IntelligenceHero } from "@/components/home/IntelligenceHero";
+import { TopFlowerSection } from "@/components/home/TopFlowerSection";
+import { BiggestMoversSection } from "@/components/home/BiggestMoversSection";
+import { HotDropsSection } from "@/components/home/HotDropsSection";
+import { BudgetBeastSection } from "@/components/home/BudgetBeastSection";
+import { CommunityFeedSection } from "@/components/home/CommunityFeedSection";
+import { MapSection } from "@/components/home/MapSection";
 import { AnalystRankTeaser } from "@/components/home/AnalystRankTeaser";
 import { GAMIFICATION_ENABLED } from "@/lib/intelligence/featureFlags";
 import { api } from "../../convex/_generated/api";
@@ -126,15 +130,31 @@ function HomeClientView({
 
         <div className="space-y-12 pb-8 pt-4 lg:space-y-16 lg:pb-12 lg:pt-6">
           <IntelligenceErrorBoundary>
-            <HomepageHero reports={reports} meetups={meetups} />
+            <IntelligenceHero />
           </IntelligenceErrorBoundary>
 
           <IntelligenceErrorBoundary>
-            <MarketStatusModule state="MI" />
+            <TopFlowerSection />
           </IntelligenceErrorBoundary>
 
           <IntelligenceErrorBoundary>
-            <DetectionFeed reports={reports} meetups={meetups} />
+            <BiggestMoversSection />
+          </IntelligenceErrorBoundary>
+
+          <IntelligenceErrorBoundary>
+            <HotDropsSection />
+          </IntelligenceErrorBoundary>
+
+          <IntelligenceErrorBoundary>
+            <BudgetBeastSection />
+          </IntelligenceErrorBoundary>
+
+          <IntelligenceErrorBoundary>
+            <CommunityFeedSection reports={reports} meetups={meetups} />
+          </IntelligenceErrorBoundary>
+
+          <IntelligenceErrorBoundary>
+            <MapSection reports={reports} meetups={meetups} />
           </IntelligenceErrorBoundary>
 
           <HowItWorksSection />

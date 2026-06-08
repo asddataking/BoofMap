@@ -46,7 +46,7 @@ export default function ReportPage() {
           <h2 className="font-heading text-2xl font-bold text-white">
             {lane === "picker" ? "Report Boof" : "New Report"}
           </h2>
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-[var(--text-muted)]">
             {lane === "picker"
               ? "Find fire. Expose boof. Contribute intelligence."
               : "Sign in to submit — keeps reports accountable"}
@@ -54,7 +54,7 @@ export default function ReportPage() {
 
           {lane === "picker" && (
             <div className="mt-6 space-y-3">
-              <p className="text-sm font-medium text-zinc-300">
+              <p className="text-sm font-medium text-[var(--text-main)]">
                 What are you reporting?
               </p>
               {LANES.map(({ id, title, description, icon: Icon, accent }) => (
@@ -63,7 +63,7 @@ export default function ReportPage() {
                   type="button"
                   onClick={() => setLane(id)}
                   className={cn(
-                    "glass-card flex w-full items-start gap-4 p-4 text-left transition hover:border-zinc-600",
+                    "glass-card flex w-full items-start gap-4 p-4 text-left transition hover:border-[var(--accent-border)]",
                     accent === "emerald"
                       ? "hover:border-emerald-500/30"
                       : "hover:border-purple-500/30"
@@ -90,7 +90,7 @@ export default function ReportPage() {
                     <p className="font-heading text-sm font-semibold text-white">
                       {title}
                     </p>
-                    <p className="mt-1 text-xs leading-relaxed text-zinc-500">
+                    <p className="mt-1 text-xs leading-relaxed text-[var(--text-muted)]">
                       {description}
                     </p>
                   </div>
@@ -107,7 +107,7 @@ export default function ReportPage() {
                   setLane("picker");
                   setMeetupSubmitted(false);
                 }}
-                className="mt-4 text-xs text-zinc-500 hover:text-zinc-300"
+                className="mt-4 text-xs text-[var(--text-muted)] hover:text-[var(--text-main)]"
               >
                 ← Change report type
               </button>

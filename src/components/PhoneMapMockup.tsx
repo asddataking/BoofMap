@@ -29,12 +29,12 @@ export function PhoneMapMockup({
       <div
         className="phone-mockup relative rotate-[4deg] transition-transform duration-500 hover:rotate-[2deg] lg:rotate-[6deg]"
       >
-        <div className="overflow-hidden rounded-[2.5rem] border-[3px] border-zinc-700 bg-zinc-950 shadow-[0_32px_80px_rgba(0,0,0,0.6)]">
-          <div className="flex items-center justify-center gap-2 bg-zinc-900 py-2">
-            <div className="h-1 w-12 rounded-full bg-zinc-700" />
+        <div className="overflow-hidden rounded-[2.5rem] border-[3px] border-[var(--border-soft)] bg-[var(--bg-panel)] shadow-[0_32px_80px_rgba(0,0,0,0.6)]">
+          <div className="flex items-center justify-center gap-2 bg-[var(--bg-elevated)] py-2">
+            <div className="h-1 w-12 rounded-full bg-[var(--bg-elevated)]" />
           </div>
 
-          <div className="relative h-[420px] bg-zinc-950">
+          <div className="relative h-[420px] bg-[var(--bg-panel)]">
             <MapViewDynamic
               reports={reports.slice(0, 30)}
               center={[42.33, -83.05]}
@@ -47,11 +47,11 @@ export function PhoneMapMockup({
                 {chips.map(({ label, value, icon: Icon, color }) => (
                   <div
                     key={label}
-                    className="rounded-xl border border-zinc-800/80 bg-zinc-900/90 px-2.5 py-2 backdrop-blur-sm"
+                    className="rounded-xl border border-[var(--border-soft)] bg-[var(--bg-card)]/90 px-2.5 py-2 backdrop-blur-sm"
                   >
                     <div className="flex items-center gap-1.5">
                       <Icon className={`h-3 w-3 ${color}`} />
-                      <span className="text-[10px] font-medium text-zinc-400">
+                      <span className="text-[10px] font-medium text-[var(--text-muted)]">
                         {label}
                       </span>
                     </div>
@@ -64,7 +64,7 @@ export function PhoneMapMockup({
             </div>
           </div>
 
-          <div className="h-1 bg-zinc-900" />
+          <div className="h-1 bg-[var(--bg-elevated)]" />
         </div>
       </div>
     </div>

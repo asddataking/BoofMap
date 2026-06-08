@@ -2,6 +2,7 @@ import type { Doc, Id } from "../_generated/dataModel";
 import type { MutationCtx } from "../_generated/server";
 import { GAMIFICATION_ENABLED } from "./featureFlags";
 import { detectionTypeFromReport } from "./intelligenceData";
+import { computeScores, type ProductAgg } from "./scoreEngine";
 import { slugify } from "./slugify";
 
 const SIGNAL_TTL_MS = 7 * 24 * 60 * 60 * 1000;
@@ -249,12 +250,36 @@ export async function upsertBrandAndProduct(ctx: MutationCtx, report: ReportDoc)
   const valueScore =
     report.pricePaid != null && report.pricePaid < 35 ? report.boofScore : 0;
 
+  const agg: ProductAgg = {
+    productSlug,
+    productName: report.strainName,
+    brandName: report.brandName,
+    brandSlug,
+    productType: report.productType,
+    scores: scoreDoc
+      ? Array(scoreDoc.reportCount).fill(scoreDoc.trustScore / 20)
+      : [],
+    prices: [],
+    confirms: report.confirmCount,
+    issueTags: report.issueTags,
+    packageDates: report.packageDate ? [report.packageDate] : [],
+    reportTimestamps: [report.createdAt],
+  };
+  agg.scores.push(report.boofScore);
+  if (report.pricePaid != null) agg.prices.push(report.pricePaid);
+
+  const intelScores = computeScores(agg);
+
   if (scoreDoc) {
     await ctx.db.patch(scoreDoc._id, {
       fireScore: Math.max(scoreDoc.fireScore, fireScore),
       valueScore: Math.max(scoreDoc.valueScore, valueScore),
+      communityScore: intelScores.communityScore,
+      flavorScore: intelScores.flavorScore,
+      burnScore: intelScores.burnScore,
+      freshnessScore: intelScores.freshnessScore,
       reportCount: scoreDoc.reportCount + 1,
-      trustScore: Math.round(report.boofScore * 20),
+      trustScore: intelScores.communityScore,
       updatedAt: Date.now(),
     });
   } else {
@@ -264,9 +289,13 @@ export async function upsertBrandAndProduct(ctx: MutationCtx, report: ReportDoc)
       brandSlug,
       brandName: report.brandName,
       productType: report.productType,
-      trustScore: Math.round(report.boofScore * 20),
+      trustScore: intelScores.communityScore,
       fireScore,
-      valueScore,
+      valueScore: intelScores.valueScore,
+      communityScore: intelScores.communityScore,
+      flavorScore: intelScores.flavorScore,
+      burnScore: intelScores.burnScore,
+      freshnessScore: intelScores.freshnessScore,
       reportCount: 1,
       updatedAt: Date.now(),
     });

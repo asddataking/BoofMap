@@ -51,14 +51,14 @@ export function MeetupReportCard({
                 </span>
               )}
             </div>
-            <p className="mt-0.5 text-sm text-zinc-400">
+            <p className="mt-0.5 text-sm text-[var(--text-muted)]">
               {report.platform} · {report.meetup_type.replace("-", " ")}
             </p>
           </div>
           <SellerSignalBadge signal={report.seller_signal} size="sm" />
         </div>
 
-        <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-zinc-500">
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-[var(--text-muted)]">
           <span className="flex items-center gap-1">
             <MapPin className="h-3 w-3" />
             {report.city}
@@ -76,13 +76,13 @@ export function MeetupReportCard({
         )}
 
         {report.notes && (
-          <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-zinc-500">
+          <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-[var(--text-muted)]">
             {report.notes}
           </p>
         )}
 
         <div className="mt-3 flex items-center gap-3">
-          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-zinc-800/60 bg-gradient-to-br from-purple-900/20 to-zinc-900/60 text-[10px] text-zinc-600">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-[var(--border-soft)] bg-gradient-to-br from-purple-900/20 to-zinc-900/60 text-[10px] text-[var(--text-muted)]">
             {report.image_url ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img

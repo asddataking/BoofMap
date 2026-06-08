@@ -92,8 +92,8 @@ export function AdminAiChat() {
       )}
 
       {open && (
-        <div className="fixed bottom-4 right-4 z-50 flex h-[min(520px,calc(100dvh-2rem))] w-[min(400px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950 shadow-[0_24px_80px_rgba(0,0,0,0.6)] lg:bottom-8 lg:right-8">
-          <div className="flex items-center justify-between border-b border-zinc-800 bg-zinc-900/80 px-4 py-3">
+        <div className="fixed bottom-4 right-4 z-50 flex h-[min(520px,calc(100dvh-2rem))] w-[min(400px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-panel)] shadow-[0_24px_80px_rgba(0,0,0,0.6)] lg:bottom-8 lg:right-8">
+          <div className="flex items-center justify-between border-b border-[var(--border-soft)] bg-[var(--bg-elevated)] px-4 py-3">
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/15">
                 <Sparkles className="h-4 w-4 text-emerald-400" />
@@ -108,7 +108,7 @@ export function AdminAiChat() {
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="rounded-lg p-2 text-zinc-500 hover:bg-zinc-800 hover:text-zinc-300"
+              className="rounded-lg p-2 text-[var(--text-muted)] hover:bg-[var(--bg-elevated)] hover:text-[var(--text-main)]"
               aria-label="Minimize"
             >
               <Minimize2 className="h-4 w-4" />
@@ -126,7 +126,7 @@ export function AdminAiChat() {
                     "max-w-[90%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed",
                     msg.role === "user"
                       ? "ml-auto bg-emerald-600/20 text-emerald-100"
-                      : "bg-zinc-900 text-zinc-300"
+                      : "bg-[var(--bg-elevated)] text-[var(--text-main)]"
                   )}
                 >
                   {msg.content}
@@ -136,7 +136,7 @@ export function AdminAiChat() {
                     {msg.toolsUsed.map((t) => (
                       <span
                         key={t}
-                        className="rounded-full bg-zinc-800/80 px-2 py-0.5 text-[10px] text-zinc-500"
+                        className="rounded-full bg-[var(--bg-elevated)]/80 px-2 py-0.5 text-[10px] text-[var(--text-muted)]"
                       >
                         {t}
                       </span>
@@ -146,7 +146,7 @@ export function AdminAiChat() {
               </div>
             ))}
             {loading && status && (
-              <p className="text-xs text-zinc-500">{status}</p>
+              <p className="text-xs text-[var(--text-muted)]">{status}</p>
             )}
             {error && (
               <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-2 text-xs text-red-300">
@@ -155,7 +155,7 @@ export function AdminAiChat() {
             )}
           </div>
 
-          <div className="border-t border-zinc-800 p-3">
+          <div className="border-t border-[var(--border-soft)] p-3">
             <form
               onSubmit={(e) => {
                 e.preventDefault();

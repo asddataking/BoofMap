@@ -82,7 +82,7 @@ export function AdminReportsPanel() {
               "rounded-full px-3 py-1.5 text-xs font-medium capitalize",
               statusFilter === s
                 ? "bg-emerald-500/20 text-emerald-300"
-                : "bg-zinc-900 text-zinc-500 hover:text-zinc-300"
+                : "bg-[var(--bg-elevated)] text-[var(--text-muted)] hover:text-[var(--text-main)]"
             )}
           >
             {s}
@@ -103,16 +103,16 @@ export function AdminReportsPanel() {
                 </h3>
                 {report.status && <StatusBadge status={report.status} />}
               </div>
-              <p className="mt-1 text-sm text-zinc-400">
+              <p className="mt-1 text-sm text-[var(--text-muted)]">
                 {report.brand_name} · {report.dispensary_name} · {report.city}
               </p>
-              <p className="mt-1 text-xs text-zinc-600">
+              <p className="mt-1 text-xs text-[var(--text-muted)]">
                 Score {report.boof_score}/5 · {report.product_type}
                 {report.issue_tags.length > 0 &&
                   ` · ${report.issue_tags.join(", ")}`}
               </p>
               {report.notes && (
-                <p className="mt-2 line-clamp-2 text-sm text-zinc-500">
+                <p className="mt-2 line-clamp-2 text-sm text-[var(--text-muted)]">
                   {report.notes}
                 </p>
               )}
@@ -122,7 +122,7 @@ export function AdminReportsPanel() {
               <button
                 type="button"
                 onClick={() => setEditing(report)}
-                className="inline-flex items-center gap-1 rounded-lg border border-zinc-700 px-3 py-1.5 text-xs text-zinc-300 hover:bg-zinc-800"
+                className="inline-flex items-center gap-1 rounded-lg border border-[var(--border-soft)] px-3 py-1.5 text-xs text-[var(--text-main)] hover:bg-[var(--bg-elevated)]"
               >
                 <Pencil className="h-3.5 w-3.5" /> Edit
               </button>
@@ -148,7 +148,7 @@ export function AdminReportsPanel() {
           </div>
         ))}
         {!reports?.length && (
-          <p className="text-center text-sm text-zinc-500">No reports found.</p>
+          <p className="text-center text-sm text-[var(--text-muted)]">No reports found.</p>
         )}
       </div>
 
@@ -233,7 +233,7 @@ function EditReportDrawer({
         onClick={onClose}
         aria-label="Close"
       />
-      <div className="relative flex h-full w-full max-w-md flex-col overflow-y-auto border-l border-zinc-800 bg-zinc-950 p-6 shadow-2xl">
+      <div className="relative flex h-full w-full max-w-md flex-col overflow-y-auto border-l border-[var(--border-soft)] bg-[var(--bg-panel)] p-6 shadow-2xl">
         <h3 className="font-heading text-lg font-bold text-white">Edit report</h3>
         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
           {(
@@ -319,7 +319,7 @@ function EditReportDrawer({
                     "rounded-full px-2.5 py-1 text-xs",
                     form.issueTags.includes(tag)
                       ? "bg-emerald-500/20 text-emerald-300"
-                      : "bg-zinc-800 text-zinc-500"
+                      : "bg-[var(--bg-elevated)] text-[var(--text-muted)]"
                   )}
                 >
                   {tag}

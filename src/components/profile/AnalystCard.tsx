@@ -44,14 +44,14 @@ function AnalystCardGuest() {
         <h2 className="font-heading text-xl font-bold text-white sm:text-2xl">
           Your analyst card
         </h2>
-        <p className="mt-1 text-sm text-zinc-500">
+        <p className="mt-1 text-sm text-[var(--text-muted)]">
           Sign in to track accuracy, streaks, badges, and your rank.
         </p>
       </header>
 
       <div className="glass-card border-emerald-500/15 p-5">
         <ReporterTierList />
-        <div className="mt-5 border-t border-zinc-800/60 pt-5">
+        <div className="mt-5 border-t border-[var(--border-soft)] pt-5">
           <SignInButton mode="modal">
             <button type="button" className="btn-primary w-full px-5 py-2.5 text-sm sm:w-auto">
               Sign in to unlock your card
@@ -66,8 +66,8 @@ function AnalystCardGuest() {
 function AnalystCardSkeleton() {
   return (
     <section aria-label="Analyst profile" aria-busy="true">
-      <div className="mb-4 h-4 w-24 animate-pulse rounded bg-zinc-800" />
-      <div className="glass-card h-48 animate-pulse border-zinc-800/80 bg-zinc-900/40" />
+      <div className="mb-4 h-4 w-24 animate-pulse rounded bg-[var(--bg-elevated)]" />
+      <div className="glass-card h-48 animate-pulse border-[var(--border-soft)] bg-[var(--bg-elevated)]" />
     </section>
   );
 }
@@ -106,7 +106,7 @@ function AnalystCardLoaded({ profile }: { profile: UserProfile }) {
               <h3 className="truncate font-heading text-lg font-bold text-white sm:text-xl">
                 {profile.display_name ?? "Community member"}
               </h3>
-              <p className="mt-1 text-sm text-zinc-500">
+              <p className="mt-1 text-sm text-[var(--text-muted)]">
                 Level {profile.level} · {profile.report_count} reports ·{" "}
                 {profile.points.toLocaleString()} pts
               </p>
@@ -155,8 +155,8 @@ function AnalystCardLoaded({ profile }: { profile: UserProfile }) {
           </div>
         )}
 
-        <details className="relative mt-5 border-t border-zinc-800/60 pt-4">
-          <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wider text-zinc-500 hover:text-zinc-400">
+        <details className="relative mt-5 border-t border-[var(--border-soft)] pt-4">
+          <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] hover:text-[var(--text-muted)]">
             Rank ladder
           </summary>
           <div className="mt-3">
@@ -179,13 +179,13 @@ function ReporterTierList({ currentTitle }: { currentTitle?: string }) {
             className={`flex items-center justify-between gap-3 rounded-lg border px-3 py-2 text-sm ${
               active
                 ? "border-emerald-500/40 bg-emerald-500/10 text-white"
-                : "border-zinc-800/80 bg-zinc-900/40 text-zinc-400"
+                : "border-[var(--border-soft)] bg-[var(--bg-elevated)] text-[var(--text-muted)]"
             }`}
           >
             <span className={active ? "font-semibold text-emerald-300" : ""}>
               {tier.title}
             </span>
-            <span className="text-right text-[11px] text-zinc-500">{tier.unlock}</span>
+            <span className="text-right text-[11px] text-[var(--text-muted)]">{tier.unlock}</span>
           </li>
         );
       })}
@@ -203,10 +203,10 @@ function StatPill({
   value: string;
 }) {
   return (
-    <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/60 px-2 py-2 text-center sm:px-3">
+    <div className="rounded-xl border border-[var(--border-soft)] bg-[var(--bg-elevated)]/60 px-2 py-2 text-center sm:px-3">
       <Icon className="mx-auto h-3.5 w-3.5 text-emerald-500" />
       <p className="mt-1 font-heading text-sm font-bold text-white">{value}</p>
-      <p className="text-[9px] font-semibold uppercase tracking-wider text-zinc-600">
+      <p className="text-[9px] font-semibold uppercase tracking-wider text-[var(--text-muted)]">
         {label}
       </p>
     </div>

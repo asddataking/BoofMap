@@ -8,6 +8,9 @@ import { PwaRegister } from "@/components/PwaRegister";
 import { SkipToMain } from "@/components/a11y/SkipToMain";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { SiteJsonLd } from "@/components/SiteJsonLd";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeScript } from "@/components/ThemeScript";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { rootMetadata } from "@/lib/seo";
 import "./globals.css";
 
@@ -26,7 +29,7 @@ const barlowCondensed = Barlow_Condensed({
 export const metadata = rootMetadata;
 
 export const viewport: Viewport = {
-  themeColor: "#050807",
+  themeColor: "#fafafa",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -41,8 +44,12 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${inter.variable} ${barlowCondensed.variable} h-full`}
+      data-theme="light"
+      suppressHydrationWarning
     >
       <head>
+        <ThemeScript />
+        <meta name="theme-color" content="#fafafa" />
         <SiteJsonLd />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link
@@ -59,11 +66,14 @@ export default function RootLayout({
       <body className="min-h-full antialiased page-gradient">
         <SkipToMain />
         <PwaRegister />
-        <ClerkProvider>
-          <ConvexClientProvider>
-            <BoofAuthProvider>{children}</BoofAuthProvider>
-          </ConvexClientProvider>
-        </ClerkProvider>
+        <ThemeProvider>
+          <ClerkProvider>
+            <ConvexClientProvider>
+              <BoofAuthProvider>{children}</BoofAuthProvider>
+            </ConvexClientProvider>
+          </ClerkProvider>
+          <ThemeToggle />
+        </ThemeProvider>
         <GoogleAnalytics />
         <Analytics />
       </body>

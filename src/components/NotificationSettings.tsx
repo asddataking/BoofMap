@@ -51,7 +51,7 @@ const STATUS_STYLES: Record<
   },
   disabled: {
     label: "Disabled",
-    className: "bg-zinc-800/80 text-zinc-400 border-zinc-700",
+    className: "bg-[var(--bg-elevated)]/80 text-[var(--text-muted)] border-[var(--border-soft)]",
     icon: BellOff,
   },
   permission_needed: {
@@ -163,7 +163,7 @@ export function NotificationSettings({ compact = false }: { compact?: boolean })
 
   if (authLoading) {
     return (
-      <p className="py-6 text-center text-sm text-zinc-500">Loading alerts…</p>
+      <p className="py-6 text-center text-sm text-[var(--text-muted)]">Loading alerts…</p>
     );
   }
 
@@ -193,7 +193,7 @@ export function NotificationSettings({ compact = false }: { compact?: boolean })
               <h3 className="font-heading text-sm font-semibold text-white">
                 Enable Boof Alerts
               </h3>
-              <p className="mt-0.5 text-xs text-zinc-500">
+              <p className="mt-0.5 text-xs text-[var(--text-muted)]">
                 Community-powered alerts for mold, fire drops, and fraud patterns.
               </p>
             </div>
@@ -219,14 +219,14 @@ export function NotificationSettings({ compact = false }: { compact?: boolean })
             "mt-4 flex w-full items-center justify-between rounded-xl border px-4 py-3 text-sm font-medium transition",
             prefs.enabled
               ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-200"
-              : "border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:border-zinc-700"
+              : "border-[var(--border-soft)] bg-[var(--bg-elevated)] text-[var(--text-muted)] hover:border-[var(--border-soft)]"
           )}
         >
           <span>Boof Alerts master switch</span>
           <span
             className={cn(
               "relative h-6 w-11 rounded-full transition",
-              prefs.enabled ? "bg-emerald-500" : "bg-zinc-700"
+              prefs.enabled ? "bg-emerald-500" : "bg-[var(--bg-elevated)]"
             )}
           >
             <span
@@ -250,14 +250,14 @@ export function NotificationSettings({ compact = false }: { compact?: boolean })
 
         {/* TODO: Register FCM token and store VAPID subscription in Convex */}
         {/* TODO: Wire listPotentialAlerts to Web Push delivery worker */}
-        <p className="mt-3 text-[10px] text-zinc-600">
+        <p className="mt-3 text-[10px] text-[var(--text-muted)]">
           Push delivery via FCM / Web Push VAPID coming soon — preferences are
           saved now.
         </p>
       </div>
 
       <div className="space-y-2">
-        <p className="text-xs font-medium uppercase tracking-wider text-zinc-500">
+        <p className="text-xs font-medium uppercase tracking-wider text-[var(--text-muted)]">
           Alert categories
         </p>
         <div className="grid gap-2">
@@ -273,13 +273,13 @@ export function NotificationSettings({ compact = false }: { compact?: boolean })
                   "rounded-xl border px-4 py-3 text-left transition disabled:opacity-40",
                   active
                     ? "border-emerald-500/30 bg-emerald-500/5"
-                    : "border-zinc-800 bg-zinc-900/40 hover:border-zinc-700"
+                    : "border-[var(--border-soft)] bg-[var(--bg-elevated)] hover:border-[var(--border-soft)]"
                 )}
               >
                 <span className="text-sm font-medium text-white">
                   {cat.label}
                 </span>
-                <p className="mt-0.5 text-xs text-zinc-500">{cat.description}</p>
+                <p className="mt-0.5 text-xs text-[var(--text-muted)]">{cat.description}</p>
               </button>
             );
           })}

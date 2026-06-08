@@ -64,7 +64,7 @@ function MoverPanel({
 
   return (
     <div className={`glass-card overflow-hidden border ${accentClasses}`}>
-      <div className="flex items-center gap-2 border-b border-zinc-800/60 px-4 py-3">
+      <div className="flex items-center gap-2 border-b border-[var(--border-soft)] px-4 py-3">
         <Icon className={`h-4 w-4 ${iconClass}`} />
         <h3 className="font-heading text-sm font-bold uppercase tracking-wider text-white">
           {title}
@@ -81,13 +81,13 @@ function MoverPanel({
           >
             <Link
               href={item.slug ? `/brands/${item.slug}` : `/brands/${slugify(item.name)}`}
-              className="flex items-center justify-between gap-3 px-4 py-3 transition hover:bg-zinc-800/30"
+              className="flex items-center justify-between gap-3 px-4 py-3 transition hover:bg-[var(--surface-hover)]"
             >
               <div className="min-w-0">
                 <p className="truncate font-heading text-sm font-semibold text-white">
                   {item.name}
                 </p>
-                <p className="truncate text-xs text-zinc-500">{item.subtitle}</p>
+                <p className="truncate text-xs text-[var(--text-muted)]">{item.subtitle}</p>
               </div>
               <div className="flex shrink-0 items-center gap-3">
                 <span className="font-heading text-lg font-bold tabular-nums text-white">

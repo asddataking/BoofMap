@@ -39,8 +39,8 @@ function StatCard({
         <Icon className="h-4 w-4" />
       </div>
       <p className="font-heading text-3xl font-bold text-white">{value}</p>
-      <p className="mt-1 text-sm font-medium text-zinc-400">{label}</p>
-      {sub && <p className="mt-0.5 text-xs text-zinc-600">{sub}</p>}
+      <p className="mt-1 text-sm font-medium text-[var(--text-muted)]">{label}</p>
+      {sub && <p className="mt-0.5 text-xs text-[var(--text-muted)]">{sub}</p>}
     </div>
   );
 }
@@ -50,7 +50,7 @@ export function AdminOverview() {
 
   if (!stats) {
     return (
-      <div className="flex min-h-[40vh] items-center justify-center text-zinc-500">
+      <div className="flex min-h-[40vh] items-center justify-center text-[var(--text-muted)]">
         Loading dashboard…
       </div>
     );
@@ -102,25 +102,25 @@ export function AdminOverview() {
             </h3>
           </div>
           {stats.recent_signups.length === 0 ? (
-            <p className="text-sm text-zinc-500">No users yet.</p>
+            <p className="text-sm text-[var(--text-muted)]">No users yet.</p>
           ) : (
             <ul className="space-y-3">
               {stats.recent_signups.map((user) => (
                 <li
                   key={user.id}
-                  className="flex items-center justify-between gap-3 rounded-xl bg-zinc-900/40 px-3 py-2.5"
+                  className="flex items-center justify-between gap-3 rounded-xl bg-[var(--bg-elevated)] px-3 py-2.5"
                 >
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-medium text-zinc-200">
+                    <p className="truncate text-sm font-medium text-[var(--text-main)]">
                       {user.display_name ?? "Anonymous"}
                     </p>
-                    <p className="truncate text-xs text-zinc-600">
+                    <p className="truncate text-xs text-[var(--text-muted)]">
                       {user.clerk_id}
                     </p>
                   </div>
                   <div className="shrink-0 text-right">
                     <StatusBadge status={user.role} />
-                    <p className="mt-1 text-[10px] text-zinc-600">
+                    <p className="mt-1 text-[10px] text-[var(--text-muted)]">
                       {formatTimeAgo(user.created_at)}
                     </p>
                   </div>
@@ -146,9 +146,9 @@ export function AdminOverview() {
             ].map(([label, value]) => (
               <div
                 key={label as string}
-                className="flex items-center justify-between rounded-xl bg-zinc-900/40 px-3 py-2.5"
+                className="flex items-center justify-between rounded-xl bg-[var(--bg-elevated)] px-3 py-2.5"
               >
-                <dt className="text-sm text-zinc-400">{label}</dt>
+                <dt className="text-sm text-[var(--text-muted)]">{label}</dt>
                 <dd className="font-heading text-lg font-semibold text-white">
                   {value}
                 </dd>

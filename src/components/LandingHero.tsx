@@ -55,7 +55,7 @@ export function LandingHero({
                 </svg>
               </span>
             </h1>
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-zinc-400 sm:text-lg">
+            <p className="mt-5 max-w-lg text-base leading-relaxed text-[var(--text-muted)] sm:text-lg">
               Real cannabis reports from real people. Better products. Better
               prices. Smarter choices.
             </p>
@@ -94,15 +94,15 @@ export function LandingHero({
               {["DR", "MK", "JT", "AL"].map((initials, i) => (
                 <div
                   key={initials}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-[#050505] bg-gradient-to-br from-zinc-700 to-zinc-800 text-[10px] font-bold text-zinc-300"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-[#050505] bg-gradient-to-br from-zinc-700 to-zinc-800 text-[10px] font-bold text-[var(--text-main)]"
                   style={{ zIndex: 4 - i }}
                 >
                   {initials}
                 </div>
               ))}
             </div>
-            <p className="text-sm text-zinc-500">
-              <span className="font-semibold text-zinc-300">
+            <p className="text-sm text-[var(--text-muted)]">
+              <span className="font-semibold text-[var(--text-main)]">
                 {totalReports.toLocaleString()}+
               </span>{" "}
               community reports

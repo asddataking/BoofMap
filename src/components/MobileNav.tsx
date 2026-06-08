@@ -18,7 +18,7 @@ export function MobileNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 border-t border-zinc-800/80 bg-[#0a0a0a]/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-2xl lg:hidden"
+      className="fixed bottom-0 left-0 right-0 z-50 border-t border-[var(--border-soft)] bg-[var(--bg-panel)]/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-2xl lg:hidden"
       aria-label="Main navigation"
     >
       <div className="mx-auto flex w-full max-w-6xl items-stretch justify-around px-1 py-1.5">
@@ -37,8 +37,8 @@ export function MobileNav() {
               className={cn(
                 "flex min-h-[52px] min-w-[56px] flex-1 flex-col items-center justify-center gap-0.5 rounded-xl px-1 py-1.5 text-[10px] font-medium transition active:scale-95",
                 active
-                  ? "text-emerald-400"
-                  : "text-zinc-500 hover:text-zinc-300"
+                  ? "text-[var(--fire-green)]"
+                  : "text-[var(--text-muted)] hover:text-[var(--text-main)]"
               )}
             >
               <Icon

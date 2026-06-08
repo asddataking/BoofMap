@@ -4,8 +4,8 @@ import { SignInButton } from "@clerk/nextjs";
 
 export function SignInPrompt({ message }: { message?: string }) {
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 text-center">
-      <p className="text-sm text-zinc-400">
+    <div className="rounded-2xl border border-[var(--border-soft)] bg-[var(--bg-elevated)] p-6 text-center">
+      <p className="text-sm text-[var(--text-muted)]">
         {message ?? "Sign in to submit reports and vote on community posts."}
       </p>
       <SignInButton mode="modal">

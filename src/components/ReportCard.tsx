@@ -27,7 +27,7 @@ export function ReportCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.04, duration: 0.35 }}
-      className="glass-card overflow-hidden transition hover:border-zinc-700/60"
+      className="glass-card overflow-hidden transition hover:border-[var(--border-soft)]/60"
     >
       <div className="p-4">
         <div className="flex items-start justify-between gap-3">
@@ -35,17 +35,17 @@ export function ReportCard({
             <h3 className="truncate font-heading text-base font-semibold text-white">
               {report.strain_name}
             </h3>
-            <p className="mt-0.5 text-sm text-zinc-400">
+            <p className="mt-0.5 text-sm text-[var(--text-muted)]">
               <Link
                 href={`/brands/${slugify(report.brand_name)}`}
                 className="text-emerald-400/90 hover:text-emerald-300"
               >
                 {report.brand_name}
               </Link>
-              <span className="text-zinc-600"> · </span>
+              <span className="text-[var(--text-muted)]"> · </span>
               <Link
                 href={`/dispensaries/${slugify(report.dispensary_name)}`}
-                className="hover:text-zinc-300"
+                className="hover:text-[var(--text-main)]"
               >
                 {report.dispensary_name}
               </Link>
@@ -54,8 +54,8 @@ export function ReportCard({
           <ScoreBadge score={report.boof_score} size="sm" />
         </div>
 
-        <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-zinc-500">
-          <span className="rounded-md bg-zinc-800/60 px-2 py-0.5 capitalize text-zinc-400">
+        <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-[var(--text-muted)]">
+          <span className="rounded-md bg-[var(--bg-elevated)] px-2 py-0.5 capitalize text-[var(--text-muted)]">
             {report.product_type}
           </span>
           <span className="flex items-center gap-1">
@@ -75,13 +75,13 @@ export function ReportCard({
         )}
 
         {!compact && report.notes && (
-          <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-zinc-500">
+          <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-[var(--text-muted)]">
             {report.notes}
           </p>
         )}
 
         <div className="mt-3 flex items-center gap-3">
-          <div className="h-14 w-14 shrink-0 rounded-xl border border-zinc-800/60 bg-gradient-to-br from-zinc-800/40 to-zinc-900/60 flex items-center justify-center text-[10px] text-zinc-600">
+          <div className="h-14 w-14 shrink-0 rounded-xl border border-[var(--border-soft)] bg-gradient-to-br from-zinc-800/40 to-zinc-900/60 flex items-center justify-center text-[10px] text-[var(--text-muted)]">
             {report.image_url ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -105,7 +105,7 @@ export function ReportCard({
             <button
               type="button"
               onClick={onDownvote}
-              className="flex items-center justify-center gap-1 rounded-xl border border-zinc-800 px-3 py-2 text-xs text-zinc-500 transition hover:border-zinc-700 hover:text-zinc-400"
+              className="flex items-center justify-center gap-1 rounded-xl border border-[var(--border-soft)] px-3 py-2 text-xs text-[var(--text-muted)] transition hover:border-[var(--border-soft)] hover:text-[var(--text-muted)]"
             >
               <ThumbsDown className="h-3.5 w-3.5" />
               {report.downvote_count ?? 0}

@@ -28,7 +28,7 @@ export function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#050505] text-zinc-500">
+      <div className="flex min-h-screen items-center justify-center bg-[#050505] text-[var(--text-muted)]">
         Loading admin…
       </div>
     );
@@ -52,10 +52,10 @@ export function AdminDashboard() {
           <h2 className="font-heading text-lg font-bold text-red-200">
             Admin access required
           </h2>
-          <p className="mt-2 text-sm text-zinc-500">
+          <p className="mt-2 text-sm text-[var(--text-muted)]">
             Your account isn&apos;t in the admin list. Add your Clerk user ID or
-            email to <code className="text-zinc-400">ADMIN_USER_IDS</code> /{" "}
-            <code className="text-zinc-400">ADMIN_EMAILS</code> in Convex, then
+            email to <code className="text-[var(--text-muted)]">ADMIN_USER_IDS</code> /{" "}
+            <code className="text-[var(--text-muted)]">ADMIN_EMAILS</code> in Convex, then
             sign out and back in.
           </p>
         </div>
@@ -65,7 +65,7 @@ export function AdminDashboard() {
 
   if (!isConvexConfigured()) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#050505] text-zinc-500">
+      <div className="flex min-h-screen items-center justify-center bg-[#050505] text-[var(--text-muted)]">
         Connect Convex (NEXT_PUBLIC_CONVEX_URL) to use the admin dashboard.
       </div>
     );

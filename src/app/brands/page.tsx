@@ -46,11 +46,11 @@ export default async function BrandsPage() {
           <h1 className="font-display text-2xl font-bold text-white sm:text-3xl">
             Strain &amp; Brand Analytics
           </h1>
-          <p className="mt-1 max-w-2xl text-sm text-zinc-500">
+          <p className="mt-1 max-w-2xl text-sm text-[var(--text-muted)]">
             {SEO_COPY_SNIPPETS.realReports}{" "}
             {SEO_COPY_SNIPPETS.trackProducts}
           </p>
-          <p className="mt-2 text-xs text-zinc-600">
+          <p className="mt-2 text-xs text-[var(--text-muted)]">
             <Link href="/reports" className="text-emerald-500 hover:underline">
               Browse live reports
             </Link>
@@ -64,10 +64,10 @@ export default async function BrandsPage() {
               <li key={name}>
                 <Link
                   href={`/brands/${slugify(name)}`}
-                  className="glass-card flex items-center justify-between px-4 py-3.5 transition hover:border-zinc-700"
+                  className="glass-card flex items-center justify-between px-4 py-3.5 transition hover:border-[var(--border-soft)]"
                 >
                   <span className="font-medium text-white">{name}</span>
-                  <ChevronRight className="h-4 w-4 text-zinc-600" />
+                  <ChevronRight className="h-4 w-4 text-[var(--text-muted)]" />
                 </Link>
               </li>
             ))}

@@ -11,6 +11,7 @@
 import type * as achievements from "../achievements.js";
 import type * as admin from "../admin.js";
 import type * as detections from "../detections.js";
+import type * as intelligence from "../intelligence.js";
 import type * as intelligenceNotifications from "../intelligenceNotifications.js";
 import type * as leaderboards from "../leaderboards.js";
 import type * as lib_auth from "../lib/auth.js";
@@ -23,6 +24,7 @@ import type * as lib_intelligenceValidators from "../lib/intelligenceValidators.
 import type * as lib_mappers from "../lib/mappers.js";
 import type * as lib_moderation from "../lib/moderation.js";
 import type * as lib_reportAlerts from "../lib/reportAlerts.js";
+import type * as lib_scoreEngine from "../lib/scoreEngine.js";
 import type * as lib_sellerSignal from "../lib/sellerSignal.js";
 import type * as lib_slugify from "../lib/slugify.js";
 import type * as lib_tickerWrite from "../lib/tickerWrite.js";
@@ -51,6 +53,7 @@ declare const fullApi: ApiFromModules<{
   achievements: typeof achievements;
   admin: typeof admin;
   detections: typeof detections;
+  intelligence: typeof intelligence;
   intelligenceNotifications: typeof intelligenceNotifications;
   leaderboards: typeof leaderboards;
   "lib/auth": typeof lib_auth;
@@ -63,6 +66,7 @@ declare const fullApi: ApiFromModules<{
   "lib/mappers": typeof lib_mappers;
   "lib/moderation": typeof lib_moderation;
   "lib/reportAlerts": typeof lib_reportAlerts;
+  "lib/scoreEngine": typeof lib_scoreEngine;
   "lib/sellerSignal": typeof lib_sellerSignal;
   "lib/slugify": typeof lib_slugify;
   "lib/tickerWrite": typeof lib_tickerWrite;

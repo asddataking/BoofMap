@@ -343,12 +343,17 @@ export default defineSchema({
     trustScore: v.number(),
     fireScore: v.number(),
     valueScore: v.number(),
+    communityScore: v.optional(v.number()),
+    flavorScore: v.optional(v.number()),
+    burnScore: v.optional(v.number()),
+    freshnessScore: v.optional(v.number()),
     reportCount: v.number(),
     updatedAt: v.number(),
   })
     .index("by_product_slug", ["productSlug"])
     .index("by_fire_score", ["fireScore"])
-    .index("by_value_score", ["valueScore"]),
+    .index("by_value_score", ["valueScore"])
+    .index("by_community_score", ["communityScore"]),
 
   batchReports: defineTable({
     userId: v.string(),
