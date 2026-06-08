@@ -1,8 +1,5 @@
 "use client";
 
-import { useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
-import { isConvexConfigured } from "@/lib/convex/config";
 import {
   DEMO_FALLING_PRODUCTS,
   DEMO_HOT_DROPS,
@@ -15,6 +12,16 @@ import {
   resolvePlatformStats,
   resolveRankingList,
 } from "@/lib/intelligence/resolveIntelligence";
+import {
+  deriveBiggestMovers,
+  deriveFallingBrands,
+  deriveFallingProducts,
+  deriveHotDrops,
+  derivePlatformStats,
+  deriveRisingBrands,
+  deriveTopFlower,
+  deriveValuePicks,
+} from "@/lib/intelligence/deriveIntelligence";
 import {
   getSeedBiggestMovers,
   getSeedFallingBrands,
@@ -29,98 +36,76 @@ import type {
   IntelligenceRankingEntry,
   PlatformStats,
 } from "@/lib/intelligence/types";
+import { useIntelligenceReports } from "./useIntelligenceReports";
 
 export function usePlatformStats(): PlatformStats {
-  const data = useQuery(
-    api.intelligence.getPlatformStats,
-    isConvexConfigured() ? {} : "skip"
-  );
+  const reports = useIntelligenceReports();
+  const derived = derivePlatformStats(reports);
   return resolvePlatformStats(
-    data as PlatformStats | undefined,
+    derived.reports > 0 ? derived : undefined,
     getSeedPlatformStats(),
     DEMO_PLATFORM_STATS
   );
 }
 
 export function useTopFlowerThisWeek(): IntelligenceRankingEntry[] {
-  const data = useQuery(
-    api.intelligence.getTopFlowerThisWeek,
-    isConvexConfigured() ? { limit: 10 } : "skip"
-  );
+  const reports = useIntelligenceReports();
   return resolveRankingList(
-    data as IntelligenceRankingEntry[] | undefined,
+    deriveTopFlower(reports, 10),
     getSeedTopFlower(10),
     DEMO_TOP_FLOWER
   );
 }
 
 export function useBiggestMovers(): IntelligenceRankingEntry[] {
-  const data = useQuery(
-    api.intelligence.getBiggestMovers,
-    isConvexConfigured() ? { limit: 8 } : "skip"
-  );
+  const reports = useIntelligenceReports();
   return resolveRankingList(
-    data as IntelligenceRankingEntry[] | undefined,
+    deriveBiggestMovers(reports, 8),
     getSeedBiggestMovers(8),
     DEMO_MOVERS
   );
 }
 
 export function useHotDrops(): IntelligenceRankingEntry[] {
-  const data = useQuery(
-    api.intelligence.getHotDrops,
-    isConvexConfigured() ? { limit: 8 } : "skip"
-  );
+  const reports = useIntelligenceReports();
   return resolveRankingList(
-    data as IntelligenceRankingEntry[] | undefined,
+    deriveHotDrops(reports, 8),
     getSeedHotDrops(8),
     DEMO_HOT_DROPS
   );
 }
 
 export function useValuePicks(): IntelligenceRankingEntry[] {
-  const data = useQuery(
-    api.intelligence.getValuePicks,
-    isConvexConfigured() ? { limit: 8 } : "skip"
-  );
+  const reports = useIntelligenceReports();
   return resolveRankingList(
-    data as IntelligenceRankingEntry[] | undefined,
+    deriveValuePicks(reports, 8),
     getSeedValuePicks(8),
     DEMO_VALUE_PICKS
   );
 }
 
 export function useRisingBrands(): IntelligenceRankingEntry[] {
-  const data = useQuery(
-    api.intelligence.getRisingBrands,
-    isConvexConfigured() ? { limit: 6 } : "skip"
-  );
+  const reports = useIntelligenceReports();
   return resolveRankingList(
-    data as IntelligenceRankingEntry[] | undefined,
+    deriveRisingBrands(reports, 6),
     getSeedRisingBrands(6),
     []
   );
 }
 
 export function useFallingBrands(): IntelligenceRankingEntry[] {
-  const data = useQuery(
-    api.intelligence.getFallingBrands,
-    isConvexConfigured() ? { limit: 6 } : "skip"
-  );
+  const reports = useIntelligenceReports();
   return resolveRankingList(
-    data as IntelligenceRankingEntry[] | undefined,
+    deriveFallingBrands(reports, 6),
     getSeedFallingBrands(6),
     []
   );
 }
 
 export function useFallingProducts(): IntelligenceRankingEntry[] {
-  const data = useQuery(
-    api.intelligence.getFallingProducts,
-    isConvexConfigured() ? { limit: 8 } : "skip"
-  );
+  const reports = useIntelligenceReports();
   return resolveRankingList(
-    data as IntelligenceRankingEntry[] | undefined,
+    deriveFallingProducts(reports, 8),
     getSeedFallingProducts(8),
     DEMO_FALLING_PRODUCTS
   );

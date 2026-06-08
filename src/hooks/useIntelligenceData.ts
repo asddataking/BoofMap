@@ -12,8 +12,10 @@ import type {
   SignalEvent,
 } from "@/lib/intelligence/types";
 import { LEADERBOARD_CATEGORIES } from "@/lib/intelligence/constants";
+import { deriveSignalEvents } from "@/lib/intelligence/deriveIntelligence";
 import { resolveRankingList } from "@/lib/intelligence/resolveIntelligence";
 import { getSeedSignalEvents } from "@/lib/intelligence/seedIntelligence";
+import { useIntelligenceReports } from "./useIntelligenceReports";
 
 const DEMO_SIGNALS: SignalEvent[] = [
   {
@@ -75,12 +77,18 @@ const DEMO_MARKET: MarketStatus = {
 };
 
 export function useSignalEvents(): SignalEvent[] {
+  const reports = useIntelligenceReports();
+  const derived = deriveSignalEvents(reports, 20);
   const data = useQuery(
     api.signalEvents.listActive,
     isConvexConfigured() ? { limit: 20 } : "skip"
   );
   return resolveRankingList(
-    data as SignalEvent[] | undefined,
+    (data as SignalEvent[] | undefined)?.length
+      ? (data as SignalEvent[])
+      : derived.length > 0
+        ? derived
+        : undefined,
     getSeedSignalEvents(20),
     DEMO_SIGNALS
   );
