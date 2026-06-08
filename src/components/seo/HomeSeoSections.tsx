@@ -1,21 +1,30 @@
 import Link from "next/link";
 import { SEO_COPY_SNIPPETS, SEO_HOME_SECTIONS } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
-export function HomeSeoSections() {
+export function HomeSeoSections({ asPage = false }: { asPage?: boolean }) {
+  const Heading = asPage ? "h1" : "h2";
+
   return (
     <section
       id="cannabis-transparency-platform"
-      className="scroll-mt-24 border-t border-[var(--border-soft)] pt-12 lg:pt-16"
+      className={cn(
+        "scroll-mt-24",
+        !asPage && "border-t border-[var(--border-soft)] pt-12 lg:pt-16"
+      )}
       aria-labelledby="platform-heading"
     >
       <header className="max-w-3xl">
         <p className="section-kicker">Why BoofMap</p>
-        <h2
+        <Heading
           id="platform-heading"
-          className="font-display text-xl font-extrabold uppercase tracking-tight text-[var(--text-main)] sm:text-2xl"
+          className={cn(
+            "font-display font-extrabold uppercase tracking-tight text-[var(--text-main)]",
+            asPage ? "text-3xl sm:text-4xl" : "text-xl sm:text-2xl"
+          )}
         >
           Community-Powered Cannabis Transparency
-        </h2>
+        </Heading>
         <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)] sm:text-base">
           {SEO_COPY_SNIPPETS.positioning}{" "}
           {SEO_COPY_SNIPPETS.realReports}{" "}

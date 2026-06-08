@@ -21,7 +21,7 @@ export function MobileNav() {
       className="fixed bottom-0 left-0 right-0 z-50 border-t border-zinc-800/80 bg-[#0a0a0a]/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-2xl lg:hidden"
       aria-label="Main navigation"
     >
-      <div className="mx-auto flex max-w-6xl items-stretch justify-around px-1 py-1.5">
+      <div className="mx-auto flex w-full max-w-6xl items-stretch justify-around px-1 py-1.5">
         {links.map(({ href, label, icon: Icon }) => {
           const active =
             href === "/"

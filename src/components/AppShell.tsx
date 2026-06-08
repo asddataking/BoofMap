@@ -50,7 +50,7 @@ export function AppShell({
       )}
     >
       <header className="sticky top-0 z-30 border-b border-[var(--border-soft)] bg-[var(--bg-panel)]/95 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))]">
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 pb-3 pt-[max(0.75rem,env(safe-area-inset-top))] lg:max-w-none lg:px-8">
           <BoofLogo size="md" />
 
           <nav
@@ -191,7 +191,11 @@ export function AppShell({
         )}
       </header>
 
-      <main id="main-content" className="mx-auto max-w-6xl px-4" tabIndex={-1}>
+      <main
+        id="main-content"
+        className="mx-auto w-full max-w-6xl px-4 lg:max-w-none lg:px-8"
+        tabIndex={-1}
+      >
         {children}
       </main>
 
@@ -208,7 +212,7 @@ export function AppShell({
 
       <footer
         className={cn(
-          "mx-auto max-w-6xl px-4 pt-8",
+          "mx-auto w-full max-w-6xl px-4 pt-8 lg:max-w-none lg:px-8",
           isLanding ? "pb-28 lg:pb-8" : "pb-28"
         )}
       >

@@ -7,7 +7,6 @@ import { AppShell } from "@/components/AppShell";
 import { FaqSection } from "@/components/FaqSection";
 import { HowItWorksSection } from "@/components/HowItWorksSection";
 import { LandingPwaSection } from "@/components/LandingPwaSection";
-import { HomeSeoSections } from "@/components/seo/HomeSeoSections";
 import { PageTransition } from "@/components/PageTransition";
 import { DetectionTicker } from "@/components/intelligence/DetectionTicker";
 import { IntelligenceErrorBoundary } from "@/components/intelligence/IntelligenceErrorBoundary";
@@ -139,8 +138,6 @@ function HomeClientView({
           </IntelligenceErrorBoundary>
 
           <HowItWorksSection />
-
-          <HomeSeoSections />
 
           <FaqSection id="home-faq" heading="Common questions" />
 

@@ -20,6 +20,7 @@ const intelligenceLinks = [
 ] as const;
 
 const helpLinks = [
+  { href: "/about", label: "Cannabis transparency" },
   { href: "/faq", label: "FAQ" },
   { href: "/#how-it-works", label: "How it works" },
   { href: "/media", label: "Media kit" },
