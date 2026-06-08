@@ -1,6 +1,10 @@
 import { v } from "convex/values";
+import { internal } from "./_generated/api";
 import { mutation, query } from "./_generated/server";
+import { processApprovedReport } from "./lib/intelligencePipeline";
 import { reportToApi, meetupToApi } from "./lib/mappers";
+import { insertTickerFromReport } from "./lib/tickerWrite";
+import { isHighSeverityReport, severityLabel } from "./lib/reportAlerts";
 import {
   buildPublicWarning,
 } from "./lib/sellerSignal";
@@ -334,6 +338,8 @@ export const moderate = mutation({
       const report = await ctx.db.get(id);
       if (!report) throw new Error("Report not found");
 
+      const wasApproved = report.status === "approved";
+
       await ctx.db.patch(id, {
         status,
         reviewedAt: now,
@@ -342,6 +348,27 @@ export const moderate = mutation({
             ? Math.round(report.boofScore * 20)
             : report.trustScore,
       });
+
+      if (status === "approved" && !wasApproved) {
+        const updated = await ctx.db.get(id);
+        if (updated) {
+          await ctx.runMutation(internal.users.incrementUserStatsAfterReport, {
+            userId: updated.userId,
+          });
+          await processApprovedReport(ctx, updated);
+          if (
+            isHighSeverityReport(updated.issueTags, updated.boofScore)
+          ) {
+            await insertTickerFromReport(ctx, {
+              brandName: updated.brandName,
+              city: updated.city,
+              productName: updated.strainName || updated.productType,
+              severity: severityLabel(updated.issueTags, updated.boofScore),
+              issueTags: updated.issueTags,
+            });
+          }
+        }
+      }
     } else {
       const id = args.sourceId as Id<"meetupReports">;
       const report = await ctx.db.get(id);

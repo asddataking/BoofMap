@@ -1,4 +1,5 @@
 import { v } from "convex/values";
+import type { MutationCtx } from "./_generated/server";
 import { internalMutation, mutation, query } from "./_generated/server";
 import { isAdminIdentity, requireIdentity } from "./lib/auth";
 import { userProfileToApi } from "./lib/mappers";
@@ -33,10 +34,11 @@ export const syncCurrentUser = mutation({
       if (existing.role !== role) {
         await ctx.db.patch(existing._id, { role });
       }
+      await ensureIntelligenceProfile(ctx, clerkId, displayName);
       return existing._id;
     }
 
-    return await ctx.db.insert("users", {
+    const id = await ctx.db.insert("users", {
       clerkId,
       displayName,
       role,
@@ -44,8 +46,37 @@ export const syncCurrentUser = mutation({
       reportCount: 0,
       createdAt: Date.now(),
     });
+    await ensureIntelligenceProfile(ctx, clerkId, displayName);
+    return id;
   },
 });
+
+async function ensureIntelligenceProfile(
+  ctx: MutationCtx,
+  userId: string,
+  displayName?: string
+) {
+  const profile = await ctx.db
+    .query("profiles")
+    .withIndex("by_user_id", (q) => q.eq("userId", userId))
+    .unique();
+
+  if (profile) return;
+
+  await ctx.db.insert("profiles", {
+    userId,
+    role: "customer",
+    activeViewRole: "customer",
+    detectorRank: "observer",
+    detectionPoints: 0,
+    referralCode: `BD-${userId.slice(-6).toUpperCase()}`,
+    customersReferred: 0,
+    budtendersReferred: 0,
+    activeReferrals: 0,
+    displayName,
+    updatedAt: Date.now(),
+  });
+}
 
 export const getMe = query({
   args: {},

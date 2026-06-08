@@ -18,7 +18,9 @@ export type AdminSection =
   | "users"
   | "reports"
   | "meetups"
-  | "moderation";
+  | "moderation"
+  | "budtenders"
+  | "brands";
 
 const nav: { id: AdminSection; label: string; icon: typeof LayoutDashboard }[] =
   [
@@ -26,6 +28,8 @@ const nav: { id: AdminSection; label: string; icon: typeof LayoutDashboard }[] =
     { id: "users", label: "Users", icon: Users },
     { id: "reports", label: "Product Reports", icon: Newspaper },
     { id: "meetups", label: "Meetup Reports", icon: UserCheck },
+    { id: "budtenders", label: "Budtender Apps", icon: UserCheck },
+    { id: "brands", label: "Brand Apps", icon: UserCheck },
     { id: "moderation", label: "Moderation", icon: Shield },
   ];
 

@@ -62,7 +62,7 @@ export function ReportForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isAuthenticated) {
-      setError("Sign in to submit a report.");
+      setError("Sign in to submit a detection.");
       return;
     }
     setSubmitting(true);
@@ -111,7 +111,7 @@ export function ReportForm({
   }
 
   if (!isAuthenticated) {
-    return <SignInPrompt message="Sign in to report boof, fire, or taxed product." />;
+    return <SignInPrompt message="Sign in to submit fire, boof, or value detections." />;
   }
 
   return (
@@ -326,7 +326,7 @@ export function ReportForm({
           ? "Submitting…"
           : useQuickFlags
             ? "Submit boof report"
-            : "Submit community report"}
+            : "Submit detection"}
       </motion.button>
     </form>
   );

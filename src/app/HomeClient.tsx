@@ -9,10 +9,12 @@ import { HowItWorksSection } from "@/components/HowItWorksSection";
 import { LandingPwaSection } from "@/components/LandingPwaSection";
 import { HomeSeoSections } from "@/components/seo/HomeSeoSections";
 import { PageTransition } from "@/components/PageTransition";
-import { BoofTicker } from "@/components/home/BoofTicker";
+import { DetectionTicker } from "@/components/intelligence/DetectionTicker";
+import { MarketStatusModule } from "@/components/intelligence/MarketStatusModule";
+import { DetectionFeed } from "@/components/intelligence/DetectionFeed";
 import { HomepageHero } from "@/components/home/HomepageHero";
-import { IntelBoard } from "@/components/home/IntelBoard";
 import { AnalystRankTeaser } from "@/components/home/AnalystRankTeaser";
+import { GAMIFICATION_ENABLED } from "@/lib/intelligence/featureFlags";
 import { api } from "../../convex/_generated/api";
 import { useAuth } from "@/components/BoofAuthProvider";
 import type { MeetupReport, Report } from "@/lib/types";
@@ -118,16 +120,14 @@ function HomeClientView({
   return (
     <AppShell showFab variant="landing">
       <PageTransition>
-        <BoofTicker />
+        <DetectionTicker />
 
         <div className="space-y-12 pb-8 pt-4 lg:space-y-16 lg:pb-12 lg:pt-6">
-          <HomepageHero
-            reports={reports}
-            meetups={meetups}
-            totalReports={reports.length + meetups.length}
-          />
+          <HomepageHero reports={reports} meetups={meetups} />
 
-          <IntelBoard reports={reports} meetups={meetups} />
+          <MarketStatusModule state="MI" />
+
+          <DetectionFeed reports={reports} meetups={meetups} />
 
           <HowItWorksSection />
 
@@ -148,14 +148,14 @@ function HomeClientView({
               <div className="flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div>
                   <h3 className="font-display text-xl font-extrabold uppercase tracking-tight text-[var(--text-main)] sm:text-2xl">
-                    Join the transparency network
+                    Join the intelligence network
                   </h3>
                   <p className="mt-2 max-w-lg text-sm text-[var(--text-muted)]">
-                    Browse live community reports free. Sign up to submit quality
-                    signals, confirm alerts, and help legal markets find fire and
-                    avoid boof.
+                    Browse live detections free. Sign up to submit intelligence,
+                    confirm alerts, and earn status in the cannabis intelligence
+                    network.
                   </p>
-                  <AnalystRankTeaser />
+                  {GAMIFICATION_ENABLED && <AnalystRankTeaser />}
                 </div>
                 <SignUpButton mode="modal">
                   <button type="button" className="btn-primary shrink-0 px-8 py-4">

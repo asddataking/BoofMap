@@ -9,7 +9,14 @@ import { MEDIA_CONTACT_EMAIL, MEDIA_KIT_PDF_FILENAME, MEDIA_KIT_PDF_PATH } from 
 const exploreLinks = [
   { href: "/reports", label: "Live reports & map" },
   { href: "/brands", label: "Brand analytics" },
-  { href: "/report", label: "Submit a report" },
+  { href: "/report", label: "Submit detection" },
+] as const;
+
+const intelligenceLinks = [
+  { href: "/insiders", label: "Budtender Network" },
+  { href: "/brands/partner", label: "Brand Partners" },
+  { href: "/state-of-the-market", label: "State Of The Market" },
+  { href: "/leaderboards", label: "Leaderboards" },
 ] as const;
 
 const helpLinks = [
@@ -23,7 +30,7 @@ export function SiteFooter() {
 
   return (
     <footer className="mt-12 border-t border-[var(--border-soft)] pt-10">
-      <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
         <div className="sm:col-span-2 lg:col-span-1">
           <BoofLogo size="sm" showBeta />
           <p className="mt-3 max-w-xs text-sm text-[var(--text-muted)]">
@@ -45,6 +52,24 @@ export function SiteFooter() {
           </h2>
           <ul className="mt-3 space-y-2">
             {exploreLinks.map(({ href, label }) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className="text-sm text-[var(--text-main)] underline-offset-2 hover:text-[#39FF88] hover:underline"
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <nav aria-label="Intelligence network">
+          <h2 className="font-display text-xs font-bold uppercase tracking-[0.18em] text-[var(--text-muted)]">
+            Intelligence
+          </h2>
+          <ul className="mt-3 space-y-2">
+            {intelligenceLinks.map(({ href, label }) => (
               <li key={href}>
                 <Link
                   href={href}

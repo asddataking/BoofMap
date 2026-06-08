@@ -6,6 +6,8 @@ import { AppShell } from "@/components/AppShell";
 import { InstallPrompt } from "@/components/InstallPrompt";
 import { PageTransition } from "@/components/PageTransition";
 import { AnalystCard } from "@/components/profile/AnalystCard";
+import { ProfileIntelligencePanel } from "@/components/profile/ProfileIntelligencePanel";
+import { GAMIFICATION_ENABLED } from "@/lib/intelligence/featureFlags";
 import { useAuth } from "@/components/BoofAuthProvider";
 import { NotificationSettings } from "@/components/NotificationSettings";
 import { ProfileMyReports } from "@/components/ProfileMyReports";
@@ -23,7 +25,7 @@ export default function ProfilePage() {
               Profile
             </h1>
             <p className="mt-1 text-sm text-zinc-500">
-              Your account, analyst card, alerts, and reports.
+              Your intelligence profile, detections, alerts, and reputation.
             </p>
           </div>
 
@@ -45,7 +47,9 @@ export default function ProfilePage() {
             </Link>
           )}
 
-          <AnalystCard />
+          <ProfileIntelligencePanel />
+
+          {GAMIFICATION_ENABLED && <AnalystCard />}
 
           <InstallPrompt />
 
@@ -70,7 +74,7 @@ export default function ProfilePage() {
                 href="/report"
                 className="rounded-2xl border border-zinc-800 bg-zinc-900/50 px-6 py-3.5 text-center text-sm font-semibold text-white hover:border-zinc-700"
               >
-                Report Boof
+                Submit Detection
               </Link>
             </div>
           </div>

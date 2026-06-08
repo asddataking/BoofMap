@@ -128,6 +128,10 @@ export interface MeetupReportFormData {
   image_file?: File | null;
 }
 
+export type ProfileRole = "customer" | "budtender" | "brand";
+
+export type DetectionType = "fire" | "boof" | "value" | "warning";
+
 export interface BoofUser {
   uid: string;
   display_name?: string;

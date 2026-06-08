@@ -4,6 +4,7 @@ import { internal } from "./_generated/api";
 import { mutation, query } from "./_generated/server";
 import { requireIdentity } from "./lib/auth";
 import { isHighSeverityReport, severityLabel } from "./lib/reportAlerts";
+import { processApprovedReport, processConfirmation } from "./lib/intelligencePipeline";
 import { insertTickerFromReport } from "./lib/tickerWrite";
 import { coordsForCity } from "./lib/cityCoords";
 import { reportToApi } from "./lib/mappers";
@@ -260,6 +261,7 @@ export const create = mutation({
       await ctx.runMutation(internal.users.incrementUserStatsAfterReport, {
         userId,
       });
+      await processApprovedReport(ctx, doc);
       if (isHighSeverityReport(args.issueTags, args.boofScore)) {
         await insertTickerFromReport(ctx, {
           brandName: args.brandName.trim(),
@@ -321,6 +323,12 @@ export const vote = mutation({
     });
 
     const updated = await ctx.db.get(args.reportId);
-    return updated ? { report: reportToApi(updated) } : { error: "Not found" };
+    if (!updated) return { error: "Not found" };
+
+    if (args.voteType === "confirm") {
+      await processConfirmation(ctx, updated, userId);
+    }
+
+    return { report: reportToApi(updated) };
   },
 });

@@ -2,44 +2,19 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Flame, MapPin, Shield, Skull, Zap } from "lucide-react";
-import { LandingStatCard } from "@/components/LandingStatCard";
+import { MapPin, Zap } from "lucide-react";
+import { IntelligenceStats } from "@/components/intelligence/IntelligenceStats";
 import { TacticalMapPanel } from "@/components/home/TacticalMapPanel";
+import { PLATFORM_TAGLINE } from "@/lib/intelligence/constants";
 import type { MeetupReport, Report } from "@/lib/types";
-import { getMarkerTier } from "@/lib/markers";
-
-function countSince(reports: Report[], ms: number, predicate: (r: Report) => boolean) {
-  const since = Date.now() - ms;
-  return reports.filter(
-    (r) => predicate(r) && new Date(r.created_at).getTime() >= since
-  ).length;
-}
-
 export function HomepageHero({
   reports,
   meetups = [],
-  totalReports,
 }: {
   reports: Report[];
   meetups?: MeetupReport[];
-  totalReports: number;
+  totalReports?: number;
 }) {
-  const fireFinds = reports.filter((r) => getMarkerTier(r) === "fire").length;
-  const boofAlerts = reports.filter((r) => getMarkerTier(r) === "boof").length;
-  const fireToday = countSince(reports, 24 * 60 * 60 * 1000, (r) => getMarkerTier(r) === "fire");
-  const boofToday = countSince(reports, 24 * 60 * 60 * 1000, (r) => getMarkerTier(r) === "boof");
-  const reportsToday = countSince(reports, 24 * 60 * 60 * 1000, () => true);
-  const trustScore = Math.min(
-    99,
-    Math.round(
-      reports.length
-        ? (reports.reduce((s, r) => s + (r.confirm_count ?? 0), 0) /
-            Math.max(reports.length, 1)) *
-            12
-        : 72
-    )
-  );
-
   return (
     <section className="relative overflow-hidden pt-2 lg:pt-4" aria-label="Welcome">
       <div className="pointer-events-none absolute -left-24 top-0 h-72 w-72 rounded-full bg-[#39FF88]/8 blur-3xl" />
@@ -58,7 +33,7 @@ export function HomepageHero({
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#39FF88]" />
               </span>
               <span className="font-display text-[10px] font-bold uppercase tracking-[0.2em] text-[#39FF88]">
-                Community-Powered Cannabis Transparency
+                Cannabis Intelligence Network
               </span>
             </div>
 
@@ -72,14 +47,13 @@ export function HomepageHero({
             </h1>
 
             <p className="mt-4 max-w-lg text-base leading-relaxed text-[var(--text-muted)]">
-              Real cannabis reports from real consumers. Track quality, value,
-              flavor, effects, and trust across legal markets — not pay-to-play
-              menus.
+              {PLATFORM_TAGLINE} Watch the cannabis market in real time.
+              Community-powered detections surface fire, expose boof, and track
+              value — brands cannot buy trust.
             </p>
             <p className="mt-2 text-sm text-[var(--text-muted)]/80">
-              The cannabis transparency platform for legal markets. Community
-              intelligence nationwide — launching in Michigan — updated
-              continuously.
+              Intelligence terminal for legal markets. Launching in Michigan.
+              Updated continuously from community signals.
             </p>
           </motion.div>
 
@@ -94,14 +68,14 @@ export function HomepageHero({
               className="btn-primary inline-flex flex-1 items-center justify-center gap-2 px-6 py-3.5 sm:flex-none"
             >
               <Zap className="h-4 w-4" aria-hidden />
-              Report Boof
+              Submit Detection
             </Link>
             <Link
               href="/reports"
               className="btn-secondary inline-flex flex-1 items-center justify-center gap-2 px-6 py-3.5 sm:flex-none"
             >
               <MapPin className="h-4 w-4" aria-hidden />
-              Open Map
+              Intel Map
             </Link>
           </motion.div>
 
@@ -109,40 +83,8 @@ export function HomepageHero({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="flex gap-3 overflow-x-auto pb-1 scrollbar-thin lg:grid lg:grid-cols-2 lg:overflow-visible xl:grid-cols-4"
           >
-            <LandingStatCard
-              label="Fire Finds"
-              value={fireFinds}
-              delta={`+${fireToday} today`}
-              icon={Flame}
-              accent="fire"
-              index={0}
-            />
-            <LandingStatCard
-              label="Boof Alerts"
-              value={boofAlerts}
-              delta={`+${boofToday} today`}
-              icon={Skull}
-              accent="boof"
-              index={1}
-            />
-            <LandingStatCard
-              label="Live Reports"
-              value={totalReports}
-              delta={`+${reportsToday} today`}
-              icon={Shield}
-              accent="intel"
-              index={2}
-            />
-            <LandingStatCard
-              label="Community Trust"
-              value={`${trustScore}%`}
-              delta="Signals verified"
-              icon={Zap}
-              accent="trust"
-              index={3}
-            />
+            <IntelligenceStats />
           </motion.div>
         </div>
 

@@ -269,7 +269,7 @@ export function IntelBoard({
                 No signals in this filter yet. Be the first to report.
               </p>
               <Link href="/report" className="btn-primary mt-4 inline-flex px-6 py-3">
-                Report Boof
+                Submit Detection
               </Link>
             </div>
           )}

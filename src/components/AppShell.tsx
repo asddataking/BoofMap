@@ -8,19 +8,20 @@ import { MobileNav } from "./MobileNav";
 import { SiteFooter } from "./SiteFooter";
 import { BoofLogo } from "./BoofLogo";
 import { useAuth } from "@/components/BoofAuthProvider";
+import { NotificationBell } from "@/components/intelligence/NotificationBell";
 import { cn } from "@/lib/utils";
 import { useId, useState } from "react";
 
 const landingLinks = [
-  { href: "/reports", label: "Map & Reports" },
+  { href: "/reports", label: "Intel Map" },
   { href: "/brands", label: "Brands" },
   { href: "/#how-it-works", label: "How It Works" },
 ] as const;
 
 const appLinks = [
-  { href: "/reports", label: "Map & Reports" },
+  { href: "/reports", label: "Intel Map" },
   { href: "/brands", label: "Brands" },
-  { href: "/report", label: "Report" },
+  { href: "/report", label: "Detect" },
 ] as const;
 
 export function AppShell({
@@ -96,17 +97,20 @@ export function AppShell({
               className="btn-dark hidden items-center gap-2 !px-4 !py-2 text-sm sm:inline-flex"
             >
               <Target className="h-4 w-4" aria-hidden />
-              Report Boof
+              Submit Detection
             </Link>
 
             {!loading && (
               <>
                 {isAuthenticated ? (
+                  <>
+                  <NotificationBell />
                   <UserButton
                     appearance={{
                       elements: { avatarBox: "h-9 w-9" },
                     }}
                   />
+                  </>
                 ) : (
                   <div className="hidden items-center gap-2 sm:flex">
                     <SignInButton mode="modal">
@@ -180,7 +184,7 @@ export function AppShell({
                 onClick={() => setMenuOpen(false)}
                 className="mt-1 rounded-xl bg-zinc-900 px-3 py-2.5 text-sm font-semibold text-white"
               >
-                Report Boof
+                Submit Detection
               </Link>
             </div>
           </nav>
@@ -194,11 +198,11 @@ export function AppShell({
       {showFab && (
         <Link
           href="/report"
-          aria-label="Report boof — submit a community report"
+          aria-label="Submit detection — contribute product intelligence"
           className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] right-4 z-40 flex min-h-[48px] items-center gap-2 rounded-lg bg-[#FF3B3B] px-5 py-3.5 font-display text-sm font-extrabold uppercase tracking-wide text-white shadow-[0_8px_32px_rgba(255,59,59,0.4)] transition hover:scale-[1.02] hover:shadow-[0_8px_40px_rgba(255,59,59,0.55)] active:scale-[0.98] lg:bottom-8 lg:right-8"
         >
           <Target className="h-4 w-4" aria-hidden />
-          <span className="hidden sm:inline">Report Boof</span>
+          <span className="hidden sm:inline">Detect</span>
         </Link>
       )}
 

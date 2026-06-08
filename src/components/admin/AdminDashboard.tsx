@@ -14,6 +14,8 @@ import { AdminReportsPanel } from "./AdminReportsPanel";
 import { AdminMeetupPanel } from "./AdminMeetupPanel";
 import { AdminModerationPanel } from "./AdminModerationPanel";
 import { AdminAiChat } from "./AdminAiChat";
+import { AdminBudtenderPanel } from "./AdminBudtenderPanel";
+import { AdminBrandPanel } from "./AdminBrandPanel";
 
 export function AdminDashboard() {
   const { isAdmin, loading, isAuthenticated } = useAuth();
@@ -86,6 +88,8 @@ export function AdminDashboard() {
         {section === "reports" && <AdminReportsPanel />}
         {section === "meetups" && <AdminMeetupPanel />}
         {section === "moderation" && <AdminModerationPanel />}
+        {section === "budtenders" && <AdminBudtenderPanel />}
+        {section === "brands" && <AdminBrandPanel />}
       </AdminShell>
       <AdminAiChat />
     </>
